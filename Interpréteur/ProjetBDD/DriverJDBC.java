@@ -39,11 +39,45 @@ public class DriverJDBC {
 		}
 	}
 	
-	public void creationTable(String nomTable) {
+	public void creationTable(String nomTable, String attributs) {
 		try {
 			System.out.println(" -- -- -- \n Création de table : " + nomTable + " \n -- -- -- \n");
 			Statement stmt = this.connection.createStatement();
-			stmt.executeUpdate("CREATE TABLE " + nomTable + "(hey integer)");
+			stmt.executeUpdate("CREATE TABLE " + nomTable + attributs);
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+	}
+	
+	public void insertValeur(String nomTable, String values) {
+		try {
+			System.out.println(" -- -- -- \n Insertion de valeurs : " + values + " dans la table " + nomTable + "\n -- -- -- \n");
+			Statement stmt = this.connection.createStatement();
+			stmt.executeUpdate("INSERT INTO " + nomTable + " VALUES " + values);
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+	}
+	
+	// Je pense qu'il faudra faire un par type
+	public void selectStringValues(String nomTable, String attributs) {
+		try {
+			System.out.println(" -- -- -- \n Lecture des valeurs de la table " + nomTable + "\n -- -- -- \n");
+			Statement stmt = this.connection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT " + attributs + " FROM " + nomTable);
+			String[] colonnes = attributs.split(",");
+			String out = " ";
+			while (rs.next()) {
+				for (String colonne : colonnes) {
+					out += rs.getString(colonne) + " ";
+				}
+				out += " \n ";
+			}
+			System.out.println(out);
 			
 		} catch (SQLException e) {
 			
@@ -64,9 +98,10 @@ public class DriverJDBC {
 	}
 	
 	public void fermeture() {
-		System.out.println(" -- -- -- \n Tentative de fermeture de connexion \n -- -- -- \n");
+		System.out.println(" -- -- -- \n Tentative de fermeture de connexion \n ");
 		try {
 			this.connection.close();
+			System.out.println(" Connexion fermée \n -- -- -- \n");
 			
 		} catch (SQLException e) {
 			
