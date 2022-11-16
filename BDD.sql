@@ -1,14 +1,39 @@
 -- Création du schéma physique de la BD
 
-CREATE TABLE RESTAURANT(
+CREATE TABLE RESTAURANTS(
     RMail VARCHAR(50),
     RNom VARCHAR(30) NOT NULL,
-    Num VARCHAR(12) NOT NULL,
+    RNum VARCHAR(12) NOT NULL,
     RAdresse VARCHAR(50) NOT NULL,
     Places int NOT NULL,
     Presentation VARCHAR(200),
     PRIMARY KEY(RMail)
-)
+);
+
+CREATE TABLE HORAIRES(
+    JourPlage VARCHARar(3) CHECK (JourPlage IN ('LM', 'LS', 'MaM', 'MaS', 'MeM', 'MeS', 'JM', 'JS', 'VM', 'VS', 'SM', 'SS', 'DM', 'DS')),
+    PRIMARY KEY(JourPlage)
+);
+
+CREATE TABLE TYPESCOMMANDE(
+    TypeCommande VARCHAR(9) CHECK (TypeKey IN ('livraison', 'place', 'emporter')),
+    PRIMARY KEY(TypeKey)
+);
+
+CREATE TABLE PLATS(
+    Pid INT,
+    PRestaurant VARCHAR(50),
+    PNom VARCHAR(20) NOT NULL,
+    PDescription VARCHAR(200),
+    PPrix INT NOT NULL,
+    PRIMARY KEY(Pid, PRestaurant),
+    FOREIGN KEY(PRestaurant) REFERENCES RESTAURANTS(RMail)
+);
+
+CREATE TABLE ALLERGENES(
+    ANom VARCHAR(15),
+    PRIMARY KEY(ANom)
+);
 
 -- CREATE TABLE MILIEU(
 --     composition varchar(30) NOT NULL CHECK (composition IN ('acide', 'basique', 'neutre')),
