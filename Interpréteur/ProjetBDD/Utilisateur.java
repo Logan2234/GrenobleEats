@@ -19,7 +19,7 @@ public class Utilisateur {
 
     }
 
-    public getEmail(){
+    public String getEmail(){
         return this.eMail;
     }
 
