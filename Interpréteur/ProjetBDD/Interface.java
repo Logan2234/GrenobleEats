@@ -51,7 +51,8 @@ public class Interface {
 			while (rs.next()) {
 				nombreReponses++;
 				if (nombreReponses > 1) {
-					identificationAvecId();
+					System.out.println("\n Aïe... Il y a plus d'un utilisateur avec le même courriel... Pas normal... Indique une autre adresse. \n");
+					identification();
 					return;
 				}
 				userId = rs.getInt("UId");
@@ -60,12 +61,7 @@ public class Interface {
 				identification();
 				return;
 			}
-			System.out.println("\n Quel est ton mot de passe ? \n");
-			String MdP = interacteur.nextLine();
-			stmt = jdbc.connection.createStatement();
-			rs = stmt.executeQuery("SELECT UId FROM UTILISATEURS WHERE UId = \'" + String.valueOf(userId) + "\' AND Mdp = \'" + MdP + "\'");
-				
-				
+			verifierMDP(userId);
 			}
 		} catch (SQLException e) { 
 			
@@ -74,13 +70,30 @@ public class Interface {
 		}
 	}
 	
-	public void identificationAvecId() {
+	public void verifierMDP(int userId) {
 		try {
-			System.out.println("\n Aïe... Ce mail est utilisé par plus d'une personne... Quel est ton numéro d'utilisateur ? \n");
-		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("\n Quel est ton mot de passe ? \n");
+			String MdP = interacteur.nextLine();
+			Statement stmt = jdbc.connection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT UId FROM UTILISATEURS WHERE UId = \'" + String.valueOf(userId) + "\' AND Mdp = \'" + MdP + "\'");
+			int nombreReponses = 0;
+			while (rs.next()) {
+				nombreReponses++;
+			}
+			if (nombreReponses == 0) {
+				System.out.println("Mot de passe incorrect. Veillez introduire le bon mot de passe. \n");
+				verifierMDP(userId);
+				return;
+			} else {
+				accueil();
+				return;
+			}
+			
+		} catch (SQLException e) { 
+			e.printStackTrace();	
 		}
 	}
+	
 	
 	public void creerCompte() { // TODO 
 		System.out.println("Tu vas te regaler ! \n");
