@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class Interface {
 	Scanner interacteur;
 	DriverJDBC jdbc;
+	Utilisateur user;
 	
 	public Interface() {
 		this.interacteur = new Scanner(System.in);
@@ -28,15 +29,79 @@ public class Interface {
 		jdbc.fermeture();
 	}
 	
+	public void droitOublie() {
+		System.out.println("Est-tu sûr(e) de vouloir effacer tes données, " + user.getPrenom() + "?");
+		System.out.println("Les données ne pourront pas être récupérées. \n");
+		
+		System.out.println("1) Oui, je souhaite tout effacer");
+		System.out.println("2) Quitter l'application \n");
+
+		System.out.println("Tapez le numéro de la réponse que vous souhaitez : \n");
+		
+		String reponse = interacteur.nextLine();
+		
+		switch (reponse) {
+			case "1":
+				this.accueil(); // TODO
+				break;
+			case "2":
+				this.quit();
+				break;
+			default:
+				System.out.println("Vous n'avez pas indiqué une réponse valide. \n -- -- -- \n");
+				accueil();
+				break;
+		}
+	}
+	
+	public void effacementDonnees() {
+		try {
+			Statement stmt = jdbc.connection.createStatement();
+			stmt.executeUpdate("UPDATE UTILISATEURS SET UMail = \'\', UNom = \\'\\', Prenom = \\'\\', "
+					+ "UAdresse = \\'\\', Mdp =  = \\'\\' WHERE UId = " + String.valueOf(user.getIdentifiant()));
+			System.out.println("Les données personnelles ont été effacées. Nous procédons à fermer la session. \n -- -- -- \n");
+			connexion();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void accueil() {
 		
-		System.out.println("Bienvenu à nouveau ! \n");
+		System.out.println("Bienvenu à nouveau, " + user.getPrenom() + "! \n");
 		System.out.println("Que souhaites-tu faire ? \n -- -- -- \n");
 		
 		System.out.println("1) Restaurants disponibles");
 		System.out.println("2) Réaliser une commande");
-		System.out.println("3) Éliminer données personnelles d'une personne (Droit à l'oubli)");
+		System.out.println("3) Éliminer mes données personnelles (Droit à l'oubli)");
+		System.out.println("4) Changer d'utilisateur");
+		System.out.println("5) Quitter l'application \n");
+
+		System.out.println("Tapez le numéro de la réponse que vous souhaitez : \n");
 		
+		String reponse = interacteur.nextLine();
+		
+		switch (reponse) {
+			case "1":
+				this.accueil(); // TODO
+				break;
+			case "2":
+				this.creerCompte(); // TODO
+				break;
+			case "3":
+				this.quit(); // TODO
+				break;
+			case "4":
+				identification();
+				break;
+			case "5":
+				quit();
+				break;
+			default:
+				System.out.println("Vous n'avez pas indiqué une réponse valide. \n -- -- -- \n");
+				accueil();
+				break;
+		}
 		
 	}
 	
@@ -75,7 +140,7 @@ public class Interface {
 			System.out.println("\n Quel est ton mot de passe ? \n");
 			String MdP = interacteur.nextLine();
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT UId FROM UTILISATEURS WHERE UId = \'" + String.valueOf(userId) + "\' AND Mdp = \'" + MdP + "\'");
+			ResultSet rs = stmt.executeQuery("SELECT UId FROM UTILISATEURS WHERE UId = " + String.valueOf(userId) + " AND Mdp = \'" + MdP + "\'");
 			int nombreReponses = 0;
 			while (rs.next()) {
 				nombreReponses++;
@@ -85,6 +150,10 @@ public class Interface {
 				verifierMDP(userId);
 				return;
 			} else {
+				stmt = jdbc.connection.createStatement();
+				rs = stmt.executeQuery("SELECT UMail, UNom, Prenom, UAdresse FROM UTILISATEURS WHERE UId = \'" + String.valueOf(userId) + "\'");
+				rs.next();
+				this.user = new Utilisateur(userId, rs.getString("UMail"), rs.getString("UNom"), rs.getString("Prenom"), rs.getString(MdP), rs.getString("Adresse"));
 				accueil();
 				return;
 			}
