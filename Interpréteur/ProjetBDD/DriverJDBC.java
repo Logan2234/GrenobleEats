@@ -41,7 +41,7 @@ public class DriverJDBC {
 	
 	public void creationTable(String nomTable, String attributs) {
 		try {
-			System.out.println(" -- -- -- \n Création de table : " + nomTable + " \n -- -- -- \n");
+			System.out.println(" -- -- -- \n Création de table : " + nomTable + " avec les attributs " + attributs + "\n -- -- -- \n");
 			Statement stmt = this.connection.createStatement();
 			stmt.executeUpdate("CREATE TABLE " + nomTable + attributs);
 			

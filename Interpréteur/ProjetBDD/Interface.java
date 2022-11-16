@@ -42,7 +42,7 @@ public class Interface {
 		
 		switch (reponse) {
 			case "1":
-				this.accueil(); // TODO
+				this.effacementDonnees();
 				break;
 			case "2":
 				this.quit();
@@ -89,7 +89,7 @@ public class Interface {
 				this.creerCompte(); // TODO
 				break;
 			case "3":
-				this.quit(); // TODO
+				this.droitOublie(); // TODO
 				break;
 			case "4":
 				identification();
@@ -109,9 +109,10 @@ public class Interface {
 		try {
 			int nombreReponses = 0;
 			System.out.println("\n -- -- -- \n Quel est ton adresse mail ? \n");
+			
 			String mail = interacteur.nextLine();
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT UId FROM UTILISATEURS WHERE UMail = \'" + mail + "\'");
+			ResultSet rs = stmt.executeQuery("SELECT U_Id FROM UTILISATEURS WHERE UMail = \'" + mail + "\'");
 			int userId;
 			while (rs.next()) {
 				nombreReponses++;
@@ -120,10 +121,10 @@ public class Interface {
 					identification();
 					return;
 				}
-				userId = rs.getInt("UId");
+				userId = rs.getInt("U_Id");
 			if (nombreReponses == 0) {
-				System.out.println("\n Aïe... Nous n'avons aucun utilisateur avec cet adresse mail... Veillez indiquer une adresse mail existance ? \n");
-				identification();
+				System.out.println("\n Aïe... Nous n'avons aucun utilisateur avec cet adresse mail... Nous revenons vers l'accueil. \n");
+				connexion();
 				return;
 			}
 			verifierMDP(userId);
@@ -140,7 +141,7 @@ public class Interface {
 			System.out.println("\n Quel est ton mot de passe ? \n");
 			String MdP = interacteur.nextLine();
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT UId FROM UTILISATEURS WHERE UId = " + String.valueOf(userId) + " AND Mdp = \'" + MdP + "\'");
+			ResultSet rs = stmt.executeQuery("SELECT U_Id FROM UTILISATEURS WHERE U_Id = " + String.valueOf(userId) + " AND Mdp = \'" + MdP + "\'");
 			int nombreReponses = 0;
 			while (rs.next()) {
 				nombreReponses++;
@@ -151,7 +152,7 @@ public class Interface {
 				return;
 			} else {
 				stmt = jdbc.connection.createStatement();
-				rs = stmt.executeQuery("SELECT UMail, UNom, Prenom, UAdresse FROM UTILISATEURS WHERE UId = \'" + String.valueOf(userId) + "\'");
+				rs = stmt.executeQuery("SELECT UMail, UNom, Prenom, UAdresse FROM UTILISATEURS WHERE U_Id = " + String.valueOf(userId));
 				rs.next();
 				this.user = new Utilisateur(userId, rs.getString("UMail"), rs.getString("UNom"), rs.getString("Prenom"), rs.getString(MdP), rs.getString("Adresse"));
 				accueil();
@@ -184,7 +185,7 @@ public class Interface {
 		
 		switch (reponse) {
 			case "1":
-				this.accueil();
+				this.identification();
 				break;
 			case "2":
 				this.creerCompte();
