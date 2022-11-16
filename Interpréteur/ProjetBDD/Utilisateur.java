@@ -17,7 +17,7 @@ public class Utilisateur {
     }
     
     public String getMdp(){
-        retirn this.mdp;
+        return this.mdp;
     }
 
     public String getNom(){
@@ -33,10 +33,10 @@ public class Utilisateur {
     }
 
     @Override
-    public toString(){
+    public String toString(){
         return "Cet utilisateur a pour identifiant "
             + this.identifiant + " et pour mot de passe : " 
-            + this.mdp ", s'appelle " + this.prenom + " "
+            + this.mdp + ", s'appelle " + this.prenom + " "
             + this.nom + " et habite au " + this.adresse;
     }
 }
