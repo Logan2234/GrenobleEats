@@ -1,22 +1,29 @@
+
+
 public class Utilisateur {
 
-    private String identifiant;
+    private int identifiant;
     private String eMail;
     private String nom;
     private String prenom;
     private String mdp;
     private String adresse;
 
-    public Utilisateur(String identifiant, String mdp){
+    public Utilisateur(int identifiant, String email, String mdp, String nom, String prenom, String adresse){
         this.identifiant = identifiant;
         this.mdp = mdp;
-    }
-    
-    public String getMail() {
-    	return this.eMail;
+        this.eMail = email;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.adresse = adresse;
+
     }
 
-    public String getIdentifiant(){
+    public getEmail(){
+        return this.eMail;
+    }
+
+    public int getIdentifiant(){
         return this.identifiant;
     }
     
