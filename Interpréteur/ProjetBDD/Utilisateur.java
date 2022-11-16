@@ -11,6 +11,10 @@ public class Utilisateur {
         this.identifiant = identifiant;
         this.mdp = mdp;
     }
+    
+    public String getMail() {
+    	return this.eMail;
+    }
 
     public String getIdentifiant(){
         return this.identifiant;

@@ -6,7 +6,7 @@ public class DriverJDBC {
 	private String url;
 	private String user;
 	private String passwrd;
-	private Connection connection;
+	public Connection connection;
 	
 	public DriverJDBC() {
 		
@@ -62,6 +62,7 @@ public class DriverJDBC {
 			e.printStackTrace();
 		}
 	}
+	
 	
 	// Je pense qu'il faudra faire un par type
 	public void selectStringValues(String nomTable, String attributs) {
