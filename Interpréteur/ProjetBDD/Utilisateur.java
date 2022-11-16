@@ -1,3 +1,5 @@
+
+
 public class Utilisateur {
 
     private int identifiant;
@@ -43,7 +45,8 @@ public class Utilisateur {
     @Override
     public String toString(){
         return "Cet utilisateur a pour identifiant "
-            + this.identifiant + " et pour mot de passe : " 
+            + this.identifiant + ", a pour eMail " 
+            + this.eMail + " et pour mot de passe : " 
             + this.mdp + ", s'appelle " + this.prenom + " "
             + this.nom + " et habite au " + this.adresse;
     }
