@@ -153,7 +153,7 @@ public class Interface {
 				stmt = jdbc.connection.createStatement();
 				rs = stmt.executeQuery("SELECT UMail, UNom, Prenom, UAdresse FROM UTILISATEURS WHERE UId = \'" + String.valueOf(userId) + "\'");
 				rs.next();
-				this.user = new Utilisateur(userId, rs.getString("UMail"), rs.getString("UNom"), rs.getString("Prenom"), rs.getString(MdP), rs.getString("Adresse"));
+				this.user = new Utilisateur(userId, rs.getString("UMail"), rs.getString("UNom"), rs.getString("Prenom"), MdP, rs.getString("Adresse"));
 				accueil();
 				return;
 			}
@@ -161,6 +161,11 @@ public class Interface {
 		} catch (SQLException e) { 
 			e.printStackTrace();	
 		}
+	}
+
+	public void laisserEvaluation(){
+		System.out.println("\n Choisissez une commande \n");
+
 	}
 	
 	
