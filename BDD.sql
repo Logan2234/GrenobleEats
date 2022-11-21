@@ -17,8 +17,8 @@ CREATE TABLE HORAIRES(
 );
 
 CREATE TABLE TYPESCOMMANDE(
-    TypeCommande VARCHAR(9) CHECK (TypeKey IN ('livraison', 'place', 'emporter')),
-    PRIMARY KEY(TypeKey)
+    TypeCommande VARCHAR(9) CHECK (TypeCommande IN ('livraison', 'place', 'emporter')),
+    PRIMARY KEY(TypeCommande)
 );
 
 CREATE TABLE CATEGORIES (
@@ -34,7 +34,7 @@ CREATE TABLE ALLERGENES(
 CREATE TABLE COMMANDES (
     Cid INT,
     CDate DATE NOT NULL,
-    CHaure TIME NOT NULL,
+    CHeure TIMESTAMP NOT NULL,
     CPrix FLOAT,
     U_id INT,
     TypeCommande VARCHAR(9),
@@ -56,7 +56,7 @@ CREATE TABLE UTILISATEURS (
 CREATE TABLE EVALUATIONS (
     Eid INT,
     EDate DATE NOT NULL,
-    EHeure TIME NOT NULL,
+    EHeure TIMESTAMP NOT NULL,
     Avis VARCHAR(300),
     ENote INT NOT NULL,
     Cid INT,
@@ -74,17 +74,17 @@ CREATE TABLE COMMANDESLIVREES (
     CLid INT,
     CLAdresse VARCHAR(50),
     Indications VARCHAR(300),
-    CLArrivee TIME,
-    CLStatut VARCHAR(11) CHECK (CEStatut IN ('Attente', 'Validee', 'enLivraison', 'AnnuleeC', 'AnnuleeR', 'Terminee')) NOT NULL,
-    PRIMARY KEY(CEid)
+    CLArrivee TIMESTAMP,
+    CLStatut VARCHAR(11) CHECK (CLStatut IN ('Attente', 'Validee', 'enLivraison', 'AnnuleeC', 'AnnuleeR', 'Terminee')) NOT NULL,
+    PRIMARY KEY(CLid)
 );
 
 CREATE TABLE COMMANDESSURPLACE (
     CPid INT,
     NbPers INT NOT NULL,
-    CPArrivee TIME NOT NULL,
-    CPStatut VARCHAR(8) CHECK (CEStatut IN ('Attente', 'Validee', 'AnnuleeC', 'AnnuleeR', 'Terminee')) NOT NULL,
-    PRIMARY KEY(CEid)
+    CPArrivee TIMESTAMP NOT NULL,
+    CPStatut VARCHAR(8) CHECK (CPStatut IN ('Attente', 'Validee', 'AnnuleeC', 'AnnuleeR', 'Terminee')) NOT NULL,
+    PRIMARY KEY(CPid)
 );
 
 CREATE TABLE PLATS(
