@@ -115,7 +115,6 @@ public class Interface {
 			ResultSet rs = stmt.executeQuery("SELECT U_Id FROM UTILISATEURS WHERE UMail = \'" + mail + "\'");
 			int userId = 0;
 			while (rs.next()) {
-				System.out.println("\nTest\n");
 				nombreReponses++;
 				if (nombreReponses > 1) {
 					System.out.println("\n Aïe... Il y a plus d'un utilisateur avec le même courriel... Pas normal... Indique une autre adresse. \n");
