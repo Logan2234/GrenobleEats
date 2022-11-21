@@ -1,21 +1,27 @@
 
-import java.util.Scanner;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Test {
 	public static void main(String[] args) {
 		DriverJDBC test = new DriverJDBC();
-		Scanner interacteur = new Scanner(System.in);
 		test.connexion();
-		test.creationTable("Test", "(hey varchar (30), test varchar (30))");
-		test.insertValeur("Test", "(\'Test\', \'Probando\')");
-		test.insertValeur("Test", "(\'Test2\', \'Probando2\')");
-		System.out.println("C'est qui le plus grand bg ? \n");
-		String leBoss = interacteur.nextLine();
-		System.out.println(leBoss + "\n Non mais en vrai, c'est qui ?\n");
-		leBoss = interacteur.nextLine();
-		System.out.println(leBoss);
-		test.selectValues("Test", "hey,test");
-		test.effacerTable("Test");
+		try {
+			System.out.println(" -- -- -- \n Création de table "+"\n -- -- -- \n");
+			Statement stmt = test.connection.createStatement();
+			stmt.executeUpdate("CREATE TABLE UTILISATEURS (U_Id int NOT NULL, UMail varchar(30), Mdp varchar(30), UNom varchar(30), Prenom varchar(30), UAdresse varchar(30))");
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		test.insertValeur("UTILISATEURS", "(1, \'jorge@test.com\', \'password\', \'Luri\', \'Jorge\', \'4 Rue du Test, Grenoble 38000\')");
+		test.insertValeur("UTILISATEURS", "(2, \'cedric@test.com\', \'password\', \'Pauly\', \'Cédric\', \'4 Rue du Test, Grenoble 38000\')");
+		test.fermeture();
+		Interface autreTest = new Interface();
+		autreTest.connexion();
+		test.connexion();
+		test.effacerTable("UTILISATEURS");
 		test.fermeture();
 	}
 }

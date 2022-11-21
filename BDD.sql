@@ -1,143 +1,148 @@
 -- Création du schéma physique de la BD
 
-CREATE TABLE RESTAURANT(
+CREATE TABLE RESTAURANTS(
     RMail VARCHAR(50),
     RNom VARCHAR(30) NOT NULL,
-    Num VARCHAR(12) NOT NULL,
+    RNum VARCHAR(12) NOT NULL,
     RAdresse VARCHAR(50) NOT NULL,
     Places int NOT NULL,
-    Presentation VARCHAR(200),
+    Presentation VARCHAR(300),
+    RNote FLOAT,
     PRIMARY KEY(RMail)
-)
+);
 
--- CREATE TABLE MILIEU(
---     composition varchar(30) NOT NULL CHECK (composition IN ('acide', 'basique', 'neutre')),
---     PRIMARY KEY (composition)
--- );
+CREATE TABLE HORAIRES(
+    JourPlage VARCHAR(3) CHECK (JourPlage IN ('LM', 'LS', 'MaM', 'MaS', 'MeM', 'MeS', 'JM', 'JS', 'VM', 'VS', 'SM', 'SS', 'DM', 'DS')),
+    PRIMARY KEY(JourPlage)
+);
 
--- CREATE TABLE TYPEMISSION(
---     typeMis varchar(30) NOT NULL CHECK (typeMis IN ('transport', 'combat', 'pillage', 'interception')),
---     PRIMARY KEY(typeMis)
--- );
+CREATE TABLE TYPESCOMMANDE(
+    TypeCommande VARCHAR(9) CHECK (TypeKey IN ('livraison', 'place', 'emporter')),
+    PRIMARY KEY(TypeKey)
+);
 
--- CREATE TABLE GALAXIE(
---     codeGal INTEGER NOT NULL,
---     nomGal varchar(30),
---     distanceGal INTEGER CHECK(distanceGal > 0),
---     PRIMARY KEY(codeGal),
--- );
+CREATE TABLE CATEGORIES (
+    CatNom VARCHAR(30),
+    PRIMARY KEY(CatNom)
+);
 
--- CREATE TABLE NAVIRE(
---     codeNav INTEGER NOT NULL,
---     rayonAc INTEGER CHECK(rayonAc > 0),
---     nbPil INTEGER CHECK(nbPil > 0),
---     vMax INTEGER CHECK(vMax > 0),
---     PRIMARY KEY(codeNav)
--- );
+CREATE TABLE ALLERGENES(
+    ANom VARCHAR(20),
+    PRIMARY KEY(ANom)
+);
 
--- CREATE TABLE MISSION(
---     codeMis INTEGER NOT NULL,
---     dateMis DATE,
---     nbNav INTEGER CHECK(nbNav > 0),
---     vMin INTEGER CHECK(vMin > 0),
---     rayonEng INTEGER CHECK(rayonEng > 0),
---     typeMis varchar(30) NOT NULL,
---     PRIMARY KEY(codeMis),
---     FOREIGN KEY(typeMis) REFERENCES TYPEMISSION(typeMis)
--- );
+CREATE TABLE COMMANDES (
+    Cid INT,
+    CDate DATE NOT NULL,
+    CHaure TIME NOT NULL,
+    CPrix FLOAT,
+    U_id INT,
+    TypeCommande VARCHAR(9),
+    PRIMARY KEY(Cid),
+    FOREIGN KEY(U_id) REFERENCES UTILISATEURS(U_id),
+    FOREIGN KEY(TypeCommande) REFERENCES TYPESCOMMANDE(TypeCommande)
+);
 
--- CREATE TABLE PILOTE(
---     codePil INTEGER NOT NULL,
---     nomPil varchar(30),
---     prenomPil varchar(30),
---     age INTEGER CHECK(age > 0),
---     grade varchar(30),
---     PRIMARY KEY(codePil)
--- );
+CREATE TABLE UTILISATEURS (
+    U_id INT,
+    UMail VARCHAR(50),
+    UMdp VARCHAR(30),
+    UNom VARCHAR(20),
+    UPrenom VARCHAR(20),
+    UAddresse VARCHAR(50),
+    PRIMARY KEY(U_id)
+);
 
--- CREATE TABLE EQUIPAGE(
---     codeEq INTEGER NOT NULL,
---     effectif INTEGER CHECK(effectif > 0),
---     PRIMARY KEY(codeEq)
--- );
+CREATE TABLE EVALUATIONS (
+    Eid INT,
+    EDate DATE NOT NULL,
+    EHeure TIME NOT NULL,
+    Avis VARCHAR(300),
+    ENote INT NOT NULL,
+    Cid INT,
+    PRIMARY KEY(Eid),
+    FOREIGN KEY(Cid) REFERENCES COMMANDES(Cid)
+);
 
--- CREATE TABLE NAVIRET(
---     codeNavT INTEGER NOT NULL,
---     capac INTEGER CHECK(capac > 0),
---     PRIMARY KEY(codeNavT),
---     FOREIGN KEY(codeNavT) REFERENCES NAVIRE(codeNav)
--- );
+CREATE TABLE COMMANDESEMPORTEES (
+    CEid INT,
+    CEStatut VARCHAR(10) CHECK (CEStatut IN ('Attente', 'Validee', 'Disponible', 'AnnuleeC', 'AnnuleeR', 'Terminee')) NOT NULL,
+    PRIMARY KEY(CEid)
+);
 
--- CREATE TABLE NAVIREC(
---     codeNavC INTEGER NOT NULL,
---     tailleMin INTEGER CHECK(tailleMin > 0),
---     tailleMax INTEGER CHECK(tailleMax > 0),
---     PRIMARY KEY(codeNavC)
---     FOREIGN KEY(codeNavC) REFERENCES NAVIRE(codeNav)
--- );
+CREATE TABLE COMMANDESLIVREES (
+    CLid INT,
+    CLAdresse VARCHAR(50),
+    Indications VARCHAR(300),
+    CLArrivee TIME,
+    CLStatut VARCHAR(11) CHECK (CEStatut IN ('Attente', 'Validee', 'enLivraison', 'AnnuleeC', 'AnnuleeR', 'Terminee')) NOT NULL,
+    PRIMARY KEY(CEid)
+);
 
--- CREATE TABLE PLANETE(
---     codeGal INTEGER NOT NULL,
---     codePLa INTEGER NOT NULL,
---     nomPla varchar(30),
---     vlib INTEGER CHECK(vlib > 0),
---     statut varchar(30) CHECK (statut IN ('nonExpl', 'reconnue', 'intégrée')),
---     composition varchar(30) NOT NULL,
---     PRIMARY KEY(codeGal, codePLa),
---     FOREIGN KEY(codeGal) REFERENCES GALAXIE(codeGal),
---     FOREIGN KEY(composition) REFERENCES MILIEU(composition)
--- );
+CREATE TABLE COMMANDESSURPLACE (
+    CPid INT,
+    NbPers INT NOT NULL,
+    CPArrivee TIME NOT NULL,
+    CPStatut VARCHAR(8) CHECK (CEStatut IN ('Attente', 'Validee', 'AnnuleeC', 'AnnuleeR', 'Terminee')) NOT NULL,
+    PRIMARY KEY(CEid)
+);
 
--- CREATE TABLE CIBLE(
---     codeMis INTEGER NOT NULL,
---     codeGal INTEGER,
---     codePla INTEGER,
---     PRIMARY KEY(codeMis),
---     FOREIGN KEY(codeMis) REFERENCES MISSION(codeMis),
---     FOREIGN KEY(codeGal, codePla) REFERENCES PLANETE(codeGal, codePla)
--- );
+CREATE TABLE PLATS(
+    Pid INT,
+    PRestaurant VARCHAR(50),
+    PNom VARCHAR(20) NOT NULL,
+    PDescription VARCHAR(300),
+    PPrix FLOAT NOT NULL,
+    PRIMARY KEY(Pid, PRestaurant),
+    FOREIGN KEY(PRestaurant) REFERENCES RESTAURANTS(RMail)
+);
 
--- CREATE TABLE AFFECTATIONPILOTE(
---     codePil int NOT NULL,
---     codeNav int NOT NULL,
---     codeMis int NOT NULL,
---     PRIMARY KEY(codePil, codeNav, codeMis),
---     FOREIGN KEY(codePil) REFERENCES PILOTE(codePil),
---     FOREIGN KEY(codeNav) REFERENCES NAVIRE(codeNav),
---     FOREIGN KEY(codeMis) REFERENCES MISSION(codeMis),
--- );
+CREATE TABLE CATEGORIEPARENT (
+    CatNom VARCHAR(30),
+    CatNomMere VARCHAR(30),
+    PRIMARY KEY(CatNom, CatNomMere),
+    FOREIGN KEY(CatNom) REFERENCES CATEGORIES(CatNom),
+    FOREIGN KEY(CatNomMere) REFERENCES CATEGORIES(CatNom)
+);
 
--- CREATE TABLE AFFECTATIONEQUIPAGE(
---     codeEq int NOT NULL,
---     codeNav int NOT NULL,
---     codeMis int NOT NULL,
---     PRIMARY KEY(codeEq, codeNav, codeMis),
---     FOREIGN KEY(codeEq) REFERENCES EQUIPAGE(codeEq),
---     FOREIGN KEY(codeNav) REFERENCES NAVIRE(codeNav),
---     FOREIGN KEY(codeMis) REFERENCES MISSION(codeMis)
--- );
+CREATE TABLE HORAIRESRESTAURANT (
+    RMail VARCHAR(50),
+    JourPlage VARCHAR(3),
+    PRIMARY KEY(RMail, JourPlage),
+    FOREIGN KEY(RMail) REFERENCES RESTAURANTS(RMail),
+    FOREIGN KEY(JourPlage) REFERENCES HORAIRES(JourPlage)
+);
 
--- CREATE TABLE COMPATIBLE(
---     codeNav int NOT NULL,
---     composition varchar NOT NULL,
---     PRIMARY KEY(codeNav, composition),
---     FOREIGN KEY(codeNav) REFERENCES NAVIRE(codeNav),
---     FOREIGN KEY(composition) REFERENCES MILIEU(composition)
+CREATE TABLE CATEGORIESRESTAURANT (
+    RMail VARCHAR(50),
+    CatNom VARCHAR(30),
+    PRIMARY KEY(RMail, CatNom),
+    FOREIGN KEY(RMail) REFERENCES RESTAURANTS(RMail),
+    FOREIGN KEY(CatNom) REFERENCES CATEGORIES(CatNom)
+);
 
--- );
+CREATE TABLE TYPESRESTAURANT (
+    RMail VARCHAR(50),
+    TypeCommande VARCHAR(9),
+    PRIMARY KEY(RMail, TypeCommande),
+    FOREIGN KEY(RMail) REFERENCES RESTAURANTS(RMail),
+    FOREIGN KEY(TypeCommande) REFERENCES TYPESCOMMANDE(TypeCommande)
+);
 
--- CREATE TABLE PILOTEFORMEA(
---     codePil int NOT NULL,
---     typeMis varchar(30),
---     PRIMARY KEY(codePil, typeMis),
---     FOREIGN KEY(codePil) REFERENCES PILOTE(codePil),
---     FOREIGN KEY(typeMis) REFERENCES TYPEMISSION(typeMis)
--- );
+CREATE TABLE ALLERGENESPLAT (
+    Pid INT,
+    PRestaurant VARCHAR(50),
+    ANom VARCHAR(20),
+    PRIMARY KEY(Pid, PRestaurant, ANom),
+    FOREIGN KEY(Pid, PRestaurant) REFERENCES PLATS(Pid, PRestaurant),
+    FOREIGN KEY(ANom) REFERENCES ALLERGENES(ANom)
+);
 
--- CREATE TABLE EQUIPAGEPEUTREMPLIR(
---     codeEq int NOT NULL,
---     typeMis varchar(30) NOT NULL,
---     PRIMARY KEY(codeEq, typeMis),
---     FOREIGN KEY(codeEq) REFERENCES EQUIPAGE(codeEq),
---     FOREIGN KEY(typeMis) REFERENCES TYPEMISSION(typeMis),
--- )
+CREATE TABLE PLATSCOMMANDE (
+    Cid INT,
+    Pid INT,
+    PRestaurant VARCHAR(50),
+    PRIMARY KEY(Cid, Pid, PRestaurant),
+    FOREIGN KEY(Cid) REFERENCES COMMANDES(Cid),
+    FOREIGN KEY(Pid, PRestaurant) REFERENCES PLATS(Pid, PRestaurant)
+);
