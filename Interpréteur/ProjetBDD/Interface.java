@@ -57,8 +57,8 @@ public class Interface {
 	public void effacementDonnees() {
 		try {
 			Statement stmt = jdbc.connection.createStatement();
-			stmt.executeUpdate("UPDATE UTILISATEURS SET UMail = \'\', UNom = \\'\\', Prenom = \\'\\', "
-					+ "UAdresse = \\'\\', Mdp =  = \\'\\' WHERE UId = " + String.valueOf(user.getIdentifiant()));
+			stmt.executeUpdate("UPDATE UTILISATEURS SET UMail = \'\', UNom = \'\', Prenom = \'\', "
+					+ "UAdresse = \'\', Mdp = \'\' WHERE U_Id = " + String.valueOf(user.getIdentifiant()));
 			System.out.println("Les données personnelles ont été effacées. Nous procédons à fermer la session. \n -- -- -- \n");
 			connexion();
 		} catch (SQLException e) {
@@ -113,8 +113,9 @@ public class Interface {
 			String mail = interacteur.nextLine();
 			Statement stmt = jdbc.connection.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT U_Id FROM UTILISATEURS WHERE UMail = \'" + mail + "\'");
-			int userId;
+			int userId = 0;
 			while (rs.next()) {
+				System.out.println("\nTest\n");
 				nombreReponses++;
 				if (nombreReponses > 1) {
 					System.out.println("\n Aïe... Il y a plus d'un utilisateur avec le même courriel... Pas normal... Indique une autre adresse. \n");
@@ -122,13 +123,14 @@ public class Interface {
 					return;
 				}
 				userId = rs.getInt("U_Id");
+			}
 			if (nombreReponses == 0) {
 				System.out.println("\n Aïe... Nous n'avons aucun utilisateur avec cet adresse mail... Nous revenons vers l'accueil. \n");
 				connexion();
 				return;
 			}
 			verifierMDP(userId);
-			}
+			
 		} catch (SQLException e) { 
 			
 			e.printStackTrace();
@@ -140,6 +142,10 @@ public class Interface {
 		try {
 			System.out.println("\n Quel est ton mot de passe ? \n");
 			String MdP = interacteur.nextLine();
+			if (MdP.equals("quit")) {
+				connexion();
+				return;
+			}
 			Statement stmt = jdbc.connection.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT U_Id FROM UTILISATEURS WHERE U_Id = " + String.valueOf(userId) + " AND Mdp = \'" + MdP + "\'");
 			int nombreReponses = 0;
@@ -147,14 +153,15 @@ public class Interface {
 				nombreReponses++;
 			}
 			if (nombreReponses == 0) {
-				System.out.println("Mot de passe incorrect. Veillez introduire le bon mot de passe. \n");
+				System.out.println("Mot de passe incorrect. Veillez introduire le bon mot de passe. Tappez quit pour revenir au début.\n");
 				verifierMDP(userId);
 				return;
 			} else {
 				stmt = jdbc.connection.createStatement();
 				rs = stmt.executeQuery("SELECT UMail, UNom, Prenom, UAdresse FROM UTILISATEURS WHERE U_Id = " + String.valueOf(userId));
 				rs.next();
-				this.user = new Utilisateur(userId, rs.getString("UMail"), rs.getString("UNom"), rs.getString("Prenom"), rs.getString(MdP), rs.getString("Adresse"));
+				this.user = new Utilisateur(userId, rs.getString("UMail"), rs.getString("UNom"), rs.getString("Prenom"), MdP, rs.getString("UAdresse"));
+				System.out.println("\n -- -- -- \n");
 				accueil();
 				return;
 			}
@@ -172,7 +179,7 @@ public class Interface {
 
 	public void connexion() {
 		
-		System.out.println("Bienvenu à GrenobleEAT ! \n");
+		System.out.println("\n -- -- -- \nBienvenu à GrenobleEAT ! \n");
 		System.out.println("As-tu un compte ? \n -- -- -- \n");
 		
 		System.out.println("1) J'ai un compte utilisateur");
