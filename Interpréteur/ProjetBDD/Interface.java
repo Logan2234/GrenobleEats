@@ -164,8 +164,43 @@ public class Interface {
 	}
 
 	public void laisserEvaluation(){
-		System.out.println("\n Choisissez une commande \n");
+		try {
+			System.out.println("\n Entrez le numéro de la commande à sélectionner \n");
+			System.out.println("Numéro, IdCommande, Date, Heure, Prix");
 
+			Statement stmt = jdbc.connection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT Cid, CDate, CHeure, CPrix FROM COMMANDES WHERE UId = \'" + user.getIdentifiant() + "\'"); // requête à completer maybe
+			int cId;
+			while (rs.next()){
+				cId = Integer.valueOf(rs.getString("Cid"));
+				System.out.println(cId + " " + rs.getString("CDate") + " " + rs.getString("CHeure") + " " + rs.getString("CPrix"));
+
+			}
+			System.out.println();
+			String userInput = interacteur.nextLine();
+			stmt = jdbc.connection.createStatement();
+			rs = stmt.executeQuery("SELECT Cid, CDate, CHeure, CPrix FROM COMMANDES WHERE CId = \'" + userInput + "\' ");
+			int nbLoop = 0;
+			while (rs.next()){
+				nbLoop++;
+				if(nbLoop>1){
+					System.out.println("PROBLEME ! Il y a plusieurs commandes de même identifiant");
+					return;
+				}
+			}
+			if (nbLoop==0){
+				System.out.println("Le numéro que vous avez rentré ne correspond à aucune commande, veuillez réessayer.");
+				laisserEvaluation();
+			}
+			else{
+				int idCommande = Integer.valueOf(userInput);
+				System.out.println("\n Entrez une note (entier entre 1 et 5 compris)\n");
+				userInput = interacteur.nextLine();
+			}
+
+		} catch (SQLException e) { 
+			e.printStackTrace();	
+		}
 	}
 	
 	
