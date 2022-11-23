@@ -34,7 +34,7 @@ INSERT INTO ALLERGENES VALUES (
     'Mollusques'
 );
 
--- Création de la liste des UTILISATEURS
+-- Création des entrées de la table UTILISATEURS
 
 INSERT INTO UTILISATEURS VALUES ('0', 'Adam.Leveque@ggmail.com', 'LevequeA', 'Leveque', 'Adam', '147 Grand Serre (Avenue du)');
 INSERT INTO UTILISATEURS VALUES ('1', 'Alicia.Philippe@ggmail.com', 'PhilippeA', 'Philippe', 'Alicia', '61 Président Carnot (Rue)');
@@ -137,13 +137,13 @@ INSERT INTO UTILISATEURS VALUES ('97', 'Valentin.Lebrun@ggmail.com', 'LebrunV', 
 INSERT INTO UTILISATEURS VALUES ('98', 'Lucas.Renard@ggmail.com', 'RenardL', 'Renard', 'Lucas', '156 René Cassin (Rue)');
 INSERT INTO UTILISATEURS VALUES ('99', 'Nathan.Moreau@ggmail.com', 'MoreauN', 'Moreau', 'Nathan', '266 Glacis de la Bastille (Voie communale)');
 
--- Création des entrées de la table des TYPESCOMMANDE
+-- Création des entrées de la table TYPESCOMMANDE
 
 INSERT INTO TYPESCOMMANDE VALUES ('emporter');
 INSERT INTO TYPESCOMMANDE VALUES ('place');
 INSERT INTO TYPESCOMMANDE VALUES ('livraison');
 
--- Création des entrées de la table des CATEGORIES
+-- Création des entrées de la table CATEGORIES
 
 INSERT INTO CATEGORIES VALUES ('_');
 
@@ -171,7 +171,7 @@ INSERT INTO CATEGORIES VALUES ('fastfood');
 INSERT INTO CATEGORIES VALUES ('gastronomie');
 INSERT INTO CATEGORIES VALUES ('expérimentale');
 
--- Création des entrées de la table des CATEGORIEPARENT
+-- Création des entrées de la table CATEGORIEPARENT
 
 INSERT INTO CATEGORIEPARENT VALUES ('nationale','_');
 INSERT INTO CATEGORIEPARENT VALUES ('categorie','_');
@@ -202,7 +202,7 @@ INSERT INTO CATEGORIEPARENT VALUES ('sicilienne','italienne');
 INSERT INTO CATEGORIEPARENT VALUES ('romaine','italienne');
 INSERT INTO CATEGORIEPARENT VALUES ('tuscane','italienne');
 
--- Création des entrées de la table des RESTAURANTS
+-- Création des entrées de la table RESTAURANTS
 -- Restaurants espagnols
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('croquettes@resto.com', 'Croquettes de chez vous', '0000000', '12 rue Croquettes 38000', '20', 'On vous sert des croquettes');
@@ -236,17 +236,22 @@ INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALU
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('cochonou@resto.com', 'Au cochon qui dore', '00000014', '15 rue cochon dore 38000', '20', 'On vous sert de la grosse viande');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
-    ('gustatif@resto.com', 'L arret gustatif', '00000015', '15 rue arret 38000', '25', 'On vous sert de la cuisine de qualite');
+    ('gustatif@resto.com', 'La raie gustative', '00000015', '15 rue de la raie 38000', '25', 'Tout bon salon de coiffure se doit d''avoir un nom... digne de ce nom');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
-    ('rizkiki@resto.com', 'Riz Kiki', '00000016', '15 rue kiki 38000', '10', 'On vous sert du riz');
+    ('rizkiki@resto.com', 'Riz Kiki', '00000016', '15 rue kiki 38000', '10', 'On vous sert du riz, mais en petite quantité');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
-    ('grandbleu@resto.com', 'La table du grand bleu', '00000017', '15 rue fromage 38000', '19', 'On vous sert du bratin dauphinois');
+    ('grandbleu@resto.com', 'La table du grand bleu', '00000017', '15 rue fromage 38000', '19', 'On vous sert du gratin dauphinois');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('festin@resto.com', 'Le festin royal', '00000018', '14 rue fetsin 38000', '10', 'On vous sert de la grosse bouffe');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('fourchette@resto.com', 'La fourchette forestière', '00000019', '14 rue Spaghetti 38000', '30', '');
 
--- Création de la table CATEGORIESRESTAURANT
+
+-- Création des entrées de la table TYPESRESTAURANT
+
+-- TODO
+
+-- Création des entrées de la table CATEGORIESRESTAURANT
 -- Restaurants espagnols
 INSERT INTO CATEGORIESRESTAURANT VALUES ('croquettes@resto.com','espagnole');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('croquettes@resto.com','fastfood');
@@ -279,11 +284,11 @@ INSERT INTO CATEGORIESRESTAURANT VALUES ('gustatif@resto.com','experimentale');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('rizkiki@resto.com','francaise');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('rizkiki@resto.com','fastfood');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('grandbleu@resto.com','alpine');
-INSERT INTO CATEGORIESRESTAURANT VALUES ('festin@resto.com','nordique');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('festin@resto.com','nationale');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('fourchette@resto.com','francaise');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('fourchette@resto.com','gastronomie');
 
--- Création de la table HORAIRESRESTAURANT
+-- Création des entrées de la table HORAIRESRESTAURANT
 -- Restaurants espagnols
 INSERT INTO HORAIRESRESTAURANT VALUES ('croquettes@resto.com','LS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('croquettes@resto.com','SS');
@@ -325,7 +330,7 @@ INSERT INTO HORAIRESRESTAURANT VALUES ('festin@resto.com','MeS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('fourchette@resto.com','VM');
 INSERT INTO HORAIRESRESTAURANT VALUES ('fourchette@resto.com','VS');
 
--- Création de la liste des PLATS
+-- Création des entrées de la table PLATS
 -- Restaurants espagnols
 INSERT INTO PLATS VALUES ('0', 'croquettes@resto.com', 'Croqueta au fromage', 'Boules de béchamel frites avec du fromage', '1.5');
 INSERT INTO PLATS VALUES ('1', 'croquettes@resto.com', 'Croqueta au jambon', 'Boules de béchamel frites avec du jambon', '1.5');
@@ -372,3 +377,11 @@ INSERT INTO PLATS VALUES ('4', 'spaghetti@resto.com', 'Pasta alla crema', 'Pasta
 INSERT INTO PLATS VALUES ('5', 'spaghetti@resto.com', 'Pasta ai 4 formaggi', 'Pasta box aux 4 fromages', '6.99');
 
 -- Restaurants français
+INSERT INTO PLATS VALUES ('0', 'chefcuisine@resto.com', 'Pissaladière', 'Oignons olives et anchois sur sa pâte à pizza', '8');
+INSERT INTO PLATS VALUES ('1', 'chefcuisine@resto.com', 'Légumes farcis', 'Tomate, courgette et poivrons farcis à la viande', '8');
+INSERT INTO PLATS VALUES ('0', 'cochonou@resto.com', 'Planche de charcuterie', 'Salami, jambon cru, viande de grison, chorizo, saucisson maigre le tout avec du pain.', '12');
+INSERT INTO PLATS VALUES ('0', 'gustatif@resto.com', 'Perruques comestibles', 'Cheveux comestibles assemblés pour ressembler à une perruque', '14.99');
+INSERT INTO PLATS VALUES ('0', 'rizkiki@resto.com', 'Risotto', 'Risotto servi dans une tasse de café, ici on respecte les quantités', '1.99');
+INSERT INTO PLATS VALUES ('0', 'grandbleu@resto.com', 'Planche de fromages', '', '19.99');
+INSERT INTO PLATS VALUES ('0', 'festin@resto.com', 'Formule à volonté', 'On y trouve de tout, vraiment de tout', '24.99');
+INSERT INTO PLATS VALUES ('0', 'fourchette@resto.com', 'Escargots persillés', 'C’est un plat vraiment singulier que l’on retrouve sur la plupart des bistros français. Les escargots sont généralement cuits au four avec du beurre, du persil, de l’ail et de l’échalote. Les amateurs des escargots persillés adorent cette association de textures entre le gras du beurre et la vivacité du persil. Ils sont toujours servis dans leurs coquilles. D’origine bourguignonne, cette spécialité française traverse le temps depuis le 19e siècle et est réinterprétée par presque tous les chefs français !', '16.99');
