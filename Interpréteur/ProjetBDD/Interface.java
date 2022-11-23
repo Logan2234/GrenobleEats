@@ -59,7 +59,7 @@ public class Interface {
 			Set<String> catMeres = new HashSet<String>();
 			
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT CatNom FROM UTILISATEURS ");
+			ResultSet rs = stmt.executeQuery("SELECT CatNom FROM UTILISATEURS WHERE CatNomMere = \'_\'");
 			while (rs.next()) {
 				catMeres.add(rs.getString("CatNom"));
 			}
@@ -89,12 +89,88 @@ public class Interface {
 	// TODO
 	public void selectSousCat(String catMere) { 
 		try {
+			Set<String> sousCats = new HashSet<String>();
+		
+			Statement stmt = jdbc.connection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT CatNom FROM UTILISATEURS WHERE CatNomMere = \'" + catMere + "\'");
+			while (rs.next()) {
+				sousCats.add(rs.getString("CatNom"));
+			}
 			System.out.println("\n -- -- -- \n");
-			System.out.println(" T'as fait un trop bon choix ! Miam ! \n"); // TODO
+			System.out.println(" T'as fait un trop bon choix ! Miam ! \n"); 
+			
+			if (sousCats.size() == 0) {
+				restoParCat(catMere);
+			} else {
+				while (true) {
+					System.out.println(" Quelle sous-catégorie t'aimerais gouter ? \n"); 
+					System.out.println("- " + catMere + " en général (tapez 1)"); 
+					for (String cat : sousCats) {
+						System.out.println("- " + cat);
+					}
+					System.out.println("\n Écris la catégorie que tu préféres : \n");
+					String reponse = interacteur.nextLine();
+					if (reponse == "1") {
+						restoParCat(catMere);
+						break;
+					}
+					if (sousCats.contains(reponse)) {
+						selectSousCat(reponse);
+						break;
+					} 
+					System.out.println("\n Oups... Cette réponse n'est pas valide. Écris (exactement) la catégorie de tes rêves \n");
+				}
+				
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void restoParCat(String categorie) {
+		try {
+			System.out.println("\n -- -- -- \n");
+			System.out.println(" Tu vas te régaler ! \n");
+			
+			ArrayList<String> restos = new ArrayList<String>();
+			
+			Statement stmt = jdbc.connection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT DISTINCT RNom FROM RESTAURANTS JOIN CATEGORIESRESTAURANT ON RESTAURANTS.RMail = CATEGORIESRESTAURANT.RMail WHERE CATEGORIESRESTAURANT = \'" + categorie + "\'");
+			while (rs.next()) {
+				restos.add(rs.getString("RNom"));
+			}
+			if (restos.size() == 0) {
+				System.out.println(" Oups... Il y a aucun restoraunt avec cette catégorie... Veillez sélectionner une autre catégorie. \n");
+				categoriesMeres();
+				return;
+			}
+			System.out.println("\n -- -- -- \n");
+			System.out.println(" Dans la catégorie de " + categorie + ", voici les restaurants disponibles : \n"); 
+			
+			for (int i = 0; i < restos.size(); i = i + 10) {
+				for (int j = i; j < i + 10; j++) {
+					System.out.println(String.valueOf((i%10) + 1) + ") " + restos.get(j)); 
+				}
+				if (i + 10 <= restos.size()) {
+					System.out.println("11) Voir plus de restaurants");
+				}
+				while (true) {
+					System.out.println("\n Écris le numéro de ta réponse souhaitée : \n");
+					String reponse = interacteur.nextLine();
+					switch (reponse) {
+					case "11":
+						if (i + 10 <= restos.size()) {
+							//TODO
+						}
+					}
+				}
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void effacementDonnees() {
