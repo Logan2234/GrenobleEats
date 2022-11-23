@@ -3,11 +3,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
 
 public class Interface {
 	Scanner interacteur;
 	DriverJDBC jdbc;
 	Utilisateur user;
+	static final DateFormat heure = new SimpleDateFormat("hh:mm:ss a");
+	static final DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 	
 	public Interface() {
 		this.interacteur = new Scanner(System.in);
@@ -170,7 +177,7 @@ public class Interface {
 		}
 	}
 
-	public void laisserEvaluation(){
+	public void laisserEvaluation(){ //TODO à debugger avec la base de donnée en partie complète
 		try {
 			System.out.println("\n Entrez le numéro de la commande à sélectionner \n");
 			System.out.println("Numéro, IdCommande, Date, Heure, Prix");
@@ -202,8 +209,31 @@ public class Interface {
 			else{
 				int idCommande = Integer.valueOf(userInput);
 				System.out.println("\n Entrez une note (entier entre 1 et 5 compris)\n");
+				int userInputInt = Integer.valueOf(interacteur.nextLine());
+				while(!(userInputInt==1 || userInputInt==2 || userInputInt==3 || userInputInt==4 || userInputInt==5)){
+					System.out.println("Note incorrecte");
+					System.out.println("\n Entrez une note (entier entre 1 et 5 compris)\n");
+					userInputInt = Integer.valueOf(interacteur.nextLine());
+				}
+				String note = String.valueOf(userInputInt);
+				System.out.println("\n Entrez une un avis (Facultatif)\n");
 				userInput = interacteur.nextLine();
+				Date newDate = new Date();
+				String currDate = date.format(newDate);
+				String currHeure = heure.format(newDate);
+
+				stmt = jdbc.connection.createStatement();
+				rs = stmt.executeQuery("SELECT Eid FROM EVALUATIONS");
+				nbLoop = 0;
+				while (rs.next()){
+					nbLoop++;
+				}
+				String id = String.valueOf(nbLoop);				
+				jdbc.insertValeur("EVALUATIONS", "(" + id + ", " + currDate + ", " + currHeure 
+								+ "' \'" + userInput + "\', " + note + ", " + idCommande + ")");
 			}
+			System.out.println("\n Merci d'avoir laissé un avis \n");
+			accueil();
 
 		} catch (SQLException e) { 
 			e.printStackTrace();	
