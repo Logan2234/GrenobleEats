@@ -365,11 +365,10 @@ INSERT INTO PLATS VALUES ('0', 'gorgonzola@resto.com', 'Canederli', 'Les caneder
 INSERT INTO PLATS VALUES ('1', 'gorgonzola@resto.com', 'Ossobuco alla milanese', 'L''Ossobuco et son Risotto alla Milanese au safran est l''un des plats de viande les plus emblématiques de la capitale de la Lombardie, Milan. Ce plat emblématique est à base de jarret de veau et son os rempli de moelle, généralement préparé avec de l''huile d''olive, du vin, des assaisonnements, des tomates et servi avec du riz ou autres légumes. Le meilleur reste la dégustation de la moelle crémeuse et délicieuse provenant des os du veau.', '13.99');
 INSERT INTO PLATS VALUES ('2', 'gorgonzola@resto.com', 'Ribollita', 'Issu de la traditionnelle « cucina povera » de mauvaise qualité, la ribollita a été créée par des serviteurs qui ont mis de côté la nourriture inachevée des maîtres (comme le pain ou les légumes) et l’ont fait bouillir pour constituer un repas. Ce ragoût traditionnel est cuisiné avec des légumes tendres, des pommes de terre et des haricots, le tout mélangé à du pain pour une délicieuse soupe crémeuse.', '7.5');
 INSERT INTO PLATS VALUES ('0', 'torre@resto.com', 'Tour de pise sur son flan', 'Reconstitution aussi vraie que nature de l''effondrement de la tour de Pise grâce à un biscuit posé sur un flan maison', '3.99');
-INSERT INTO PLATS VALUES ('0', 'spaghetti@resto.com', 'Pasta alla bolognese', 'Pasta box à la bolognaise', '5');
-INSERT INTO PLATS VALUES ('0', 'spaghetti@resto.com', 'Pasta al pesto', 'Pasta box au pesto', '6');
-INSERT INTO PLATS VALUES ('0', 'spaghetti@resto.com', 'Pasta alle sarde', 'Pasta box aux sardines', '9');
-INSERT INTO PLATS VALUES ('0', 'spaghetti@resto.com', 'Pasta alla crema', 'Pasta box à la crème', '4.5');
-INSERT INTO PLATS VALUES ('0', 'spaghetti@resto.com', 'Pasta ai 4 formaggi', 'Pasta box aux 4 fromages', '6.99');
+INSERT INTO PLATS VALUES ('1', 'spaghetti@resto.com', 'Pasta alla bolognese', 'Pasta box à la bolognaise', '5');
+INSERT INTO PLATS VALUES ('2', 'spaghetti@resto.com', 'Pasta al pesto', 'Pasta box au pesto', '6');
+INSERT INTO PLATS VALUES ('3', 'spaghetti@resto.com', 'Pasta alle sarde', 'Pasta box aux sardines', '9');
+INSERT INTO PLATS VALUES ('4', 'spaghetti@resto.com', 'Pasta alla crema', 'Pasta box à la crème', '4.5');
+INSERT INTO PLATS VALUES ('5', 'spaghetti@resto.com', 'Pasta ai 4 formaggi', 'Pasta box aux 4 fromages', '6.99');
 
 -- Restaurants français
-
