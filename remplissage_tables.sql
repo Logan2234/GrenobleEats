@@ -225,7 +225,7 @@ INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALU
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('pizza@resto.com', 'Pasta Pizza', '0000009', '14 rue PizzaPasta 38000', '10', 'On vous sert des pizzas');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
-    ('gorgonzola@resto.com', 'Il Gorgonzola', '00000010', '14 rue Gorgonbzola 38000', '20', 'On vous sert du fromage italien');
+    ('gorgonzola@resto.com', 'Il Gorgonzola', '00000010', '14 rue Gorgonzola 38000', '20', 'On vous sert du fromage italien');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('torre@resto.com', 'Torre di Pizza', '00000011', '14 rue Torre 38000', '15', 'On vous sert des torre pizza');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
@@ -248,6 +248,7 @@ INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALU
 
 -- Création de la liste des PLATS
 
+-- Restaurants espagnols
 INSERT INTO PLATS VALUES ('0', 'croquettes@resto.com', 'Croqueta au fromage', 'Boules de béchamel frites avec du fromage', '1.5');
 INSERT INTO PLATS VALUES ('1', 'croquettes@resto.com', 'Croqueta au jambon', 'Boules de béchamel frites avec du jambon', '1.5');
 INSERT INTO PLATS VALUES ('2', 'croquettes@resto.com', 'Croqueta au champignon', 'Boules de béchamel frites avec du champignon', '1.5');
@@ -256,6 +257,43 @@ INSERT INTO PLATS VALUES ('0', 'instant@resto.com', 'Pizza espagnole', 'Tomate, 
 INSERT INTO PLATS VALUES ('1', 'instant@resto.com', 'Tacos espagnol', 'Sauce fromagère, chorizo, frites, fromage', '9');
 INSERT INTO PLATS VALUES ('2', 'instant@resto.com', 'Hot-Dog espagnol', 'Pain, saucisse enrobée de tranches de chorizo, sauce andalouse', '3');
 INSERT INTO PLATS VALUES ('0', 'saveur@resto.com', 'Gaspacho', 'Une recette typique d''Andalousie, une soupe à base de légumes de saison et principalement composée de concombres, de poivrons et de tomates, assaisonnée d''épices et d''herbes aromatiques telles que le paprika, l''oignon et l''ail. En été, il arrive souvent qu''il soit servi froid.', '4');
+INSERT INTO PLATS VALUES ('1', 'saveur@resto.com', 'La porra antequerana', 'C''est une soupe typique de la région de Malaga, servie froide préparée avec des poivrons jaunes, verts et rouges et du pain dur.', '7');
+INSERT INTO PLATS VALUES ('2', 'saveur@resto.com', 'Le cocido de Madrid', 'Un des plats les plus cuisinés à Madrid, le cocito est une soupe au bœuf, au porc et aux saucisses, aux pois chiches et aux légumes. Les soupes sont des plats typiques en Espagne, liés à la tradition populaire de la mauvaise cuisine, puis abandonnés et finalement revalorisés au fil des ans.', '5');
+INSERT INTO PLATS VALUES ('0', 'paella@resto.com', 'Paella valencienne', 'Ce plat sans aucune introduction, typique de la culture espagnole et fièrement exposé dans tous les restaurants du pays. C''est un plat plein d''ingrédients et très savoureux. Né de la tradition populaire et pauvre qui a consommé tous les restes pour ne pas les jeter et les transformer en déjeuner le dimanche. Les principaux ingrédients sont les crustacés, la viande, les pois, le riz, le poisson, les haricots, les tomates et souvent un verre de sangria, le tout cuit dans une immense poêle en fer.', '12');
+INSERT INTO PLATS VALUES ('0', 'tapas@resto.com', 'Panisse', '', '3');
+INSERT INTO PLATS VALUES ('1', 'tapas@resto.com', 'Pieuvre galicienne', '', '7');
+INSERT INTO PLATS VALUES ('0', 'tortilla@resto.com', 'Tortilla de patata', '', '9');
+INSERT INTO PLATS VALUES ('1', 'tortilla@resto.com', 'Tortilla jamon', '', '8');
+INSERT INTO PLATS VALUES ('2', 'tortilla@resto.com', 'Patatas bravas', '', '6');
+
+-- Restaurants japonais
+INSERT INTO PLATS VALUES ('0', 'ramen@resto.com', 'Ramen au boeuf', 'Ramens au boeuf', '10');
+INSERT INTO PLATS VALUES ('1', 'ramen@resto.com', 'Ramen aux shiitakes', 'Ramens aux champignons', '8');
+INSERT INTO PLATS VALUES ('2', 'ramen@resto.com', 'Ramen au porc', 'Ramens au porc', '7');
+INSERT INTO PLATS VALUES ('3', 'ramen@resto.com', 'Ramen aux crevettes', 'Ramens aux crevettes', '12');
+INSERT INTO PLATS VALUES ('4', 'ramen@resto.com', 'Ramen au saumon', 'Ramens au saumon', '15');
+INSERT INTO PLATS VALUES ('0', 'gyoza@resto.com', 'Gyozas au boeuf', 'Raviolis japonaises fourrées au boeuf', '3.99');
+INSERT INTO PLATS VALUES ('1', 'gyoza@resto.com', 'Gyozas au porc', 'Raviolis japonaises fourrées au porc', '2.5');
+INSERT INTO PLATS VALUES ('2', 'gyoza@resto.com', 'Gyozas aux crevettes', 'Raviolis japonaises fourrées aux crevettes', '4.5');
+INSERT INTO PLATS VALUES ('3', 'gyoza@resto.com', 'Gyozas au tofu', 'Raviolis japonaises fourrées au tofu', '3.99');
+
+-- Restaurants italiens
+INSERT INTO PLATS VALUES ('0', 'pizza@resto.com', 'Pizza Margherita', '', '7');
+INSERT INTO PLATS VALUES ('1', 'pizza@resto.com', 'Pizza Napoli', '', '9.5');
+INSERT INTO PLATS VALUES ('2', 'pizza@resto.com', 'Pizza bianca', '', '10.99');
+INSERT INTO PLATS VALUES ('3', 'pizza@resto.com', 'Pizza calzone', '', '8.5');
+INSERT INTO PLATS VALUES ('4', 'pizza@resto.com', 'Pizza Romana', '', '9.99');
+INSERT INTO PLATS VALUES ('0', 'gorgonzola@resto.com', 'Canederli', 'Les canederli sont des boulettes de pain typiques du Trentin Haut-Adige, du Frioul et de la Vénétie, dans le nord-est du pays, et font partie du concept de la « cucina povera » (cuisine pauvre). Ils ressemblent au knödel allemand ou au kneydl juif. Ces boulettes sont un excellent moyen d''utiliser du pain rassis, en le combinant avec du speck ou d''autres produits de charcuterie, des œufs, du lait, du persil, de la farine et des oignons. Une fois les quenelles préparées et bouillies, elles sont servies soit avec du beurre fondu, soit dans un bouillon de légumes. C''est un repas très savoureux, parfait pour vous réchauffer pendant l''hiver.', '2');
+INSERT INTO PLATS VALUES ('1', 'gorgonzola@resto.com', 'Ossobuco alla milanese', 'L''Ossobuco et son Risotto alla Milanese au safran est l''un des plats de viande les plus emblématiques de la capitale de la Lombardie, Milan. Ce plat emblématique est à base de jarret de veau et son os rempli de moelle, généralement préparé avec de l''huile d''olive, du vin, des assaisonnements, des tomates et servi avec du riz ou autres légumes. Le meilleur reste la dégustation de la moelle crémeuse et délicieuse provenant des os du veau.', '13.99');
+INSERT INTO PLATS VALUES ('2', 'gorgonzola@resto.com', 'Ribollita', 'Issu de la traditionnelle « cucina povera » de mauvaise qualité, la ribollita a été créée par des serviteurs qui ont mis de côté la nourriture inachevée des maîtres (comme le pain ou les légumes) et l’ont fait bouillir pour constituer un repas. Ce ragoût traditionnel est cuisiné avec des légumes tendres, des pommes de terre et des haricots, le tout mélangé à du pain pour une délicieuse soupe crémeuse.', '7.5');
+INSERT INTO PLATS VALUES ('0', 'torre@resto.com', 'Tour de pise sur son flan', 'Reconstitution aussi vraie que nature de l''effondrement de la tour de Pise grâce à un biscuit posé sur un flan maison', '3.99');
+INSERT INTO PLATS VALUES ('0', 'spaghetti@resto.com', 'Pasta alla bolognese', 'Pasta box à la bolognaise', '5');
+INSERT INTO PLATS VALUES ('0', 'spaghetti@resto.com', 'Pasta al pesto', 'Pasta box au pesto', '6');
+INSERT INTO PLATS VALUES ('0', 'spaghetti@resto.com', 'Pasta alle sarde', 'Pasta box aux sardines', '9');
+INSERT INTO PLATS VALUES ('0', 'spaghetti@resto.com', 'Pasta alla crema', 'Pasta box à la crème', '4.5');
+INSERT INTO PLATS VALUES ('0', 'spaghetti@resto.com', 'Pasta ai 4 formaggi', 'Pasta box aux 4 fromages', '6.99');
+
+-- Restaurants français
 INSERT INTO PLATS VALUES ('1', 'saveur@resto.com', '', '', '');
 
 -- Création de la table CATEGORIESRESTAURANT
