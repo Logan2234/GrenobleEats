@@ -1,7 +1,7 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class Interface {
@@ -54,6 +54,49 @@ public class Interface {
 		}
 	}
 	
+	public void categoriesMeres(){
+		try {
+			Set<String> catMeres = new HashSet<String>();
+			
+			Statement stmt = jdbc.connection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT CatNom FROM UTILISATEURS ");
+			while (rs.next()) {
+				catMeres.add(rs.getString("CatNom"));
+			}
+			System.out.println("\n -- -- -- \n");
+			
+			while (true) {
+				System.out.println(" Quelle catégorie te donne faim ? \n");
+				for (String cat : catMeres) {
+					System.out.println("- " + cat);
+				}
+				System.out.println("\n Écris la catégorie que tu préféres : \n");
+				String reponse = interacteur.nextLine();
+				
+				if (catMeres.contains(reponse)) {
+					selectSousCat(reponse);
+					break;
+				} 
+				System.out.println("\n Oups... Cette réponse n'est pas valide. Écris (exactement) la catégorie de tes rêves \n");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	// TODO
+	public void selectSousCat(String catMere) { 
+		try {
+			System.out.println("\n -- -- -- \n");
+			System.out.println(" T'as fait un trop bon choix ! Miam ! \n"); // TODO
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void effacementDonnees() {
 		try {
 			Statement stmt = jdbc.connection.createStatement();
@@ -89,7 +132,7 @@ public class Interface {
 				this.creerCompte(); // TODO
 				break;
 			case "3":
-				this.droitOublie(); // TODO
+				this.droitOublie(); 
 				break;
 			case "4":
 				identification();
