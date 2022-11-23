@@ -91,7 +91,7 @@ INSERT INTO UTILISATEURS VALUES ('51', 'Lisa.Garnier@ggmail.com', 'GarnierL', 'G
 INSERT INTO UTILISATEURS VALUES ('52', 'Alicia.Poirier@ggmail.com', 'PoirierA', 'Poirier', 'Alicia', '31 Henri Dunant (Rue)');
 INSERT INTO UTILISATEURS VALUES ('53', 'Adrien.Guillot@ggmail.com', 'GuillotA', 'Guillot', 'Adrien', '167 Sidi Brahim (Rue)');
 INSERT INTO UTILISATEURS VALUES ('54', 'Anthony.Berger@ggmail.com', 'BergerA', 'Berger', 'Anthony', '11 Moidieu (Rue)');
-INSERT INTO UTILISATEURS VALUES ('0', 'Leo.Boucher@ggmail.com', 'BoucherL', 'Boucher', 'Leo', '139 Charcot (Rue)');
+INSERT INTO UTILISATEURS VALUES ('55', 'Leo.Boucher@ggmail.com', 'BoucherL', 'Boucher', 'Leo', '139 Charcot (Rue)');
 INSERT INTO UTILISATEURS VALUES ('56', 'Adele.Renaud@ggmail.com', 'RenaudA', 'Renaud', 'Adele', '127 Graille (Quai de la)');
 INSERT INTO UTILISATEURS VALUES ('57', 'Alban.Duval@ggmail.com', 'DuvalA', 'Duval', 'Alban', '84 Colonel Dumont (Rue du)');
 INSERT INTO UTILISATEURS VALUES ('58', 'Ambre.Leger@ggmail.com', 'LegerA', 'Leger', 'Ambre', '243 Nicolet (Rue)');
@@ -168,7 +168,6 @@ INSERT INTO CATEGORIES VALUES ('romaine');
 INSERT INTO CATEGORIES VALUES ('tuscane');
 
 INSERT INTO CATEGORIES VALUES ('fastfood');
-INSERT INTO CATEGORIES VALUES ('regionale');
 INSERT INTO CATEGORIES VALUES ('gastronomie');
 INSERT INTO CATEGORIES VALUES ('expérimentale');
 
@@ -176,10 +175,10 @@ INSERT INTO CATEGORIES VALUES ('expérimentale');
 
 INSERT INTO CATEGORIEPARENT VALUES ('nationale','_');
 INSERT INTO CATEGORIEPARENT VALUES ('categorie','_');
+
 INSERT INTO CATEGORIEPARENT VALUES ('fastfood','categorie');
 INSERT INTO CATEGORIEPARENT VALUES ('gastronomie','categorie');
 INSERT INTO CATEGORIEPARENT VALUES ('expérimentale','categorie');
-INSERT INTO CATEGORIEPARENT VALUES ('regionale','categorie');
 
 INSERT INTO CATEGORIEPARENT VALUES ('francaise','nationale');
 INSERT INTO CATEGORIEPARENT VALUES ('provencale','francaise');
@@ -247,3 +246,14 @@ INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALU
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('fourchette@resto.com', 'La fourchette forestière', '00000019', '14 rue Spaghetti 38000', '30', '');
 
+-- Création de la liste des PLATS
+
+INSERT INTO PLATS VALUES ('0', 'croquettes@resto.com', 'Croqueta au fromage', 'Boules de béchamel frites avec du fromage', '1.5');
+INSERT INTO PLATS VALUES ('1', 'croquettes@resto.com', 'Croqueta au jambon', 'Boules de béchamel frites avec du jambon', '1.5');
+INSERT INTO PLATS VALUES ('2', 'croquettes@resto.com', 'Croqueta au champignon', 'Boules de béchamel frites avec du champignon', '1.5');
+INSERT INTO PLATS VALUES ('3', 'croquettes@resto.com', 'Croqueta a la bolognaise', 'Boules de béchamel frites avec de la bolognaise', '1.5');
+INSERT INTO PLATS VALUES ('0', 'instant@resto.com', 'Pizza espagnole', 'Tomate, chorizo, fromage', '8');
+INSERT INTO PLATS VALUES ('1', 'instant@resto.com', 'Tacos espagnol', 'Sauce fromagère, chorizo, frites, fromage', '9');
+INSERT INTO PLATS VALUES ('2', 'instant@resto.com', 'Hot-Dog espagnol', 'Pain, saucisse enrobée de tranches de chorizo, sauce andalouse', '3');
+INSERT INTO PLATS VALUES ('0', 'saveur@resto.com', 'Gaspacho', 'Une recette typique d''Andalousie, une soupe à base de légumes de saison et principalement composée de concombres, de poivrons et de tomates, assaisonnée d''épices et d''herbes aromatiques telles que le paprika, l''oignon et l''ail. En été, il arrive souvent qu''il soit servi froid.', '4');
+INSERT INTO PLATS VALUES ('1', 'saveur@resto.com', '', '', '');
