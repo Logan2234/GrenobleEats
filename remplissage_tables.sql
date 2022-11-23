@@ -246,8 +246,86 @@ INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALU
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('fourchette@resto.com', 'La fourchette forestière', '00000019', '14 rue Spaghetti 38000', '30', '');
 
--- Création de la liste des PLATS
+-- Création de la table CATEGORIESRESTAURANT
+-- Restaurants espagnols
+INSERT INTO CATEGORIESRESTAURANT VALUES ('croquettes@resto.com','espagnole');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('croquettes@resto.com','fastfood');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('instant@resto.com','madridenne');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('instant@resto.com','fastfood');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('saveur@resto.com','pinxto');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('saveur@resto.com','gastronomie');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('tapas@resto.com','tapas');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('paella@resto.com','valencienne');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('paella@resto.com','andalouse');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('tortilla@resto.com','valencienne');
+-- Restaurants japonais
+INSERT INTO CATEGORIESRESTAURANT VALUES ('ramen@resto.com','japonaise');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('gyoza@resto.com','japonaise');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('gyoza@resto.com','gastronomie');
+-- Restaurants italiens
+INSERT INTO CATEGORIESRESTAURANT VALUES ('pizza@resto.com','italienne');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('pizza@resto.com','fastfood');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('gorgonzola@resto.com','italienne');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('gorgonzola@resto.com','gastronomie');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('torre@resto.com','italienne');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('torre@resto.com','experimentale');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('spaghetti@resto.com','italienne');
+-- Restaurants français
+INSERT INTO CATEGORIESRESTAURANT VALUES ('chefcuisine@resto.com','gastronomie');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('chefcuisine@resto.com','provencale');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('cochonou@resto.com','savoyarde');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('gustatif@resto.com','francaise');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('gustatif@resto.com','experimentale');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('rizkiki@resto.com','francaise');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('rizkiki@resto.com','fastfood');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('grandbleu@resto.com','alpine');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('festin@resto.com','nordique');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('fourchette@resto.com','francaise');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('fourchette@resto.com','gastronomie');
 
+-- Création de la table HORAIRESRESTAURANT
+-- Restaurants espagnols
+INSERT INTO HORAIRESRESTAURANT VALUES ('croquettes@resto.com','LS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('croquettes@resto.com','SS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('croquettes@resto.com','MS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('croquettes@resto.com','MeS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('croquettes@resto.com','DS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('instant@resto.com','SM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('instant@resto.com','SS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('instant@resto.com','DM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('instant@resto.com','DS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('saveur@resto.com','DS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('saveur@resto.com','MS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('tapas@resto.com','MeS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('paella@resto.com','DM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('paella@resto.com','SM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('tortilla@resto.com','MS');
+-- Restaurants japonais
+INSERT INTO HORAIRESRESTAURANT VALUES ('ramen@resto.com','MeM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('gyoza@resto.com','MeS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('gyoza@resto.com','MM');
+-- Restaurants italiens
+INSERT INTO HORAIRESRESTAURANT VALUES ('pizza@resto.com','JM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('pizza@resto.com','JS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('gorgonzola@resto.com','SM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('gorgonzola@resto.com','SS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('torre@resto.com','DM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('torre@resto.com','MM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('spaghetti@resto.com','JS');
+-- Restaurants français
+INSERT INTO HORAIRESRESTAURANT VALUES ('chefcuisine@resto.com','DM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('chefcuisine@resto.com','DS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('cochonou@resto.com','SM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('gustatif@resto.com','MM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('gustatif@resto.com','MS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('rizkiki@resto.com','LM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('rizkiki@resto.com','LS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('grandbleu@resto.com','MM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('festin@resto.com','MeS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('fourchette@resto.com','VM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('fourchette@resto.com','VS');
+
+-- Création de la liste des PLATS
 -- Restaurants espagnols
 INSERT INTO PLATS VALUES ('0', 'croquettes@resto.com', 'Croqueta au fromage', 'Boules de béchamel frites avec du fromage', '1.5');
 INSERT INTO PLATS VALUES ('1', 'croquettes@resto.com', 'Croqueta au jambon', 'Boules de béchamel frites avec du jambon', '1.5');
@@ -294,3 +372,4 @@ INSERT INTO PLATS VALUES ('0', 'spaghetti@resto.com', 'Pasta alla crema', 'Pasta
 INSERT INTO PLATS VALUES ('0', 'spaghetti@resto.com', 'Pasta ai 4 formaggi', 'Pasta box aux 4 fromages', '6.99');
 
 -- Restaurants français
+
