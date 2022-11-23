@@ -136,4 +136,3 @@ INSERT INTO UTILISATEURS VALUES ('96', 'Nathan.Perrier@ggmail.com', 'PerrierN', 
 INSERT INTO UTILISATEURS VALUES ('97', 'Valentin.Lebrun@ggmail.com', 'LebrunV', 'Lebrun', 'Valentin', '254 Ville (Jardin de)');
 INSERT INTO UTILISATEURS VALUES ('98', 'Lucas.Renard@ggmail.com', 'RenardL', 'Renard', 'Lucas', '156 René Cassin (Rue)');
 INSERT INTO UTILISATEURS VALUES ('99', 'Nathan.Moreau@ggmail.com', 'MoreauN', 'Moreau', 'Nathan', '266 Glacis de la Bastille (Voie communale)');
-
