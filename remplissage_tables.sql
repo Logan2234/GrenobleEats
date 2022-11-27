@@ -246,7 +246,6 @@ INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALU
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('fourchette@resto.com', 'La fourchette forestière', '00000019', '14 rue Spaghetti 38000', '30', '');
 
-
 -- Création des entrées de la table TYPESRESTAURANT
 
 -- TODO
