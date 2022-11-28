@@ -412,6 +412,7 @@ INSERT INTO ALLERGENESPLAT VALUES ('3', 'spaghetti@resto.com', 'Poissons');
 INSERT INTO ALLERGENESPLAT VALUES ('4', 'spaghetti@resto.com', 'Lait');
 INSERT INTO ALLERGENESPLAT VALUES ('5', 'spaghetti@resto.com', 'Lait');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'chefcuisine@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'chefcuisine@resto.com', 'Poissons');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'cochonou@resto.com', 'Gluten');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'grandbleu@resto.com', 'Lait');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Gluten');
@@ -420,7 +421,13 @@ INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Oeufs');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Poissons');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Arachides');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Soja');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Fruits a coques');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Céleri');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Moutarde');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Graines de sésame');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Anhydre sulfureux et sulfites');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Lupin');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Mollusques');
 
 -- Création de la liste des PLATS
 -- Restaurants espagnols
