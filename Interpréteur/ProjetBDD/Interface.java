@@ -86,7 +86,7 @@ public class Interface {
 		
 	}
 	
-	// TODO
+	
 	public void selectSousCat(String catMere) { 
 		try {
 			Set<String> sousCats = new HashSet<String>();
@@ -142,15 +142,15 @@ public class Interface {
 				restos.add(rs.getString("RNom"));
 			}
 			if (restos.size() == 0) {
-				System.out.println(" Oups... Il y a aucun restoraunt avec cette catégorie... Veillez sélectionner une autre catégorie. \n");
+				System.out.println(" Oups... Il y a aucun restorant avec cette catégorie... Veillez sélectionner une autre catégorie. \n");
 				categoriesMeres();
 				return;
 			}
-			System.out.println("\n -- -- -- \n");
+			System.out.println("\n -- -- -- \n");   
 			System.out.println(" Dans la catégorie de " + categorie + ", voici les restaurants disponibles : \n"); 
 			
-			for (int i = 0; i < restos.size(); i = i + 10) {
-				for (int j = i; j < i + 10; j++) {
+			for (int i = 0; i < restos.size(); i += 10) {
+				for (int j = i; j < i + 10 && j < restos.size(); j++) {
 					System.out.println(String.valueOf((i%10) + 1) + ") " + restos.get(j)); 
 				}
 				if (i + 10 <= restos.size()) {
@@ -159,18 +159,59 @@ public class Interface {
 				while (true) {
 					System.out.println("\n Écris le numéro de ta réponse souhaitée : \n");
 					String reponse = interacteur.nextLine();
-					switch (reponse) {
-					case "11":
-						if (i + 10 <= restos.size()) {
-							//TODO
-						}
+					if (reponse == "11" && i + 10 <= restos.size()) break;
+					if (reponse == "1" && i <= restos.size()) {
+						commanderResto(restos.get(i));
+						return;
 					}
+					if (reponse == "2" && i + 1 <= restos.size()) {
+						commanderResto(restos.get(i + 1));
+						return;
+					}
+					if (reponse == "3" && i + 2 <= restos.size()) {
+						commanderResto(restos.get(i + 2));
+						return;
+					}
+					if (reponse == "4" && i + 3 <= restos.size()) {
+						commanderResto(restos.get(i + 3));
+						return;
+					}
+					if (reponse == "5" && i + 4 <= restos.size()) {
+						commanderResto(restos.get(i + 4));
+						return;
+					}
+					if (reponse == "6" && i + 5 <= restos.size()) {
+						commanderResto(restos.get(i + 5));
+						return;
+					}
+					if (reponse == "7" && i + 6 <= restos.size()) {
+						commanderResto(restos.get(i + 6));
+						return;
+					}
+					if (reponse == "8" && i + 7 <= restos.size()) {
+						commanderResto(restos.get(i + 7));
+						return;
+					}
+					if (reponse == "9" && i + 8 <= restos.size()) {
+						commanderResto(restos.get(i + 8));
+						return;
+					}
+					if (reponse == "10" && i + 9 <= restos.size()) {
+						commanderResto(restos.get(i + 9));
+						return;
+					}
+					
+					System.out.println("\n Aïe, votre réponse n'est pas valide ou il n'y a plus de restorants. Choisis une réponse valide. \n");
 				}
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void commanderResto(String resto) {
+		//TODO
 	}
 	
 	public void effacementDonnees() {
