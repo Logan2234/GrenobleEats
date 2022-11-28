@@ -470,12 +470,9 @@ public class Interface {
 			System.out.println("Numéro, IdCommande, Date, Heure, Prix");
 
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT Cid, CDate, CHeure, CPrix FROM COMMANDES WHERE UId = \'" + user.getIdentifiant() + "\'"); // requête à completer maybe
-			int cId;
+			ResultSet rs = stmt.executeQuery("SELECT Cid, CDate, CHeure, CPrix FROM COMMANDES WHERE UId = \'" + user.getIdentifiant() + "\'"); //TODO renvoyer Cid Cdate Cheure Cprix et le nom du restau si possible
 			while (rs.next()){
-				cId = Integer.valueOf(rs.getString("Cid"));
-				System.out.println(cId + " " + rs.getString("CDate") + " " + rs.getString("CHeure") + " " + rs.getString("CPrix"));
-
+				System.out.println(rs.getString("Cid") + " " + rs.getString("CDate") + " " + rs.getString("CHeure") + " " + rs.getString("CPrix"));
 			}
 			System.out.println();
 			String userInput = interacteur.nextLine();
@@ -517,7 +514,7 @@ public class Interface {
 				}
 				String id = String.valueOf(nbLoop);				
 				jdbc.insertValeur("EVALUATIONS", "(" + id + ", " + currDate + ", " + currHeure 
-								+ "' \'" + userInput + "\', " + note + ", " + idCommande + ")");
+								+ "' \'" + userInput + "\', " + note + ", " + idCommande + ")"); //TODO requête à vérifier
 			}
 			System.out.println("\n Merci d'avoir laissé un avis \n");
 			accueil();
@@ -526,7 +523,29 @@ public class Interface {
 			e.printStackTrace();	
 		}
 	}
-	
+
+	public void commande(int idRestaurant){
+		try {
+			System.out.println("\n Prenons ta commande\n");
+
+
+			while (true){
+
+			
+				System.out.println("Entre l'identifiant d'un plat : ");  
+				Statement stmt = jdbc.connection.createStatement();
+				ResultSet rs = stmt.executeQuery(""); //TODO idPlat et nomPlat (avec idRestaurant)
+				while (rs.next()){
+					System.out.println(rs.getString("Pid") + " " + rs.getString("PNom"));
+				}
+			}
+			
+
+		} catch (SQLException e) { 
+			e.printStackTrace();	
+		}
+
+	}	
 	
 	public void creerCompte() { // TODO 
 		System.out.println("Tu vas te regaler ! \n");
