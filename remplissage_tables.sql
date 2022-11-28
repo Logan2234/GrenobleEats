@@ -368,7 +368,8 @@ INSERT INTO HORAIRESRESTAURANT VALUES ('festin@resto.com','MeS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('fourchette@resto.com','VM');
 INSERT INTO HORAIRESRESTAURANT VALUES ('fourchette@resto.com','VS');
 
--- Création de la table ALLERGENESPLAT
+
+-- Création des entrées de la table ALLERGENESPLAT
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'croquettes@resto.com', 'Lait');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'croquettes@resto.com', 'Gluten');
 INSERT INTO ALLERGENESPLAT VALUES ('1', 'croquettes@resto.com', 'Lait');
@@ -412,6 +413,7 @@ INSERT INTO ALLERGENESPLAT VALUES ('3', 'spaghetti@resto.com', 'Poissons');
 INSERT INTO ALLERGENESPLAT VALUES ('4', 'spaghetti@resto.com', 'Lait');
 INSERT INTO ALLERGENESPLAT VALUES ('5', 'spaghetti@resto.com', 'Lait');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'chefcuisine@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'chefcuisine@resto.com', 'Poissons');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'cochonou@resto.com', 'Gluten');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'grandbleu@resto.com', 'Lait');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Gluten');
@@ -420,7 +422,13 @@ INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Oeufs');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Poissons');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Arachides');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Soja');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Fruits a coques');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Céleri');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Moutarde');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Graines de sésame');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Anhydre sulfureux et sulfites');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Lupin');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Mollusques');
 
 -- Création de la liste des PLATS
 -- Restaurants espagnols
@@ -498,5 +506,3 @@ INSERT INTO PLATSCOMMANDE VALUES ('0', '5', 'spaghetti@resto.com');
 -- Création des entrées de la table EVALUATIONS
 
 INSERT INTO EVALUATION VALUES ('0', '2022-11-28', '20:25:32', '6.99', '91', 'emporter');
-
--- Création des entrées de la table ALLERGENESPLAT
