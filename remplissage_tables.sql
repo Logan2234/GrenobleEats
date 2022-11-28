@@ -368,7 +368,8 @@ INSERT INTO HORAIRESRESTAURANT VALUES ('festin@resto.com','MeS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('fourchette@resto.com','VM');
 INSERT INTO HORAIRESRESTAURANT VALUES ('fourchette@resto.com','VS');
 
--- Création de la table ALLERGENESPLAT
+
+-- Création des entrées de la table ALLERGENESPLAT
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'croquettes@resto.com', 'Lait');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'croquettes@resto.com', 'Gluten');
 INSERT INTO ALLERGENESPLAT VALUES ('1', 'croquettes@resto.com', 'Lait');
@@ -505,5 +506,3 @@ INSERT INTO PLATSCOMMANDE VALUES ('0', '5', 'spaghetti@resto.com');
 -- Création des entrées de la table EVALUATIONS
 
 INSERT INTO EVALUATION VALUES ('0', '2022-11-28', '20:25:32', '6.99', '91', 'emporter');
-
--- Création des entrées de la table ALLERGENESPLAT
