@@ -265,10 +265,15 @@ public class Interface {
 			Statement stmt = jdbc.connection.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT PNom, PDescription, PPrix FROM PLATS WHERE PRestaurant = \'" + resto + "\'"); 
 			
-			ArrayList<String> plats = new ArrayList<String>();
+			ArrayList<Map<String,String>> plats = new ArrayList<Map<String,String>>();
 			
 			while (rs.next()) {
-				plats.add(rs.getString("RNom"));
+				
+				Map<String,String> plat = new HashMap<String,String>();
+				plat.put("Nom", rs.getString("PNom"));
+				plat.put("Des", rs.getString("PDescription");
+				plat.put("Prix", "PPrix");
+				plats.add(plat);
 			}
 			if (plats.size() == 0) {
 				System.out.println(" Oups... Il y a aucun plat disponible... Veillez sélectionner un autre restorant. \n");
@@ -280,7 +285,7 @@ public class Interface {
 			
 			for (int i = 0; i < plats.size(); i += 10) {
 				for (int j = i; j < i + 10 && j < plats.size(); j++) {
-					System.out.println(String.valueOf((i%10) + 1) + ") " + plats.get(j)); 
+					System.out.println(String.valueOf((i%10) + 1) + ") " + plats.get(j).get("Nom") + " (" + plats.get(j).get("Prix") + " €) - " + plats.get(j).get("Des")); 
 				}
 				if (i + 10 <= plats.size()) {
 					System.out.println("11) Voir plus de restaurants");
@@ -344,7 +349,7 @@ public class Interface {
 		}
 	}
 	
-	public void ajouterACommande(String plat) {
+	public void ajouterACommande(Map<String,String> plat) {
 		// TODO
 	}
 	
