@@ -66,7 +66,8 @@ public class Interface {
 			Set<String> catMeres = new HashSet<String>();
 			
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT CatNom FROM UTILISATEURS WHERE CatNomMere = \'_\'");
+			// Requête fonctionnelle
+			ResultSet rs = stmt.executeQuery("SELECT CatNom FROM CATEGORIEPARENT WHERE CatNomMere = \'_\'");
 			while (rs.next()) {
 				catMeres.add(rs.getString("CatNom"));
 			}
@@ -99,7 +100,8 @@ public class Interface {
 			Set<String> sousCats = new HashSet<String>();
 		
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT CatNom FROM UTILISATEURS WHERE CatNomMere = \'" + catMere + "\'");
+			// Requête fonctionnelle
+			ResultSet rs = stmt.executeQuery("SELECT CatNom FROM CATEGORIEPARENT WHERE CatNomMere = \'" + catMere + "\'");
 			while (rs.next()) {
 				sousCats.add(rs.getString("CatNom"));
 			}
@@ -144,7 +146,8 @@ public class Interface {
 			ArrayList<String> restos = new ArrayList<String>();
 			
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT DISTINCT RNom FROM RESTAURANTS JOIN CATEGORIESRESTAURANT ON RESTAURANTS.RMail = CATEGORIESRESTAURANT.RMail WHERE CATEGORIESRESTAURANT = \'" + categorie + "\'");
+			// Requête fonctionnelle
+			ResultSet rs = stmt.executeQuery("SELECT DISTINCT RNom FROM RESTAURANTS JOIN CATEGORIESRESTAURANT ON RESTAURANTS.RMail = CATEGORIESRESTAURANT.RMail WHERE CATEGORIESRESTAURANT.CatNom = \'" + categorie + "\'");
 			while (rs.next()) {
 				restos.add(rs.getString("RNom"));
 			}
@@ -279,6 +282,7 @@ public class Interface {
 			
 			String mail = interacteur.nextLine();
 			Statement stmt = jdbc.connection.createStatement();
+			// Requête fonctionnelle
 			ResultSet rs = stmt.executeQuery("SELECT U_Id FROM UTILISATEURS WHERE UMail = \'" + mail + "\'");
 			int userId = 0;
 			while (rs.next()) {
