@@ -6,7 +6,7 @@ CREATE TABLE RESTAURANTS(
     RNum VARCHAR(12) NOT NULL,
     RAdresse VARCHAR(50) NOT NULL,
     Places int NOT NULL,
-    Presentation VARCHAR(300),
+    Presentation VARCHAR(1000),
     RNote FLOAT,
     PRIMARY KEY(RMail)
 );
@@ -27,20 +27,8 @@ CREATE TABLE CATEGORIES(
 );
 
 CREATE TABLE ALLERGENES(
-    ANom VARCHAR(20),
+    ANom VARCHAR(29),
     PRIMARY KEY(ANom)
-);
-
-CREATE TABLE COMMANDES(
-    Cid INT,
-    CDate DATE NOT NULL,
-    CHeure TIME NOT NULL,
-    CPrix FLOAT,
-    U_id INT,
-    TypeCommande VARCHAR(9),
-    PRIMARY KEY(Cid),
-    FOREIGN KEY(U_id) REFERENCES UTILISATEURS(U_id),
-    FOREIGN KEY(TypeCommande) REFERENCES TYPESCOMMANDE(TypeCommande)
 );
 
 CREATE TABLE UTILISATEURS(
@@ -53,11 +41,21 @@ CREATE TABLE UTILISATEURS(
     PRIMARY KEY(U_id)
 );
 
+CREATE TABLE COMMANDES(
+    Cid INT,
+    CDate TIMESTAMP NOT NULL,
+    CPrix FLOAT,
+    U_id INT,
+    TypeCommande VARCHAR(9),
+    PRIMARY KEY(Cid),
+    FOREIGN KEY(U_id) REFERENCES UTILISATEURS(U_id),
+    FOREIGN KEY(TypeCommande) REFERENCES TYPESCOMMANDE(TypeCommande)
+);
+
 CREATE TABLE EVALUATIONS(
     Eid INT,
-    EDate DATE NOT NULL,
-    EHeure TIME NOT NULL,
-    Avis VARCHAR(300),
+    EDate TIMESTAMP NOT NULL,
+    Avis VARCHAR(1000),
     ENote INT NOT NULL,
     Cid INT,
     PRIMARY KEY(Eid),
@@ -73,8 +71,8 @@ CREATE TABLE COMMANDESEMPORTEES(
 CREATE TABLE COMMANDESLIVREES(
     CLid INT,
     CLAdresse VARCHAR(50),
-    Indications VARCHAR(300),
-    CLArrivee TIME,
+    Indications VARCHAR(1000),
+    CLArrivee TIMESTAMP,
     CLStatut VARCHAR(11) CHECK (CLStatut IN ('Attente', 'Validee', 'enLivraison', 'AnnuleeC', 'AnnuleeR', 'Terminee')) NOT NULL,
     PRIMARY KEY(CLid)
 );
@@ -82,7 +80,7 @@ CREATE TABLE COMMANDESLIVREES(
 CREATE TABLE COMMANDESSURPLACE(
     CPid INT,
     NbPers INT NOT NULL,
-    CPArrivee TIME NOT NULL,
+    CPArrivee TIMESTAMP NOT NULL,
     CPStatut VARCHAR(8) CHECK (CPStatut IN ('Attente', 'Validee', 'AnnuleeC', 'AnnuleeR', 'Terminee')) NOT NULL,
     PRIMARY KEY(CPid)
 );
@@ -90,8 +88,8 @@ CREATE TABLE COMMANDESSURPLACE(
 CREATE TABLE PLATS(
     Pid INT,
     PRestaurant VARCHAR(50),
-    PNom VARCHAR(20) NOT NULL,
-    PDescription VARCHAR(300),
+    PNom VARCHAR(50) NOT NULL,
+    PDescription VARCHAR(1000),
     PPrix FLOAT NOT NULL,
     PRIMARY KEY(Pid, PRestaurant),
     FOREIGN KEY(PRestaurant) REFERENCES RESTAURANTS(RMail)
@@ -132,7 +130,7 @@ CREATE TABLE TYPESRESTAURANT(
 CREATE TABLE ALLERGENESPLAT(
     Pid INT,
     PRestaurant VARCHAR(50),
-    ANom VARCHAR(20),
+    ANom VARCHAR(29),
     PRIMARY KEY(Pid, PRestaurant, ANom),
     FOREIGN KEY(Pid, PRestaurant) REFERENCES PLATS(Pid, PRestaurant),
     FOREIGN KEY(ANom) REFERENCES ALLERGENES(ANom)

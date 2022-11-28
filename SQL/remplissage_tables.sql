@@ -17,22 +17,26 @@ INSERT INTO HORAIRES VALUES ('DS');
 
 -- Création des entrées de la table ALLERGENES
 
-INSERT INTO ALLERGENES VALUES (
-    'Gluten',
-    'Crustacés',
-    'Oeufs',
-    'Poissons',
-    'Arachides',
-    'Soja',
-    'Lait',
-    'Fruits a coques',
-    'Céleri',
-    'Moutarde',
-    'Graines de sésame',
-    'Anhydre sulfureux et sulfites',
-    'Lupin',
-    'Mollusques'
-);
+INSERT INTO ALLERGENES VALUES ('Gluten');
+INSERT INTO ALLERGENES VALUES ('Crustacés');
+INSERT INTO ALLERGENES VALUES ('Oeufs');
+INSERT INTO ALLERGENES VALUES ('Poissons');
+INSERT INTO ALLERGENES VALUES ('Arachides');
+INSERT INTO ALLERGENES VALUES ('Soja');
+INSERT INTO ALLERGENES VALUES ('Lait');
+INSERT INTO ALLERGENES VALUES ('Fruits a coques');
+INSERT INTO ALLERGENES VALUES ('Céleri');
+INSERT INTO ALLERGENES VALUES ('Moutarde');
+INSERT INTO ALLERGENES VALUES ('Graines de sésame');
+INSERT INTO ALLERGENES VALUES ('Anhydre sulfureux et sulfites');
+INSERT INTO ALLERGENES VALUES ('Lupin');
+INSERT INTO ALLERGENES VALUES ('Mollusques');
+
+-- Création des entrées de la table TYPESCOMMANDE
+
+INSERT INTO TYPESCOMMANDE VALUES ('emporter');
+INSERT INTO TYPESCOMMANDE VALUES ('place');
+INSERT INTO TYPESCOMMANDE VALUES ('livraison');
 
 -- Création des entrées de la table UTILISATEURS
 
@@ -137,12 +141,6 @@ INSERT INTO UTILISATEURS VALUES ('97', 'Valentin.Lebrun@ggmail.com', 'LebrunV', 
 INSERT INTO UTILISATEURS VALUES ('98', 'Lucas.Renard@ggmail.com', 'RenardL', 'Renard', 'Lucas', '156 René Cassin (Rue)');
 INSERT INTO UTILISATEURS VALUES ('99', 'Nathan.Moreau@ggmail.com', 'MoreauN', 'Moreau', 'Nathan', '266 Glacis de la Bastille (Voie communale)');
 
--- Création des entrées de la table TYPESCOMMANDE
-
-INSERT INTO TYPESCOMMANDE VALUES ('emporter');
-INSERT INTO TYPESCOMMANDE VALUES ('place');
-INSERT INTO TYPESCOMMANDE VALUES ('livraison');
-
 -- Création des entrées de la table CATEGORIES
 
 INSERT INTO CATEGORIES VALUES ('_');
@@ -167,9 +165,10 @@ INSERT INTO CATEGORIES VALUES ('sicilienne');
 INSERT INTO CATEGORIES VALUES ('romaine');
 INSERT INTO CATEGORIES VALUES ('tuscane');
 
+INSERT INTO CATEGORIES VALUES ('categorie');
 INSERT INTO CATEGORIES VALUES ('fastfood');
 INSERT INTO CATEGORIES VALUES ('gastronomie');
-INSERT INTO CATEGORIES VALUES ('expérimentale');
+INSERT INTO CATEGORIES VALUES ('experimentale');
 
 -- Création des entrées de la table CATEGORIEPARENT
 
@@ -178,7 +177,7 @@ INSERT INTO CATEGORIEPARENT VALUES ('categorie', '_');
 
 INSERT INTO CATEGORIEPARENT VALUES ('fastfood', 'categorie');
 INSERT INTO CATEGORIEPARENT VALUES ('gastronomie', 'categorie');
-INSERT INTO CATEGORIEPARENT VALUES ('expérimentale', 'categorie');
+INSERT INTO CATEGORIEPARENT VALUES ('experimentale', 'categorie');
 
 INSERT INTO CATEGORIEPARENT VALUES ('francaise', 'nationale');
 INSERT INTO CATEGORIEPARENT VALUES ('provencale', 'francaise');
@@ -195,7 +194,7 @@ INSERT INTO CATEGORIEPARENT VALUES ('valencienne', 'espagnole');
 INSERT INTO CATEGORIEPARENT VALUES ('tapas', 'espagnole');
 INSERT INTO CATEGORIEPARENT VALUES ('madridenne', 'tapas');
 INSERT INTO CATEGORIEPARENT VALUES ('andalouse', 'tapas');
-INSERT INTO CATEGORIEPARENT VALUES ('pinxto', 'tapas');
+INSERT INTO CATEGORIEPARENT VALUES ('pintxo', 'tapas');
 
 INSERT INTO CATEGORIEPARENT VALUES ('italienne', 'nationale');
 INSERT INTO CATEGORIEPARENT VALUES ('sicilienne', 'italienne');
@@ -295,7 +294,7 @@ INSERT INTO CATEGORIESRESTAURANT VALUES ('croquettes@resto.com', 'espagnole');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('croquettes@resto.com', 'fastfood');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('instant@resto.com', 'madridenne');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('instant@resto.com', 'fastfood');
-INSERT INTO CATEGORIESRESTAURANT VALUES ('saveur@resto.com', 'pinxto');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('saveur@resto.com', 'pintxo');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('saveur@resto.com', 'gastronomie');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('tapas@resto.com', 'tapas');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('paella@resto.com', 'valencienne');
@@ -330,7 +329,7 @@ INSERT INTO CATEGORIESRESTAURANT VALUES ('fourchette@resto.com', 'gastronomie');
 -- Restaurants espagnols
 INSERT INTO HORAIRESRESTAURANT VALUES ('croquettes@resto.com','LS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('croquettes@resto.com','SS');
-INSERT INTO HORAIRESRESTAURANT VALUES ('croquettes@resto.com','MS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('croquettes@resto.com','MaS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('croquettes@resto.com','MeS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('croquettes@resto.com','DS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('instant@resto.com','SM');
@@ -338,97 +337,35 @@ INSERT INTO HORAIRESRESTAURANT VALUES ('instant@resto.com','SS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('instant@resto.com','DM');
 INSERT INTO HORAIRESRESTAURANT VALUES ('instant@resto.com','DS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('saveur@resto.com','DS');
-INSERT INTO HORAIRESRESTAURANT VALUES ('saveur@resto.com','MS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('saveur@resto.com','MaS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('tapas@resto.com','MeS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('paella@resto.com','DM');
 INSERT INTO HORAIRESRESTAURANT VALUES ('paella@resto.com','SM');
-INSERT INTO HORAIRESRESTAURANT VALUES ('tortilla@resto.com','MS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('tortilla@resto.com','MaS');
 -- Restaurants japonais
 INSERT INTO HORAIRESRESTAURANT VALUES ('ramen@resto.com','MeM');
 INSERT INTO HORAIRESRESTAURANT VALUES ('gyoza@resto.com','MeS');
-INSERT INTO HORAIRESRESTAURANT VALUES ('gyoza@resto.com','MM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('gyoza@resto.com','MaM');
 -- Restaurants italiens
 INSERT INTO HORAIRESRESTAURANT VALUES ('pizza@resto.com','JM');
 INSERT INTO HORAIRESRESTAURANT VALUES ('pizza@resto.com','JS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('gorgonzola@resto.com','SM');
 INSERT INTO HORAIRESRESTAURANT VALUES ('gorgonzola@resto.com','SS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('torre@resto.com','DM');
-INSERT INTO HORAIRESRESTAURANT VALUES ('torre@resto.com','MM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('torre@resto.com','MaM');
 INSERT INTO HORAIRESRESTAURANT VALUES ('spaghetti@resto.com','JS');
 -- Restaurants français
 INSERT INTO HORAIRESRESTAURANT VALUES ('chefcuisine@resto.com','DM');
 INSERT INTO HORAIRESRESTAURANT VALUES ('chefcuisine@resto.com','DS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('cochonou@resto.com','SM');
-INSERT INTO HORAIRESRESTAURANT VALUES ('gustatif@resto.com','MM');
-INSERT INTO HORAIRESRESTAURANT VALUES ('gustatif@resto.com','MS');
+INSERT INTO HORAIRESRESTAURANT VALUES ('gustatif@resto.com','MaM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('gustatif@resto.com','MaS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('rizkiki@resto.com','LM');
 INSERT INTO HORAIRESRESTAURANT VALUES ('rizkiki@resto.com','LS');
-INSERT INTO HORAIRESRESTAURANT VALUES ('grandbleu@resto.com','MM');
+INSERT INTO HORAIRESRESTAURANT VALUES ('grandbleu@resto.com','MaM');
 INSERT INTO HORAIRESRESTAURANT VALUES ('festin@resto.com','MeS');
 INSERT INTO HORAIRESRESTAURANT VALUES ('fourchette@resto.com','VM');
 INSERT INTO HORAIRESRESTAURANT VALUES ('fourchette@resto.com','VS');
-
-
--- Création des entrées de la table ALLERGENESPLAT
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'croquettes@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'croquettes@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('1', 'croquettes@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('1', 'croquettes@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('2', 'croquettes@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('2', 'croquettes@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('3', 'croquettes@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('3', 'croquettes@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'instant@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('1', 'instant@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('1', 'instant@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('2', 'instant@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'paella@resto.com', 'Crustacés');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'paella@resto.com', 'Mollusques');
-INSERT INTO ALLERGENESPLAT VALUES ('1', 'tapas@resto.com', 'Mollusques');
-INSERT INTO ALLERGENESPLAT VALUES ('1', 'ramen@resto.com', 'Anhydre sulfureux et sulfites');
-INSERT INTO ALLERGENESPLAT VALUES ('4', 'ramen@resto.com', 'Poissons');
-INSERT INTO ALLERGENESPLAT VALUES ('3', 'ramen@resto.com', 'Mollusques');
-INSERT INTO ALLERGENESPLAT VALUES ('2', 'gyoza@resto.com', 'Mollusques');
-INSERT INTO ALLERGENESPLAT VALUES ('3', 'tapas@resto.com', 'Soja');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'pizza@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'pizza@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('1', 'pizza@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('1', 'pizza@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('2', 'pizza@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('2', 'pizza@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('3', 'pizza@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('3', 'pizza@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('4', 'pizza@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('4', 'pizza@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'gorgonzola@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('1', 'gorgonzola@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('2', 'gorgonzola@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'spaghetti@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('1', 'spaghetti@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('2', 'spaghetti@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('3', 'spaghetti@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('4', 'spaghetti@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('5', 'spaghetti@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('3', 'spaghetti@resto.com', 'Poissons');
-INSERT INTO ALLERGENESPLAT VALUES ('4', 'spaghetti@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('5', 'spaghetti@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'chefcuisine@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'chefcuisine@resto.com', 'Poissons');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'cochonou@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'grandbleu@resto.com', 'Lait');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Gluten');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Crustacés');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Oeufs');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Poissons');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Arachides');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Soja');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Fruits a coques');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Céleri');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Moutarde');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Graines de sésame');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Anhydre sulfureux et sulfites');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Lupin');
-INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Mollusques');
 
 -- Création de la liste des PLATS
 -- Restaurants espagnols
@@ -468,11 +405,11 @@ INSERT INTO PLATS VALUES ('0', 'gorgonzola@resto.com', 'Canederli', 'Les caneder
 INSERT INTO PLATS VALUES ('1', 'gorgonzola@resto.com', 'Ossobuco alla milanese', 'L''Ossobuco et son Risotto alla Milanese au safran est l''un des plats de viande les plus emblématiques de la capitale de la Lombardie, Milan. Ce plat emblématique est à base de jarret de veau et son os rempli de moelle, généralement préparé avec de l''huile d''olive, du vin, des assaisonnements, des tomates et servi avec du riz ou autres légumes. Le meilleur reste la dégustation de la moelle crémeuse et délicieuse provenant des os du veau.', '13.99');
 INSERT INTO PLATS VALUES ('2', 'gorgonzola@resto.com', 'Ribollita', 'Issu de la traditionnelle « cucina povera » de mauvaise qualité, la ribollita a été créée par des serviteurs qui ont mis de côté la nourriture inachevée des maîtres (comme le pain ou les légumes) et l’ont fait bouillir pour constituer un repas. Ce ragoût traditionnel est cuisiné avec des légumes tendres, des pommes de terre et des haricots, le tout mélangé à du pain pour une délicieuse soupe crémeuse.', '7.5');
 INSERT INTO PLATS VALUES ('0', 'torre@resto.com', 'Tour de pise sur son flan', 'Reconstitution aussi vraie que nature de l''effondrement de la tour de Pise grâce à un biscuit posé sur un flan maison', '3.99');
-INSERT INTO PLATS VALUES ('1', 'spaghetti@resto.com', 'Pasta alla bolognese', 'Pasta box à la bolognaise', '5');
-INSERT INTO PLATS VALUES ('2', 'spaghetti@resto.com', 'Pasta al pesto', 'Pasta box au pesto', '6');
-INSERT INTO PLATS VALUES ('3', 'spaghetti@resto.com', 'Pasta alle sarde', 'Pasta box aux sardines', '9');
-INSERT INTO PLATS VALUES ('4', 'spaghetti@resto.com', 'Pasta alla crema', 'Pasta box à la crème', '4.5');
-INSERT INTO PLATS VALUES ('5', 'spaghetti@resto.com', 'Pasta ai 4 formaggi', 'Pasta box aux 4 fromages', '6.99');
+INSERT INTO PLATS VALUES ('0', 'spaghetti@resto.com', 'Pasta alla bolognese', 'Pasta box à la bolognaise', '5');
+INSERT INTO PLATS VALUES ('1', 'spaghetti@resto.com', 'Pasta al pesto', 'Pasta box au pesto', '6');
+INSERT INTO PLATS VALUES ('2', 'spaghetti@resto.com', 'Pasta alle sarde', 'Pasta box aux sardines', '9');
+INSERT INTO PLATS VALUES ('3', 'spaghetti@resto.com', 'Pasta alla crema', 'Pasta box à la crème', '4.5');
+INSERT INTO PLATS VALUES ('4', 'spaghetti@resto.com', 'Pasta ai 4 formaggi', 'Pasta box aux 4 fromages', '6.99');
 -- Restaurants français
 INSERT INTO PLATS VALUES ('0', 'chefcuisine@resto.com', 'Pissaladière', 'Oignons olives et anchois sur sa pâte à pizza', '8');
 INSERT INTO PLATS VALUES ('1', 'chefcuisine@resto.com', 'Légumes farcis', 'Tomate, courgette et poivrons farcis à la viande', '8');
@@ -483,26 +420,61 @@ INSERT INTO PLATS VALUES ('0', 'grandbleu@resto.com', 'Planche de fromages', '',
 INSERT INTO PLATS VALUES ('0', 'festin@resto.com', 'Formule à volonté', 'On y trouve de tout, vraiment de tout', '24.99');
 INSERT INTO PLATS VALUES ('0', 'fourchette@resto.com', 'Escargots persillés', 'C’est un plat vraiment singulier que l’on retrouve sur la plupart des bistros français. Les escargots sont généralement cuits au four avec du beurre, du persil, de l’ail et de l’échalote. Les amateurs des escargots persillés adorent cette association de textures entre le gras du beurre et la vivacité du persil. Ils sont toujours servis dans leurs coquilles. D’origine bourguignonne, cette spécialité française traverse le temps depuis le 19e siècle et est réinterprétée par presque tous les chefs français !', '16.99');
 
--- Création des entrées de la table COMMANDES
-
-INSERT INTO COMMANDES VALUES ('0', '2022-11-28', '20:25:32', '6.99', '91', 'emporter');
-
--- Création des entrées de la table COMMANDESEMPORTEES
-
-INSERT INTO COMMANDESEMPORTEES VALUES ('0', 'Terminee');
-
--- Création des entrées de la table COMMANDESLIVREES
-
--- TODO
-
--- Création des entrées de la table COMMANDESSURPLACE
-
--- TODO
-
--- Création des entrées de la table PLATSCOMMANDE
-
-INSERT INTO PLATSCOMMANDE VALUES ('0', '5', 'spaghetti@resto.com');
-
--- Création des entrées de la table EVALUATIONS
-
-INSERT INTO EVALUATION VALUES ('0', '2022-11-28', '20:25:32', '6.99', '91', 'emporter');
+-- Création des entrées de la table ALLERGENESPLAT
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'croquettes@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'croquettes@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('1', 'croquettes@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('1', 'croquettes@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('2', 'croquettes@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('2', 'croquettes@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('3', 'croquettes@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('3', 'croquettes@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'instant@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('1', 'instant@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('1', 'instant@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('2', 'instant@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'paella@resto.com', 'Crustacés');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'paella@resto.com', 'Mollusques');
+INSERT INTO ALLERGENESPLAT VALUES ('1', 'tapas@resto.com', 'Mollusques');
+INSERT INTO ALLERGENESPLAT VALUES ('1', 'ramen@resto.com', 'Anhydre sulfureux et sulfites');
+INSERT INTO ALLERGENESPLAT VALUES ('4', 'ramen@resto.com', 'Poissons');
+INSERT INTO ALLERGENESPLAT VALUES ('3', 'ramen@resto.com', 'Mollusques');
+INSERT INTO ALLERGENESPLAT VALUES ('2', 'gyoza@resto.com', 'Mollusques');
+INSERT INTO ALLERGENESPLAT VALUES ('3', 'gyoza@resto.com', 'Soja');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'pizza@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'pizza@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('1', 'pizza@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('1', 'pizza@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('2', 'pizza@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('2', 'pizza@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('3', 'pizza@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('3', 'pizza@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('4', 'pizza@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('4', 'pizza@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'gorgonzola@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('1', 'gorgonzola@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('2', 'gorgonzola@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'spaghetti@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('1', 'spaghetti@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('2', 'spaghetti@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('3', 'spaghetti@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('4', 'spaghetti@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('2', 'spaghetti@resto.com', 'Poissons');
+INSERT INTO ALLERGENESPLAT VALUES ('3', 'spaghetti@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'chefcuisine@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'chefcuisine@resto.com', 'Poissons');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'cochonou@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'grandbleu@resto.com', 'Lait');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Gluten');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Crustacés');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Oeufs');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Poissons');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Arachides');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Soja');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Fruits a coques');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Céleri');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Moutarde');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Graines de sésame');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Anhydre sulfureux et sulfites');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Lupin');
+INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Mollusques');
