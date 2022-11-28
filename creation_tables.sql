@@ -34,7 +34,7 @@ CREATE TABLE ALLERGENES(
 CREATE TABLE COMMANDES(
     Cid INT,
     CDate DATE NOT NULL,
-    CHeure TIMESTAMP NOT NULL,
+    CHeure TIME NOT NULL,
     CPrix FLOAT,
     U_id INT,
     TypeCommande VARCHAR(9),
@@ -56,7 +56,7 @@ CREATE TABLE UTILISATEURS(
 CREATE TABLE EVALUATIONS(
     Eid INT,
     EDate DATE NOT NULL,
-    EHeure TIMESTAMP NOT NULL,
+    EHeure TIME NOT NULL,
     Avis VARCHAR(300),
     ENote INT NOT NULL,
     Cid INT,
@@ -74,7 +74,7 @@ CREATE TABLE COMMANDESLIVREES(
     CLid INT,
     CLAdresse VARCHAR(50),
     Indications VARCHAR(300),
-    CLArrivee TIMESTAMP,
+    CLArrivee TIME,
     CLStatut VARCHAR(11) CHECK (CLStatut IN ('Attente', 'Validee', 'enLivraison', 'AnnuleeC', 'AnnuleeR', 'Terminee')) NOT NULL,
     PRIMARY KEY(CLid)
 );
@@ -82,7 +82,7 @@ CREATE TABLE COMMANDESLIVREES(
 CREATE TABLE COMMANDESSURPLACE(
     CPid INT,
     NbPers INT NOT NULL,
-    CPArrivee TIMESTAMP NOT NULL,
+    CPArrivee TIME NOT NULL,
     CPStatut VARCHAR(8) CHECK (CPStatut IN ('Attente', 'Validee', 'AnnuleeC', 'AnnuleeR', 'Terminee')) NOT NULL,
     PRIMARY KEY(CPid)
 );

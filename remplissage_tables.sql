@@ -484,15 +484,11 @@ INSERT INTO PLATS VALUES ('0', 'fourchette@resto.com', 'Escargots persillés', '
 
 -- Création des entrées de la table COMMANDES
 
--- TODO
-
--- Création des entrées de la table EVALUATIONS
-
--- TODO
+INSERT INTO COMMANDES VALUES ('0', '2022-11-28', '20:25:32', '6.99', '91', 'emporter');
 
 -- Création des entrées de la table COMMANDESEMPORTEES
 
--- TODO
+INSERT INTO COMMANDESEMPORTEES VALUES ('0', 'Terminee');
 
 -- Création des entrées de la table COMMANDESLIVREES
 
@@ -504,4 +500,10 @@ INSERT INTO PLATS VALUES ('0', 'fourchette@resto.com', 'Escargots persillés', '
 
 -- Création des entrées de la table PLATSCOMMANDE
 
--- TODO
+INSERT INTO PLATSCOMMANDE VALUES ('0', '5', 'spaghetti@resto.com');
+
+-- Création des entrées de la table EVALUATIONS
+
+INSERT INTO EVALUATION VALUES ('0', '2022-11-28', '20:25:32', '6.99', '91', 'emporter');
+
+-- Création des entrées de la table ALLERGENESPLAT
