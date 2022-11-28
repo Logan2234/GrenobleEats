@@ -317,7 +317,8 @@ public class Interface {
 				return;
 			}
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT U_Id FROM UTILISATEURS WHERE U_Id = " + String.valueOf(userId) + " AND Mdp = \'" + MdP + "\'");
+			// Requête fonctionnelle (retourne l'UId si un mdp existe)
+			ResultSet rs = stmt.executeQuery("SELECT U_Id FROM UTILISATEURS WHERE U_Id = " + String.valueOf(userId) + " AND UMdp = \'" + MdP + "\'");
 			int nombreReponses = 0;
 			while (rs.next()) {
 				nombreReponses++;
@@ -326,9 +327,10 @@ public class Interface {
 				System.out.println("Mot de passe incorrect. Veillez introduire le bon mot de passe. Tappez quit pour revenir au début.\n");
 				verifierMDP(userId);
 				return;
-			} else {
+			} else { // faire cas si on a plusieurs UId ?
 				stmt = jdbc.connection.createStatement();
-				rs = stmt.executeQuery("SELECT UMail, UNom, Prenom, UAdresse FROM UTILISATEURS WHERE U_Id = " + String.valueOf(userId));
+				// Requête fonctionnelle -> à remodifier si on modifie UAddresse -> UAdresse
+				rs = stmt.executeQuery("SELECT UMail, UNom, Prenom, UAddresse FROM UTILISATEURS WHERE U_Id = " + String.valueOf(userId));
 				rs.next();
 				this.user = new Utilisateur(userId, rs.getString("UMail"), rs.getString("UNom"), rs.getString("Prenom"), MdP, rs.getString("UAdresse"));
 				System.out.println("\n -- -- -- \n");
@@ -347,7 +349,8 @@ public class Interface {
 			System.out.println("Numéro, IdCommande, Date, Heure, Prix");
 
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT Cid, CDate, CHeure, CPrix FROM COMMANDES WHERE UId = \'" + user.getIdentifiant() + "\'"); // requête à completer maybe
+			// Requête fonctionnelle -> prévenir si besoin de la modifier, à retester avec des commandes dans la BD
+			ResultSet rs = stmt.executeQuery("SELECT Cid, CDate, CPrix FROM COMMANDES WHERE U_Id = \'" + user.getIdentifiant() + "\'");
 			int cId;
 			while (rs.next()){
 				cId = Integer.valueOf(rs.getString("Cid"));
@@ -357,7 +360,8 @@ public class Interface {
 			System.out.println();
 			String userInput = interacteur.nextLine();
 			stmt = jdbc.connection.createStatement();
-			rs = stmt.executeQuery("SELECT Cid, CDate, CHeure, CPrix FROM COMMANDES WHERE CId = \'" + userInput + "\' ");
+			// Requête fonctionnelle -> prévenir si besoin de la modifier, à retester avec des commandes dans la BD
+			rs = stmt.executeQuery("SELECT Cid, CDate, CPrix FROM COMMANDES WHERE Cid = \'" + userInput + "\' ");
 			int nbLoop = 0;
 			while (rs.next()){
 				nbLoop++;
@@ -392,7 +396,8 @@ public class Interface {
 				while (rs.next()){
 					nbLoop++;
 				}
-				String id = String.valueOf(nbLoop);				
+				String id = String.valueOf(nbLoop);
+				// TODO : mettre au format TIMESTAMP 
 				jdbc.insertValeur("EVALUATIONS", "(" + id + ", " + currDate + ", " + currHeure 
 								+ "' \'" + userInput + "\', " + note + ", " + idCommande + ")");
 			}
