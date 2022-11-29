@@ -1,6 +1,4 @@
--- Début de la transaction
-
-BEGIN TRANSACTION;
+BEGIN;
 
 -- Création des entrées de la table HORAIRES
 
@@ -149,7 +147,7 @@ INSERT INTO UTILISATEURS VALUES ('99', 'Nathan.Moreau@ggmail.com', 'MoreauN', 'M
 
 INSERT INTO CATEGORIES VALUES ('_');
 
-INSERT INTO CATEGORIES VALUES ('nationale');
+INSERT INTO CATEGORIES VALUES ('Par pays');
 INSERT INTO CATEGORIES VALUES ('francaise');
 INSERT INTO CATEGORIES VALUES ('alpine');
 INSERT INTO CATEGORIES VALUES ('provencale');
@@ -169,30 +167,30 @@ INSERT INTO CATEGORIES VALUES ('sicilienne');
 INSERT INTO CATEGORIES VALUES ('romaine');
 INSERT INTO CATEGORIES VALUES ('tuscane');
 
-INSERT INTO CATEGORIES VALUES ('categorie');
+INSERT INTO CATEGORIES VALUES ('Par catégorie');
 INSERT INTO CATEGORIES VALUES ('fastfood');
 INSERT INTO CATEGORIES VALUES ('gastronomie');
 INSERT INTO CATEGORIES VALUES ('experimentale');
 
 -- Création des entrées de la table CATEGORIEPARENT
 
-INSERT INTO CATEGORIEPARENT VALUES ('nationale', '_');
-INSERT INTO CATEGORIEPARENT VALUES ('categorie', '_');
+INSERT INTO CATEGORIEPARENT VALUES ('Par pays', '_');
+INSERT INTO CATEGORIEPARENT VALUES ('Par catégorie', '_');
 
-INSERT INTO CATEGORIEPARENT VALUES ('fastfood', 'categorie');
-INSERT INTO CATEGORIEPARENT VALUES ('gastronomie', 'categorie');
-INSERT INTO CATEGORIEPARENT VALUES ('experimentale', 'categorie');
+INSERT INTO CATEGORIEPARENT VALUES ('fastfood', 'Par catégorie');
+INSERT INTO CATEGORIEPARENT VALUES ('gastronomie', 'Par catégorie');
+INSERT INTO CATEGORIEPARENT VALUES ('experimentale', 'Par catégorie');
 
-INSERT INTO CATEGORIEPARENT VALUES ('francaise', 'nationale');
+INSERT INTO CATEGORIEPARENT VALUES ('francaise', 'Par pays');
 INSERT INTO CATEGORIEPARENT VALUES ('provencale', 'francaise');
 INSERT INTO CATEGORIEPARENT VALUES ('nordique', 'francaise');
 INSERT INTO CATEGORIEPARENT VALUES ('alpine', 'francaise');
 INSERT INTO CATEGORIEPARENT VALUES ('savoyarde', 'alpine');
 INSERT INTO CATEGORIEPARENT VALUES ('dauphinoise', 'alpine');
 
-INSERT INTO CATEGORIEPARENT VALUES ('japonaise', 'nationale');
+INSERT INTO CATEGORIEPARENT VALUES ('japonaise', 'Par pays');
 
-INSERT INTO CATEGORIEPARENT VALUES ('espagnole', 'nationale');
+INSERT INTO CATEGORIEPARENT VALUES ('espagnole', 'Par pays');
 INSERT INTO CATEGORIEPARENT VALUES ('basque', 'espagnole');
 INSERT INTO CATEGORIEPARENT VALUES ('valencienne', 'espagnole');
 INSERT INTO CATEGORIEPARENT VALUES ('tapas', 'espagnole');
@@ -200,7 +198,7 @@ INSERT INTO CATEGORIEPARENT VALUES ('madridenne', 'tapas');
 INSERT INTO CATEGORIEPARENT VALUES ('andalouse', 'tapas');
 INSERT INTO CATEGORIEPARENT VALUES ('pintxo', 'tapas');
 
-INSERT INTO CATEGORIEPARENT VALUES ('italienne', 'nationale');
+INSERT INTO CATEGORIEPARENT VALUES ('italienne', 'Par pays');
 INSERT INTO CATEGORIEPARENT VALUES ('sicilienne', 'italienne');
 INSERT INTO CATEGORIEPARENT VALUES ('romaine', 'italienne');
 INSERT INTO CATEGORIEPARENT VALUES ('tuscane', 'italienne');
@@ -296,13 +294,18 @@ INSERT INTO TYPESRESTAURANT VALUES ('fourchette@resto.com', 'livraison');
 -- Restaurants espagnols
 INSERT INTO CATEGORIESRESTAURANT VALUES ('croquettes@resto.com', 'espagnole');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('croquettes@resto.com', 'fastfood');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('instant@resto.com', 'espagnole');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('instant@resto.com', 'madridenne');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('instant@resto.com', 'fastfood');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('saveur@resto.com', 'espagnole');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('saveur@resto.com', 'pintxo');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('saveur@resto.com', 'gastronomie');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('tapas@resto.com', 'tapas');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('tapas@resto.com', 'espagnole');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('paella@resto.com', 'espagnole');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('paella@resto.com', 'valencienne');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('paella@resto.com', 'andalouse');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('tortilla@resto.com', 'espagnole');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('tortilla@resto.com', 'valencienne');
 -- Restaurants japonais
 INSERT INTO CATEGORIESRESTAURANT VALUES ('ramen@resto.com', 'japonaise');
@@ -317,15 +320,23 @@ INSERT INTO CATEGORIESRESTAURANT VALUES ('torre@resto.com', 'italienne');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('torre@resto.com', 'experimentale');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('spaghetti@resto.com', 'italienne');
 -- Restaurants français
+INSERT INTO CATEGORIESRESTAURANT VALUES ('chefcuisine@resto.com', 'francaise');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('chefcuisine@resto.com', 'gastronomie');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('chefcuisine@resto.com', 'provencale');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('cochonou@resto.com', 'francaise');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('cochonou@resto.com', 'alpine');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('cochonou@resto.com', 'savoyarde');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('gustatif@resto.com', 'francaise');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('gustatif@resto.com', 'experimentale');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('rizkiki@resto.com', 'francaise');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('rizkiki@resto.com', 'fastfood');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('grandbleu@resto.com', 'francaise');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('grandbleu@resto.com', 'alpine');
-INSERT INTO CATEGORIESRESTAURANT VALUES ('festin@resto.com', 'nationale');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('grandbleu@resto.com', 'dauphinoise');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('festin@resto.com', 'francaise');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('festin@resto.com', 'espagnole');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('festin@resto.com', 'japonaise');
+INSERT INTO CATEGORIESRESTAURANT VALUES ('festin@resto.com', 'italienne');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('fourchette@resto.com', 'francaise');
 INSERT INTO CATEGORIESRESTAURANT VALUES ('fourchette@resto.com', 'gastronomie');
 
@@ -483,4 +494,4 @@ INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Anhydre sulfureux e
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Lupin');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Mollusques');
 
-COMMIT TRANSACTION;
+COMMIT;
