@@ -140,6 +140,7 @@ CREATE TABLE PLATSCOMMANDE(
     Cid INT,
     Pid INT,
     PRestaurant VARCHAR(50),
+    NbPlat INT,
     PRIMARY KEY(Cid, Pid, PRestaurant),
     FOREIGN KEY(Cid) REFERENCES COMMANDES(Cid),
     FOREIGN KEY(Pid, PRestaurant) REFERENCES PLATS(Pid, PRestaurant)
