@@ -1,3 +1,7 @@
+-- Début de la transaction
+
+BEGIN TRANSACTION;
+
 -- Création des entrées de la table HORAIRES
 
 INSERT INTO HORAIRES VALUES ('LM');
@@ -478,3 +482,5 @@ INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Graines de sésame'
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Anhydre sulfureux et sulfites');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Lupin');
 INSERT INTO ALLERGENESPLAT VALUES ('0', 'festin@resto.com', 'Mollusques');
+
+COMMIT TRANSACTION;
