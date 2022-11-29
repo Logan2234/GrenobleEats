@@ -37,7 +37,7 @@ CREATE TABLE UTILISATEURS(
     UMdp VARCHAR(30),
     UNom VARCHAR(20),
     UPrenom VARCHAR(20),
-    UAddresse VARCHAR(50),
+    UAdresse VARCHAR(50),
     PRIMARY KEY(U_id)
 );
 
