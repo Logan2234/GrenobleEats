@@ -279,7 +279,7 @@ public class Interface {
 				plats.add(plat);
 			}
 			if (plats.size() == 0) {
-				System.out.println(" Oups... Il y a aucun plat disponible... Veillez sélectionner un autre restorant. \n");
+				System.out.println(" Oups... Il y a aucun plat disponible... Veillez sélectionner un autre restaurant. \n");
 				restoParCat(categorie);
 				return;
 			}
@@ -462,9 +462,9 @@ public class Interface {
 			} else { // faire cas si on a plusieurs UId ?
 				stmt = jdbc.connection.createStatement();
 				// Requête fonctionnelle -> à remodifier si on modifie UAddresse -> UAdresse
-				rs = stmt.executeQuery("SELECT UMail, UNom, Prenom, UAddresse FROM UTILISATEURS WHERE U_Id = " + String.valueOf(userId));
+				rs = stmt.executeQuery("SELECT UMail, UNom, UPrenom, UAddresse FROM UTILISATEURS WHERE U_Id = " + String.valueOf(userId));
 				rs.next();
-				this.user = new Utilisateur(userId, rs.getString("UMail"), rs.getString("UNom"), rs.getString("Prenom"), MdP, rs.getString("UAdresse"));
+				this.user = new Utilisateur(userId, rs.getString("UMail"), rs.getString("UNom"), rs.getString("UPrenom"), MdP, rs.getString("UAdresse"));
 				System.out.println("\n -- -- -- \n");
 				accueil();
 				return;
