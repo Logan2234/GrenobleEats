@@ -5,3 +5,6 @@ compile:
 
 exec:
 	java -classpath bin:lib/ojdbc6.jar Test
+
+clean:
+	rm -rf bin/*.class
