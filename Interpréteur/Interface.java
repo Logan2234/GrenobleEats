@@ -53,17 +53,15 @@ public class Interface {
 		System.out.println("Bienvenue " + user.getPrenom() + "! \n");
 		System.out.println("Que souhaites-tu faire ? \n -- -- -- \n");
 
-		System.out.println("1) Restaurants disponibles");
-		System.out.println("2) Réaliser une commande");
-		System.out.println("3) Éliminer mes données personnelles (Droit à l'oubli)");
+		System.out.println("1) Parcourir les restaurants");
+		System.out.println("2) Passer une commande");
+		System.out.println("3) Supprimer mes données personnelles (Droit à l'oubli)");
 		System.out.println("4) Changer d'utilisateur");
 		System.out.println("5) Quitter l'application \n");
 
 		System.out.print("Tapez le numéro de la réponse que vous souhaitez : ");
 
-		String reponse = interacteur.nextLine();
-
-		switch (reponse) {
+		switch (interacteur.nextLine()) {
 			case "1":
 				// TODO
 				break;
@@ -470,6 +468,8 @@ public class Interface {
 	}
 
 	public void connexion() {
+		clearConsole();
+		
 		System.out.println("\n -- -- -- \nBienvenu à GrenobleEAT ! \n");
 		System.out.println("As-tu un compte ? \n -- -- -- \n");
 		System.out.println("1) J'ai un compte utilisateur");
@@ -597,9 +597,7 @@ public class Interface {
 
 		System.out.print("Tapez le numéro de la réponse que vous souhaitez : ");
 
-		String reponse = interacteur.nextLine();
-
-		switch (reponse) {
+		switch (interacteur.nextLine()) {
 			case "1":
 				try {
 					Statement stmt = jdbc.connection.createStatement();
