@@ -24,6 +24,16 @@ public class Interface {
 		this.jdbc.connexion();
 	}
 
+	private void clearConsole() {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+		System.out.println();
+	}
+
+	public void quit() {
+		jdbc.fermeture();
+	}
+
 	public int numberOfAnswers(ResultSet rs) {
 		int out = 0;
 		try {
@@ -35,27 +45,39 @@ public class Interface {
 		return out;
 	}
 
-	public void quit() {
-		jdbc.fermeture();
-	}
+	public void accueil() {
+		clearConsole();
 
-	public void droitOubli() {
-		System.out.println("Est-tu sûr(e) de vouloir effacer tes données, " + user.getPrenom() + "?");
-		System.out.println("Les données ne pourront pas être récupérées. \n");
+		System.out.println("===== Accueil =====\n");
 
-		System.out.println("1) Oui, je souhaite tout effacer");
-		System.out.println("2) Quitter l'application \n");
+		System.out.println("Bienvenue " + user.getPrenom() + "! \n");
+		System.out.println("Que souhaites-tu faire ? \n -- -- -- \n");
 
-		System.out.println("Tapez le numéro de la réponse que vous souhaitez : \n");
+		System.out.println("1) Restaurants disponibles");
+		System.out.println("2) Réaliser une commande");
+		System.out.println("3) Éliminer mes données personnelles (Droit à l'oubli)");
+		System.out.println("4) Changer d'utilisateur");
+		System.out.println("5) Quitter l'application \n");
+
+		System.out.print("Tapez le numéro de la réponse que vous souhaitez : ");
 
 		String reponse = interacteur.nextLine();
 
 		switch (reponse) {
 			case "1":
-				this.effacementDonnees();
+				// TODO
 				break;
 			case "2":
-				this.quit();
+				// TODO
+				break;
+			case "3":
+				droitOubli();
+				break;
+			case "4":
+				identification();
+				break;
+			case "5":
+				quit();
 				break;
 			default:
 				System.out.println("Vous n'avez pas indiqué une réponse valide. \n -- -- -- \n");
@@ -130,7 +152,6 @@ public class Interface {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public void selectSousCat(String catMere) {
@@ -261,7 +282,6 @@ public class Interface {
 							"\n Aïe, votre réponse n'est pas valide ou il n'y a plus de restorants. Choisis une réponse valide. \n");
 				}
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -364,127 +384,6 @@ public class Interface {
 		// TODO
 	}
 
-	public void effacementDonnees() {
-		try {
-			Statement stmt = jdbc.connection.createStatement();
-			stmt.executeUpdate("UPDATE UTILISATEURS SET UMail = \'\', UNom = \'\', Prenom = \'\', "
-					+ "UAdresse = \'\', Mdp = \'\' WHERE U_Id = " + String.valueOf(user.getIdentifiant()));
-			System.out.println(
-					"Les données personnelles ont été effacées. Nous procédons à fermer la session. \n -- -- -- \n");
-			connexion();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void accueil() {
-
-		System.out.println("Bienvenu à nouveau, " + user.getPrenom() + "! \n");
-		System.out.println("Que souhaites-tu faire ? \n -- -- -- \n");
-
-		System.out.println("1) Restaurants disponibles");
-		System.out.println("2) Réaliser une commande");
-		System.out.println("3) Éliminer mes données personnelles (Droit à l'oubli)");
-		System.out.println("4) Changer d'utilisateur");
-		System.out.println("5) Quitter l'application \n");
-
-		System.out.println("Tapez le numéro de la réponse que vous souhaitez : \n");
-
-		String reponse = interacteur.nextLine();
-
-		switch (reponse) {
-			case "1":
-				this.accueil(); // TODO
-				break;
-			case "2":
-				this.creerCompte(); // TODO
-				break;
-			case "3":
-				this.droitOubli();
-				break;
-			case "4":
-				identification();
-				break;
-			case "5":
-				quit();
-				break;
-			default:
-				System.out.println("Vous n'avez pas indiqué une réponse valide. \n -- -- -- \n");
-				accueil();
-				break;
-		}
-	}
-
-	public void identification() {
-		try {
-			int nombreReponses = 0;
-			System.out.println("\n -- -- -- \n Quel est ton adresse mail ? \n");
-
-			String mail = interacteur.nextLine();
-			Statement stmt = jdbc.connection.createStatement();
-			// Requête fonctionnelle
-			ResultSet rs = stmt.executeQuery("SELECT U_Id FROM UTILISATEURS WHERE UMail = \'" + mail + "\'");
-			int userId = 0;
-			while (rs.next()) {
-				nombreReponses++;
-				if (nombreReponses > 1) {
-					System.out.println(
-							"\n Aïe... Il y a plus d'un utilisateur avec le même courriel... Pas normal... Indique une autre adresse. \n");
-					identification();
-					return;
-				}
-				userId = rs.getInt("U_Id");
-			}
-			if (nombreReponses == 0) {
-				System.out.println(
-						"\n Aïe... Nous n'avons aucun utilisateur avec cet adresse mail... Nous revenons vers l'accueil. \n");
-				connexion();
-				return;
-			}
-			verifierMDP(userId);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void verifierMDP(int userId) {
-		try {
-			System.out.println("\n Quel est ton mot de passe ? \n");
-			String MdP = interacteur.nextLine();
-			if (MdP.equals("quit")) {
-				connexion();
-				return;
-			}
-			Statement stmt = jdbc.connection.createStatement();
-			// Requête fonctionnelle (retourne l'UId si un mdp existe)
-			ResultSet rs = stmt.executeQuery("SELECT U_Id FROM UTILISATEURS WHERE U_Id = " + String.valueOf(userId)
-					+ " AND UMdp = \'" + MdP + "\'");
-			int nombreReponses = 0;
-			while (rs.next()) {
-				nombreReponses++;
-			}
-			if (nombreReponses == 0) {
-				System.out.println(
-						"Mot de passe incorrect. Veillez introduire le bon mot de passe. Tappez quit pour revenir au début.\n");
-				verifierMDP(userId);
-				return;
-			} else { // faire cas si on a plusieurs UId ?
-				stmt = jdbc.connection.createStatement();
-				// Requête fonctionnelle -> à remodifier si on modifie UAddresse -> UAdresse
-				rs = stmt.executeQuery("SELECT UMail, UNom, UPrenom, UAddresse FROM UTILISATEURS WHERE U_Id = "
-						+ String.valueOf(userId));
-				rs.next();
-				this.user = new Utilisateur(userId, rs.getString("UMail"), rs.getString("UNom"),
-						rs.getString("UPrenom"), MdP, rs.getString("UAdresse"));
-				System.out.println("\n -- -- -- \n");
-				accueil();
-				return;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void laisserEvaluation() { // TODO à debugger avec la base de donnée en partie complète
 		try {
 			System.out.println("\n Entrez le numéro de la commande à sélectionner \n");
@@ -559,24 +458,15 @@ public class Interface {
 			System.out.println("\n Prenons ta commande\n");
 
 			while (true) {
-
 				System.out.println("Entre l'identifiant d'un plat : ");
 				Statement stmt = jdbc.connection.createStatement();
 				ResultSet rs = stmt.executeQuery(""); // TODO idPlat et nomPlat (avec idRestaurant)
-				while (rs.next()) {
+				while (rs.next())
 					System.out.println(rs.getString("Pid") + " " + rs.getString("PNom"));
-				}
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-	}
-
-	public void creerCompte() { // TODO
-		System.out.println("Tu vas te regaler ! \n");
-		System.out.println("C'est quoi ton nom ! \n");
 	}
 
 	public void connexion() {
@@ -585,21 +475,149 @@ public class Interface {
 		System.out.println("1) J'ai un compte utilisateur");
 		System.out.println("2) Créer un compte");
 		System.out.println("3) Quitter l'application \n");
-		System.out.println("Tapez le numéro de la réponse que vous souhaitez : \n");
+		System.out.print("Tapez le numéro de la réponse que vous souhaitez : ");
 
 		switch (interacteur.nextLine()) {
 			case "1":
-				this.identification();
+				identification();
 				break;
 			case "2":
-				this.creerCompte();
+				creerCompte();
 				break;
 			case "3":
-				this.quit();
+				quit();
 				break;
 			default:
 				System.out.println("Vous n'avez pas indiqué une réponse valide. \n -- -- -- \n");
 				connexion();
+				break;
+		}
+	}
+
+	public void identification() {
+		clearConsole();
+
+		System.out.println("===== Identification ======\n");
+
+		System.out.print("Email: ");
+		String mail = interacteur.nextLine();
+
+		if (mail.equals("quit")) {
+			connexion();
+			return;
+		}
+
+		System.out.print("\nMot de passe: ");
+		String mdp = interacteur.nextLine();
+
+		if (mdp.equals("quit")) {
+			connexion();
+			return;
+		}
+
+		try {
+			Statement stmt = jdbc.connection.createStatement();
+			// Requête fonctionnelle (retourne l'UId si un mdp existe)
+			ResultSet rs = stmt.executeQuery("SELECT U_id, UNom, UPrenom, UAdresse FROM UTILISATEURS WHERE UMail = \'"
+					+ mail + "\' AND UMdp = \'" + mdp + "\'");
+
+			int nombreReponses = 0;
+			while (rs.next())
+				nombreReponses++;
+
+			if (nombreReponses == 0) {
+				System.out.println(
+						"\nIdentifiant ou mot de passe incorrect. Veillez vérifier vos entrées. Tappez quit pour revenir au début.\n");
+				identification();
+				return;
+			} else {
+				this.user = new Utilisateur(rs.getInt("U_id"), mail, rs.getString("UNom"), rs.getString("UPrenom"), mdp,
+						rs.getString("UAdresse"));
+
+				System.out.println("\n -- -- -- \n");
+				accueil();
+				return;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void creerCompte() {
+		clearConsole();
+
+		System.out.println("===== Création du compte ======\n");
+
+		System.out.print("Nom: ");
+		String nom = interacteur.nextLine();
+
+		System.out.print("\nPrénom: ");
+		String prenom = interacteur.nextLine();
+
+		System.out.print("\nEmail: ");
+		String email = interacteur.nextLine();
+
+		System.out.print("\nAdresse: ");
+		String adresse = interacteur.nextLine();
+
+		System.out.print("\nMot de passe: ");
+		String mdp = interacteur.nextLine();
+		System.out.println();
+
+		try {
+			Statement stmt = jdbc.connection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT MAX(U_ID) FROM UTILISATEURS");
+			rs.next();
+			int new_uid = rs.getInt("MAX(U_ID)") + 1;
+
+			jdbc.insertValeur("UTILISATEURS", "(\'" + new_uid + "\', \'" + email + "\', \'" + mdp + "\', \'" + nom
+					+ "\', \'" + prenom + "\', \'" + adresse + "\')");
+
+			user = new Utilisateur(new_uid, email, nom, prenom, mdp, adresse);
+
+			System.out.println("===== Compte créé! Bon appétit! =====\n");
+
+			accueil();
+			return;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void droitOubli() {
+		clearConsole();
+
+		System.out.println("===== Droit à l'oubli ======\n");
+
+		System.out.print("Es-tu sûr(e) de vouloir effacer tes données, " + user.getPrenom() + "?");
+		System.out.println(" /!\\ LES DONNÉES NE POURRONT PAS ÊTRE RÉCUPÉRÉES /!\\ \n");
+
+		System.out.println("1) Oui, je souhaite tout effacer");
+		System.out.println("2) Retour\n");
+
+		System.out.print("Tapez le numéro de la réponse que vous souhaitez : ");
+
+		String reponse = interacteur.nextLine();
+
+		switch (reponse) {
+			case "1":
+				try {
+					Statement stmt = jdbc.connection.createStatement();
+					stmt.executeUpdate(
+							"UPDATE UTILISATEURS SET UMail = NULL, UMdp = NULL, UNom = NULL, UPrenom = NULL, UAddresse = NULL WHERE U_Id = "
+									+ String.valueOf(user.getIdentifiant()));
+					System.out.println("Les données personnelles ont été effacées. Fermeture de la session...\n");
+					connexion();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				break;
+			case "2":
+				accueil();
+				break;
+			default:
+				System.out.println("Vous n'avez pas indiqué une réponse valide. \n -- -- -- \n");
+				droitOubli();
 				break;
 		}
 	}

@@ -16,7 +16,7 @@ SET UMail = NULL,
     UNom = NULL, 
     UPrenom = NULL, 
     UAddresse = NULL
-WHERE U_id = (SELECT U_id FROM UTILISATEURS WHERE UMail = 'Nicolas.Carpentier@ggmail.com' AND UMdp = 'CarpentierN'); -- Cet U_id sera déjà enregistré dans une variable, ici on le retrouve
+WHERE U_id = (SELECT U_id FROM UTILISATEURS WHERE U_id = '82'); -- Cet U_id sera déjà enregistré dans une variable
 
 SELECT * FROM UTILISATEURS WHERE U_id = '82'; -- U_id de Nicolas Carpentier, on voit que tout est supprimé.
 
