@@ -1,7 +1,7 @@
-/.metadata/
-.settings
-.classpath
-.project
+# /.metadata/
+# .settings
+# .classpath
+# .project
 # Compiled class file
 *.class
 
@@ -22,17 +22,17 @@
 *.zip
 *.tar.gz
 *.rar
-
+!*/lib/ojdbc6.jar
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
 
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/*.code-snippets
+.vscode
+# !.vscode/settings.json
+# !.vscode/tasks.json
+# !.vscode/launch.json
+# !.vscode/extensions.json
+# !.vscode/*.code-snippets
 
 # Local History for Visual Studio Code
 .history/
@@ -48,7 +48,7 @@ tmp/
 *.swp
 *~.nib
 local.properties
-.settings/
+# .settings/
 .loadpath
 .recommenders
 
@@ -142,3 +142,4 @@ Temporary Items
 
 # .nfs files are created when an open file is removed but is still being accessed
 .nfs*
+
