@@ -17,7 +17,11 @@
 \begin{landscape}
 
 \maketitle
+\tableofcontents
+\newpage
 
+\section{Analyse du problème}
+\subsection{Hypothèses}
 Pour la conception, nous avons fait les choix suivants :
 \begin{enumerate}
     \item Le statut des commandes n'est pas dans l'entité mère COMMANDES 
@@ -28,8 +32,9 @@ commande a effectivement été effectuée et que l'on peut donner un
 évaluation
 \end{enumerate}
 
-Nous sommes arrivés avec ces contraintes :
+Nous sommes arrivés avec les contraintes suivantes :
 
+\subsection{Contraintes}
 \renewcommand{\arraystretch}{1.5}
 \begin{center}
 \[
@@ -97,11 +102,20 @@ DS \} & & \\
 \end{tabular}
 \]
 \end{center}
+
+
 \newpage
+\subsection{Diagramme Entités/Associations}
 On obtient ensuite le diagramme Entité-Relation suivant :
 \begin{center}
 \includegraphics[scale=0.7]{Diagramme_entite_relation.png}\\
 \end{center}
+
+\section{Modèle Relationnel}
+\section{Analyse des fonctionnalités}
+\section{Bilan du projet}
+\section{Mode d'emploi}
+
 
 \end{landscape}
 \end{document}
