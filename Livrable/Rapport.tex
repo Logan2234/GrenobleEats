@@ -1,0 +1,109 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{pdflscape}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{oz}
+\usepackage{array,multirow,makecell}
+\setcellgapes{1pt}
+\usepackage[top=4cm,bottom=4cm,left=3cm,right=3cm]{geometry} %marges
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash }b{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash }b{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash }b{#1}}
+
+\title{Analyse Projet BDD}
+\date{}
+\begin{document}
+\begin{landscape}
+
+\maketitle
+
+Pour la conception, nous avons fait les choix suivants :
+\begin{enumerate}
+    \item Le statut des commandes n'est pas dans l'entité mère COMMANDES 
+mais dans ses sous-entités afin d'éviter d'avoir des statuts non cohérents 
+pour un type de commande donné.
+    \item Nous avons rajouté le statut "terminée" qui indique qu'une 
+commande a effectivement été effectuée et que l'on peut donner un 
+évaluation
+\end{enumerate}
+
+Nous sommes arrivés avec ces contraintes :
+
+\renewcommand{\arraystretch}{1.5}
+\begin{center}
+\[
+\begin{tabular}{|C{5cm}|C{5cm}|C{5cm}|C{5cm} |}
+
+\hline
+DF& C. Valeurs 
+& C. Contextuelles & C. Multiplicité\\
+\hline
+
+RMail $\rightarrow$ RNom, RNumero, RAdresse, RAdresse, Places, 
+Presentation, RNote & RType $\in$ \{livraison, emporter, place\} & $\sum 
+\mbox{nbPers}  \le \mbox{Places} $ pour un restaurant et ses commandes 
+associées & RMail $\twoheadrightarrow$ JourPlage\\
+
+ & Places $> 0$ & $\mbox{Ext(CEId)} \cap \mbox{Ext(CPId)} \cap 
+\mbox{Ext(CLId)} = \emptyset $ &  RMail  $\twoheadrightarrow$ 
+TypeCommande\\ 
+ 
+ & RNote $\in  [0,5] $ &  $\mbox{Ext(CEId)} \cup \mbox{Ext(CPId)} \cup 
+\mbox{Ext(CLId)} = \mbox{Ext(CId)}$ & RMail $\twoheadrightarrow$ PId\\
+\cline{1-2}
+
+(PId, Restaurant) $\rightarrow$ PNom, Description, PPrix & PPrix $>0$ & 
+CPArrivee $\in$ JourPlage pour un restaurant et ses commandes associées & 
+RMail $\psur$ CatNom\\
+\cline{1-2}
+
+U\_Id $\rightarrow$ UMail, Mdp, UNom, UPrenom, UAdresse && \{CDate, 
+CHeure\} donne JourPlage pour toute commande& (PId, RMail) $\psur$ ANom \\
+\cline{1-2}
+
+CId $\rightarrow$ CDate, CHeure, CPrix & CPrix $>0$ & CDate $\le$ EDate& 
+CId $\twoheadrightarrow$ (PId, RMail)\\
+\cline{1-2}
+
+CLId $\rightarrow$ CLAdresse, Indications, CLArrivee, CLStatut & 
+CLStatut $\in$ \{ attente, validée, en livraison, annuleeC, annuleeR, 
+terminee \}&
+EId $\Rightarrow$ CId.statut = \{terminee\}
+& CId $\rightarrow$ TypeCommande \\
+\cline{1-2}
+
+CEId $\rightarrow$ CEStatut &
+CEStatut $\in$ \{ attente, validée, annuleeC, annuleeR, terminee \}& 
+CLArrivee $\ge$ CHeure & CId $\rightarrow$ U\_Id\\
+\cline{1-2}
+
+CPId $\rightarrow$ NbPers, CPArrivee, CPStatut &
+CPStatut $\in$ \{ attente, validée, disponible, annuleeC, annuleeR, 
+terminee \}&CDate == EDate $\Rightarrow$ CHeure $<$ EHeure & CId $\pfun$ 
+EId\\
+
+& NbPers $>0$ & & CatNom $\pfun$ CatNom\\
+\cline{1-2}
+
+EId $ \rightarrow$ EDate, EHeure, Avis, ENote & ENote $ \in [0..5] $&
+CType $\in$ TypeCommande pour un CId donné et le RMail associé &\\ 
+\cline{1-2}
+
+& JourHeure $\in $ \{LM, LS, MM, MS, MeM, MeS, JM,JS, VM, VS, SM, SS, DM, 
+DS \} & & \\
+\hline
+
+\end{tabular}
+\]
+\end{center}
+\newpage
+On obtient ensuite le diagramme Entité-Relation suivant :
+\begin{center}
+\includegraphics[scale=0.7]{Diagramme_entite_relation.png}\\
+\end{center}
+
+\end{landscape}
+\end{document}
+
+
