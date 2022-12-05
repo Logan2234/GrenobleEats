@@ -1,11 +1,11 @@
 public class Utilisateur {
 
-    private int identifiant;
-    private String eMail;
-    private String nom;
-    private String prenom;
-    private String mdp;
-    private String adresse;
+    public int identifiant;
+    public String eMail;
+    public String nom;
+    public String prenom;
+    public String mdp;
+    public String adresse;
 
     public Utilisateur(int identifiant, String eMail, String nom, String prenom, String mdp, String adresse) {
         this.identifiant = identifiant;

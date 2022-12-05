@@ -1,20 +1,16 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class Interface {
 	Scanner interacteur;
 	DriverJDBC jdbc;
 	Utilisateur user;
+	Commande commande;
 	static final DateFormat heure = new SimpleDateFormat("hh:mm:ss a");
 	static final DateFormat date = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -22,6 +18,7 @@ public class Interface {
 		this.interacteur = new Scanner(System.in);
 		this.jdbc = new DriverJDBC();
 		this.jdbc.connexion();
+		this.commande = new Commande();
 	}
 
 	private void clearConsole() {
@@ -48,7 +45,7 @@ public class Interface {
 	public void accueil() {
 		clearConsole();
 
-		System.out.println("===== Accueil =====\n");
+		commande.uid = user.getIdentifiant();
 
 		System.out.println("Bienvenue " + user.getPrenom() + "! \n");
 		System.out.println("Que souhaites-tu faire ? \n -- -- -- \n");
@@ -66,7 +63,7 @@ public class Interface {
 				// TODO
 				break;
 			case "2":
-				// TODO
+				this.categoriesRecommandes();
 				break;
 			case "3":
 				droitOubli();
@@ -85,6 +82,8 @@ public class Interface {
 	}
 
 	public void categoriesRecommandes() {
+		clearConsole();
+
 		try {
 			Statement stmt = jdbc.connection.createStatement();
 			ResultSet rs = stmt.executeQuery("BLABLABLABLA"); // TODO COMMANDE QUI DONNE 3 DERNIÈRES CAT COMMANDÉES
@@ -121,6 +120,8 @@ public class Interface {
 	}
 
 	public void categoriesMeres() {
+		clearConsole();
+		
 		try {
 			Set<String> catMeres = new HashSet<String>();
 
@@ -153,6 +154,8 @@ public class Interface {
 	}
 
 	public void selectSousCat(String catMere) {
+		clearConsole();
+
 		try {
 			Set<String> sousCats = new HashSet<String>();
 
@@ -191,6 +194,362 @@ public class Interface {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public void validationCommande() {
+		clearConsole();
+
+		while (true) {
+			System.out.println(" \nTu veux manger sur place ou on te livre ?\n");
+			System.out.println("1) Livraison");
+			System.out.println("2) Sur place");
+			System.out.println("3) Annuler commande\n");
+			String reponse = interacteur.nextLine();
+			switch (reponse) {
+			case "1":
+				commande.type = "L"; // En livraison
+				commandeLivraison();
+				return;
+			case "2":
+				commande.type = "P"; // Sur place
+				commandeSurPlace();
+				return;
+			case "3":
+				accueil();
+			default:
+				System.out.println("\nAïe... La valeur introduite est incorrecte... \n");
+				break;
+			}
+		}
+	}
+	
+	public void commandeLivraison() {
+		clearConsole();
+
+		String reponse;
+		while (true) {
+			System.out.println(" \nIndiques l'adresse de livraison : \n");
+			reponse = interacteur.nextLine();
+			if (reponse != "") {
+				commande.adresse = reponse;
+				break;
+			}
+		}
+		
+		System.out.println(" \nTu veux laisser un message pour le livreur ? : \n");
+		reponse = interacteur.nextLine();
+		if (reponse != "") commande.texte = reponse;
+		
+		while (true) {
+			System.out.println(" \nÀ quelle heure tu veux commander ? (heure entre 0 et 23) : \n");
+			reponse = interacteur.nextLine();
+			try {
+				int heure = Integer.valueOf(reponse);
+				if (0 <= heure && heure <= 23) {
+					commande.heure = heure;
+					break;
+				}
+				else System.out.println("\nOups... T'as pas indiqué un chiffre entre 0 et 23\n");
+			} catch (Exception e) {
+				System.out.println("\nOups... T'as pas indiqué un chiffre entre 0 et 23\n");
+			}
+		}
+		
+		while (true) {
+			System.out.println(" \nÀ quelle minute tu veux commander ? (minute entre 0 et 59) : \n");
+			reponse = interacteur.nextLine();
+			try {
+				int minute = Integer.valueOf(reponse);
+				if (0 <= minute && minute <= 59) {
+					commande.minute = minute;
+					break;
+				}
+				else System.out.println("\nOups... T'as pas indiqué un chiffre entre 0 et 59\n");
+			} catch (Exception e) {
+				System.out.println("\nOups... T'as pas indiqué un chiffre entre 0 et 59\n");
+			}
+		}
+		
+		envoyerCommande();
+		
+	}
+	
+	public void commandeSurPlace() {
+		clearConsole();
+
+		String reponse;
+		int capaciteMax = 0; // TODO requete SQL pour avoir la capacite max
+		while (true) {
+			System.out.println(" \nIndiques le nombre de personnes dans la réservation : \n");
+			reponse = interacteur.nextLine();
+			try {
+				int nbPlaces = Integer.valueOf(reponse);
+				if (0 < nbPlaces && nbPlaces <= capaciteMax) {
+					commande.nbPlaces = nbPlaces;
+					break;
+				}
+				else System.out.println("\nOups... T'as pas indiqué un chiffre entre 1 et la capacité maximale du restaurant...\n");
+			} catch (Exception e) {
+				System.out.println("\nOups... T'as pas indiqué un chiffre entre 1 et la capacité maximale du restaurant...\n");
+			}
+		}
+		
+		
+		while (true) {
+			System.out.println(" \nÀ quelle heure tu veux réserver ? (heure entre 0 et 23) : \n");
+			reponse = interacteur.nextLine();
+			try {
+				int heure = Integer.valueOf(reponse);
+				if (0 <= heure && heure <= 23) {
+					commande.heure = heure;
+					break;
+				}
+				else System.out.println("\nOups... T'as pas indiqué un chiffre entre 0 et 23\n");
+			} catch (Exception e) {
+				System.out.println("\nOups... T'as pas indiqué un chiffre entre 0 et 23\n");
+			}
+		}
+		
+		while (true) {
+			System.out.println(" \nÀ quelle minute tu veux réserver ? (minute entre 0 et 59) : \n");
+			reponse = interacteur.nextLine();
+			try {
+				int minute = Integer.valueOf(reponse);
+				if (0 <= minute && minute <= 59) {
+					commande.minute = minute;
+					break;
+				}
+				else System.out.println("\nOups... T'as pas indiqué un chiffre entre 0 et 59\n");
+			} catch (Exception e) {
+				System.out.println("\nOups... T'as pas indiqué un chiffre entre 0 et 59\n");
+			}
+		}
+		
+		envoyerCommande();
+	}
+	
+	public void envoyerCommande() {
+		// TODO mettre dans la BDD
+	}
+	
+	public void listeRestos() {
+		try {
+			System.out.println("\n -- -- -- \n");
+			System.out.println(" Tu vas te régaler ! \n");
+			
+			ArrayList<String> restos = new ArrayList<String>();
+			
+			Statement stmt = jdbc.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(""); // TODO requete pour sortir dans l'ordre décroissant des éval et ordre alpha 
+			
+			while (rs.next()) {
+				restos.add(rs.getString("RNom"));
+			}
+			
+			System.out.println("Voici la liste des restaurants dans l'ordre décroissant de notes : \n"); 
+			
+			for (int i = 0; i < restos.size(); i += 10) {
+				for (int j = i; j < i + 10 && j < restos.size(); j++) {
+					System.out.println(String.valueOf((i%10) + 1) + ") " + restos.get(j)); 
+				}
+				if (i + 10 <= restos.size()) {
+					System.out.println("11) Voir plus de restaurants");
+				}
+				System.out.println("\n0) Retour à l'accueil \n");
+				while (true) {
+					System.out.println("\n Écris le numéro de ta réponse souhaitée : \n");
+					String reponse = interacteur.nextLine();
+					if (reponse == "11" && i + 10 <= restos.size()) break;
+					if (reponse == "1" && i <= restos.size()) {
+						commanderResto(restos.get(i));
+						return;
+					}
+					if (reponse == "2" && i + 1 <= restos.size()) {
+						commanderResto(restos.get(i + 1));
+						return;
+					}
+					if (reponse == "3" && i + 2 <= restos.size()) {
+						commanderResto(restos.get(i + 2));
+						return;
+					}
+					if (reponse == "4" && i + 3 <= restos.size()) {
+						commanderResto(restos.get(i + 3));
+						return;
+					}
+					if (reponse == "5" && i + 4 <= restos.size()) {
+						commanderResto(restos.get(i + 4));
+						return;
+					}
+					if (reponse == "6" && i + 5 <= restos.size()) {
+						commanderResto(restos.get(i + 5));
+						return;
+					}
+					if (reponse == "7" && i + 6 <= restos.size()) {
+						commanderResto(restos.get(i + 6));
+						return;
+					}
+					if (reponse == "8" && i + 7 <= restos.size()) {
+						commanderResto(restos.get(i + 7));
+						return;
+					}
+					if (reponse == "9" && i + 8 <= restos.size()) {
+						commanderResto(restos.get(i + 8));
+						return;
+					}
+					if (reponse == "10" && i + 9 <= restos.size()) {
+						commanderResto(restos.get(i + 9));
+						return;
+					}
+					if (reponse == "0") {
+						accueil();
+						return;
+					}
+					
+					System.out.println("\n Aïe, votre réponse n'est pas valide ou il n'y a plus de restorants. Choisis une réponse valide. \n");
+				}
+			}
+			
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+public void commanderResto(String resto) {
+		try {
+			Statement stmt = jdbc.connection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT PNom, PDescription, PPrix FROM PLATS WHERE PRestaurant = \'" + resto + "\'"); 
+			
+			commande.rNom = resto;
+			
+			ArrayList<Map<String,String>> plats = new ArrayList<Map<String,String>>();
+			
+			while (rs.next()) {
+				
+				Map<String,String> plat = new HashMap<String,String>();
+				plat.put("Nom", rs.getString("PNom"));
+				plat.put("Des", rs.getString("PDescription"));
+				plat.put("Prix", String.valueOf(rs.getFloat("PPrix"))); 
+				plats.add(plat);
+			}
+			if (plats.size() == 0) {
+				System.out.println(" Oups... Il y a aucun plat disponible... Veillez sélectionner un autre restorant. \n");
+				commande.commencerCommande();
+				listeRestos();
+				return;
+			}
+			System.out.println("\n -- -- -- \n");   
+			System.out.println(" Voici les plats disponibles au " + resto + " : \n"); 
+			
+			for (int i = 0; i < plats.size(); i += 10) {
+				for (int j = i; j < i + 10 && j < plats.size(); j++) { 
+					System.out.println(String.valueOf((i%10) + 1) + ") " + plats.get(j).get("Nom") + " (" + plats.get(j).get("Prix") + " €) - " + plats.get(j).get("Des")); 
+				}
+				if (i + 10 <= plats.size()) {
+					System.out.println("11) Voir plus de plats");
+				}
+				System.out.println("\n0) Retour aux restaurants et annuler commande en cours \n");
+				while (true) {
+					System.out.println("\n Écris le numéro de ta réponse souhaitée : \n");
+					String reponse = interacteur.nextLine();
+					if (reponse == "11" && i + 10 <= plats.size()) break;
+					if (reponse == "1" && i <= plats.size()) {
+						ajouterACommande(plats.get(i), resto);
+						return;
+					}
+					if (reponse == "2" && i + 1 <= plats.size()) {
+						ajouterACommande(plats.get(i + 1), resto);
+						return;
+					}
+					if (reponse == "3" && i + 2 <= plats.size()) {
+						ajouterACommande(plats.get(i + 2), resto);
+						return;
+					}
+					if (reponse == "4" && i + 3 <= plats.size()) {
+						ajouterACommande(plats.get(i + 3), resto);
+						return;
+					}
+					if (reponse == "5" && i + 4 <= plats.size()) {
+						ajouterACommande(plats.get(i + 4), resto);
+						return;
+					}
+					if (reponse == "6" && i + 5 <= plats.size()) {
+						ajouterACommande(plats.get(i + 5), resto);
+						return;
+					}
+					if (reponse == "7" && i + 6 <= plats.size()) {
+						ajouterACommande(plats.get(i + 6), resto);
+						return;
+					}
+					if (reponse == "8" && i + 7 <= plats.size()) {
+						ajouterACommande(plats.get(i + 7), resto);
+						return;
+					}
+					if (reponse == "9" && i + 8 <= plats.size()) {
+						ajouterACommande(plats.get(i + 8), resto);
+						return;
+					}
+					if (reponse == "10" && i + 9 <= plats.size()) {
+						ajouterACommande(plats.get(i + 9), resto);
+						return;
+					}
+					if (reponse == "0") {
+						commande.commencerCommande();
+						listeRestos();
+						return;
+					}
+					
+					System.out.println("\n Aïe, votre réponse n'est pas valide ou il n'y a plus de restorants. Choisis une réponse valide. \n");
+				}
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void ajouterACommande(Map<String,String> plat, String resto) {
+		int quantite = 1;
+		String reponse;
+		while (true) {
+			System.out.println(" \nT'aimerais commander combien de plats comme celui-là ? Si tu n'indiques pas de quantité, on ajoutera que 1 à la commande.\n");
+			reponse = interacteur.nextLine();
+			try {
+				if (reponse == "") break;
+				quantite = Integer.valueOf(reponse);
+				if (quantite > 10) System.out.println("\n Ha ouais... " + reponse + "? Ça fait beaucoup, mais on sait que t'es un petit gourmand ;P \n");
+				if (quantite > 0) break;
+			} catch (Exception e){
+				System.out.println(" \nIntroduis une vraie valeur numérique entière positive strictement, stp. \n");
+			}
+			System.out.println(" \nIntroduis une valeur numérique entière positive strictement, stp. \n");
+		}
+		if (commande.plats.containsKey(plat.get("Nom"))) {
+			int nbPlats = commande.plats.get(plat.get("Nom")) + quantite;
+			commande.plats.put(plat.get("Nom"), nbPlats);
+		} else commande.plats.put(plat.get("Nom"), quantite);
+		
+		commande.prix += Float.valueOf(plat.get("Prix")) * quantite;
+		
+		while (true) {
+			System.out.println("\n Tu veux continuer ta commande ou ça sera assez ? \n");
+			System.out.println("1) Je souhaite continuer ma commande");
+			System.out.println("2) Ça sera bon, je veux passer à la suite");
+			System.out.println("\nIndiques le chiffre correspondant à ton choix désiré : \n");
+			reponse = interacteur.nextLine();
+			switch (reponse) {
+			case "1":
+				commanderResto(resto);
+				return;
+			case "2":
+				validationCommande();
+				return;
+			default:
+				System.out.println("\nAïe... La valeur introduite est incorrecte... \n");
+				break;
+			}
 		}
 	}
 
@@ -325,43 +684,43 @@ public class Interface {
 					if (reponse == "11" && i + 10 <= plats.size())
 						break;
 					if (reponse == "1" && i <= plats.size()) {
-						ajouterACommande(plats.get(i));
+						ajouterACommande(plats.get(i), resto, categorie);
 						return;
 					}
 					if (reponse == "2" && i + 1 <= plats.size()) {
-						ajouterACommande(plats.get(i + 1));
+						ajouterACommande(plats.get(i + 1), resto, categorie);
 						return;
 					}
 					if (reponse == "3" && i + 2 <= plats.size()) {
-						ajouterACommande(plats.get(i + 2));
+						ajouterACommande(plats.get(i + 2), resto, categorie);
 						return;
 					}
 					if (reponse == "4" && i + 3 <= plats.size()) {
-						ajouterACommande(plats.get(i + 3));
+						ajouterACommande(plats.get(i + 3), resto, categorie);
 						return;
 					}
 					if (reponse == "5" && i + 4 <= plats.size()) {
-						ajouterACommande(plats.get(i + 4));
+						ajouterACommande(plats.get(i + 4), resto, categorie);
 						return;
 					}
 					if (reponse == "6" && i + 5 <= plats.size()) {
-						ajouterACommande(plats.get(i + 5));
+						ajouterACommande(plats.get(i + 5), resto, categorie);
 						return;
 					}
 					if (reponse == "7" && i + 6 <= plats.size()) {
-						ajouterACommande(plats.get(i + 6));
+						ajouterACommande(plats.get(i + 6), resto, categorie);
 						return;
 					}
 					if (reponse == "8" && i + 7 <= plats.size()) {
-						ajouterACommande(plats.get(i + 7));
+						ajouterACommande(plats.get(i + 7), resto, categorie);
 						return;
 					}
 					if (reponse == "9" && i + 8 <= plats.size()) {
-						ajouterACommande(plats.get(i + 8));
+						ajouterACommande(plats.get(i + 8), resto, categorie);
 						return;
 					}
 					if (reponse == "10" && i + 9 <= plats.size()) {
-						ajouterACommande(plats.get(i + 9));
+						ajouterACommande(plats.get(i + 9), resto, categorie);
 						return;
 					}
 					if (reponse == "0") {
@@ -378,8 +737,47 @@ public class Interface {
 		}
 	}
 
-	public void ajouterACommande(Map<String, String> plat) {
-		// TODO
+	public void ajouterACommande(Map<String,String> plat, String resto, String categorie) {
+		int quantite = 1;
+		String reponse;
+		while (true) {
+			System.out.println(" \nT'aimerais commander combien de plats comme celui-là ? Si tu n'indiques pas de quantité, on ajoutera que 1 à la commande.\n");
+			reponse = interacteur.nextLine();
+			try {
+				if (reponse == "") break;
+				quantite = Integer.valueOf(reponse);
+				if (quantite > 10) System.out.println("\n Ha ouais... " + reponse + "? Ça fait beaucoup, mais on sait que t'es un petit gourmand ;P \n");
+				if (quantite > 0) break;
+			} catch (Exception e){
+				System.out.println(" \nIntroduis une vraie valeur numérique entière positive strictement, stp. \n");
+			}
+			System.out.println(" \nIntroduis une valeur numérique entière positive strictement, stp. \n");
+		}
+		if (commande.plats.containsKey(plat.get("Nom"))) {
+			int nbPlats = commande.plats.get(plat.get("Nom")) + quantite;
+			commande.plats.put(plat.get("Nom"), nbPlats);
+		} else commande.plats.put(plat.get("Nom"), quantite);
+		
+		commande.prix += Float.valueOf(plat.get("Prix")) * quantite;
+		
+		while (true) {
+			System.out.println("\n Tu veux continuer ta commande ou ça sera assez ? \n");
+			System.out.println("1) Je souhaite continuer ma commande");
+			System.out.println("2) Ça sera bon, je veux passer à la suite");
+			System.out.println("\nIndiques le chiffre correspondant à ton choix désiré : \n");
+			reponse = interacteur.nextLine();
+			switch (reponse) {
+			case "1":
+				commanderResto(resto, categorie);
+				return;
+			case "2":
+				validationCommande();
+				return;
+			default:
+				System.out.println("\nAïe... La valeur introduite est incorrecte... \n");
+				break;
+			}
+		}
 	}
 
 	public void laisserEvaluation() { // TODO à debugger avec la base de donnée en partie complète
@@ -497,9 +895,7 @@ public class Interface {
 	public void identification() {
 		clearConsole();
 
-		System.out.println("===== Identification ======\n");
-
-		System.out.print("Email: ");
+		System.out.print("Quel est ton adresse mail ? \n ");
 		String mail = interacteur.nextLine();
 
 		if (mail.equals("quit")) {
@@ -507,7 +903,7 @@ public class Interface {
 			return;
 		}
 
-		System.out.print("\nMot de passe: ");
+		System.out.print("\nQuel est ton mot de passe ? \n");
 		String mdp = interacteur.nextLine();
 
 		if (mdp.equals("quit")) {
@@ -546,23 +942,49 @@ public class Interface {
 	public void creerCompte() {
 		clearConsole();
 
-		System.out.println("===== Création du compte ======\n");
-
-		System.out.print("Nom: ");
-		String nom = interacteur.nextLine();
-
-		System.out.print("\nPrénom: ");
-		String prenom = interacteur.nextLine();
-
-		System.out.print("\nEmail: ");
-		String email = interacteur.nextLine();
-
-		System.out.print("\nAdresse: ");
-		String adresse = interacteur.nextLine();
-
-		System.out.print("\nMot de passe: ");
-		String mdp = interacteur.nextLine();
-		System.out.println();
+		System.out.println("L'aventure commence ! \n");
+		
+		String reponse;
+		while (true) {
+			System.out.println("C'est quoi ton nom ? \n");
+			reponse = interacteur.nextLine();
+			if (reponse != "") {
+				user.nom = reponse;
+				break;
+			}
+		}
+		while (true) {
+			System.out.println("C'est quoi ton prénom ? \n");
+			reponse = interacteur.nextLine();
+			if (reponse != "") {
+				user.prenom = reponse;
+				break;
+			}
+		}
+		while (true) {
+			System.out.println("C'est quoi ton adresse ? \n");
+			reponse = interacteur.nextLine();
+			if (reponse != "") {
+				user.adresse = reponse;
+				break;
+			}
+		}
+		while (true) {
+			System.out.println("C'est quoi ton email ? \n");
+			reponse = interacteur.nextLine();
+			if (reponse != "" && reponse.contains("@")) {
+				user.eMail = reponse;
+				break;
+			}
+		}
+		while (true) {
+			System.out.println("Tu veux quoi comme Mot de Passe ? \n");
+			reponse = interacteur.nextLine();
+			if (reponse != "") {
+				user.mdp = reponse;
+				break;
+			}
+		}
 
 		try {
 			Statement stmt = jdbc.connection.createStatement();
@@ -570,10 +992,8 @@ public class Interface {
 			rs.next();
 			int new_uid = rs.getInt("MAX(U_ID)") + 1;
 
-			jdbc.insertValeur("UTILISATEURS", "(\'" + new_uid + "\', \'" + email + "\', \'" + mdp + "\', \'" + nom
-					+ "\', \'" + prenom + "\', \'" + adresse + "\')");
-
-			user = new Utilisateur(new_uid, email, nom, prenom, mdp, adresse);
+			jdbc.insertValeur("UTILISATEURS", "(\'" + new_uid + "\', \'" + user.eMail + "\', \'" + user.mdp + "\', \'" + user.nom
+					+ "\', \'" + user.prenom + "\', \'" + user.adresse + "\')");
 
 			System.out.println("===== Compte créé! Bon appétit! =====\n");
 
@@ -586,8 +1006,6 @@ public class Interface {
 
 	public void droitOubli() {
 		clearConsole();
-
-		System.out.println("===== Droit à l'oubli ======\n");
 
 		System.out.print("Es-tu sûr(e) de vouloir effacer tes données, " + user.getPrenom() + "?");
 		System.out.println(" /!\\ LES DONNÉES NE POURRONT PAS ÊTRE RÉCUPÉRÉES /!\\ \n");
