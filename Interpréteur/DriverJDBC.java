@@ -10,6 +10,7 @@ public class DriverJDBC {
 	public Connection connection;
 
 	public DriverJDBC() {
+		/* 
 		this.url = "jdbc:oracle:thin:@oracle1.ensimag.fr:1521:oracle1";
 		this.user = "lurivanj";
 		this.passwrd = "lurivanj";
@@ -20,12 +21,14 @@ public class DriverJDBC {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		*/
 	}
 
 	public void connexion() {
 		try {
 			System.out.print(" -- -- -- \n Tentative de connexion... ");
-			this.connection = DriverManager.getConnection(this.url, this.user, this.passwrd);
+			//this.connection = DriverManager.getConnection(this.url, this.user, this.passwrd);
+			this.connection = DriverManager.getConnection("jdbc:sqlite:GrenobleEAT.db");
 			System.out.println("Connexion établie \n -- -- -- \n");
 		} catch (SQLException e) {
 			e.printStackTrace();

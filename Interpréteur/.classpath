@@ -6,7 +6,12 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/jorgeluriv/Documents/Clases/BDD/projet-bdd/Interpréteur/lib/ojdbc6.jar">
+	<classpathentry kind="lib" path="/Users/jorgeluriv/Documents/Git Works/BDD/Interpréteur/ojdbc6.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/jorgeluriv/Documents/Git Works/BDD/Interpréteur/sqlite-jdbc-3.40.0.0.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

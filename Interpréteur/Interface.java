@@ -914,22 +914,21 @@ public void commanderResto(String resto) {
 		try {
 			Statement stmt = jdbc.connection.createStatement();
 			// Requête fonctionnelle (retourne l'UId si un mdp existe)
-			ResultSet rs = stmt.executeQuery("SELECT U_id, UNom, UPrenom, UAdresse FROM UTILISATEURS WHERE UMail = \'"
-					+ mail + "\' AND UMdp = \'" + mdp + "\'");
+			ResultSet rs = stmt.executeQuery("SELECT U_id, UMdp, UNom, UPrenom, UAdresse, UMail FROM UTILISATEURS WHERE UMail = \'" + mail + "\'");
+			String id = String.valueOf(rs.getInt("U_id"));
 
-			int nombreReponses = 0;
-			while (rs.next())
-				nombreReponses++;
 
-			if (nombreReponses == 0) {
+			if (!mail.equals(rs.getString("UMail")) || !mdp.equals(rs.getString("UMdp"))) {
 				System.out.println(
 						"\nIdentifiant ou mot de passe incorrect. Veillez vérifier vos entrées. Tappez quit pour revenir au début.\n");
 				identification();
 				return;
 			} else {
-				this.user = new Utilisateur(rs.getInt("U_id"), mail, rs.getString("UNom"), rs.getString("UPrenom"), mdp,
+				this.user = new Utilisateur(Integer.valueOf(id), mail, rs.getString("UNom"), rs.getString("UPrenom"), mdp,
 						rs.getString("UAdresse"));
-
+				
+				System.out.println(String.valueOf(rs.getInt("U_id")));
+				
 				System.out.println("\n -- -- -- \n");
 				accueil();
 				return;
