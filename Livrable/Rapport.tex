@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{pdflscape}
 \usepackage{amssymb}
+% \usepackage[margin=3cm]{geometry}
 \usepackage{graphicx}
 \usepackage{oz}
 \usepackage{array,multirow,makecell}
@@ -14,7 +15,7 @@
 \title{Analyse Projet BDD}
 \date{}
 \begin{document}
-\begin{landscape}
+
 
 \maketitle
 \tableofcontents
@@ -33,9 +34,9 @@ commande a effectivement été effectuée et que l'on peut donner un
 \end{enumerate}
 
 Nous sommes arrivés avec les contraintes suivantes :
-
+\begin{landscape}
 \subsection{Contraintes}
-\renewcommand{\arraystretch}{1.5}
+
 \begin{center}
 \[
 \begin{tabular}{|C{5cm}|C{5cm}|C{5cm}|C{5cm} |}
@@ -45,7 +46,7 @@ DF& C. Valeurs
 & C. Contextuelles & C. Multiplicité\\
 \hline
 
-RMail $\rightarrow$ RNom, RNumero, RAdresse, RAdresse, Places, 
+RMail $\rightarrow$ RNom, RNumero, RAdresse, Places, 
 Presentation, RNote & RType $\in$ \{livraison, emporter, place\} & $\sum 
 \mbox{nbPers}  \le \mbox{Places} $ pour un restaurant et ses commandes 
 associées & RMail $\twoheadrightarrow$ JourPlage\\
@@ -58,16 +59,15 @@ TypeCommande\\
 \mbox{Ext(CLId)} = \mbox{Ext(CId)}$ & RMail $\twoheadrightarrow$ PId\\
 \cline{1-2}
 
-(PId, Restaurant) $\rightarrow$ PNom, Description, PPrix & PPrix $>0$ & 
+(PId, Restaurant) $\rightarrow$ PNom, PDescription, PPrix & PPrix $>0$ & 
 CPArrivee $\in$ JourPlage pour un restaurant et ses commandes associées & 
-RMail $\psur$ CatNom\\
+RMail $\twoheadrightarrow$ CatNom\\
 \cline{1-2}
 
-U\_Id $\rightarrow$ UMail, Mdp, UNom, UPrenom, UAdresse && \{CDate, 
-CHeure\} donne JourPlage pour toute commande& (PId, RMail) $\psur$ ANom \\
+U\_Id $\rightarrow$ UMail, UMdp, UNom, UPrenom, UAdresse && CDate donne JourPlage pour toute commande& (PId, RMail) $\psur$ ANom \\
 \cline{1-2}
 
-CId $\rightarrow$ CDate, CHeure, CPrix & CPrix $>0$ & CDate $\le$ EDate& 
+CId $\rightarrow$ CDate, CPrix & CPrix $>0$ & CDate $\le$ EDate& 
 CId $\twoheadrightarrow$ (PId, RMail)\\
 \cline{1-2}
 
@@ -75,27 +75,26 @@ CLId $\rightarrow$ CLAdresse, Indications, CLArrivee, CLStatut &
 CLStatut $\in$ \{ attente, validée, en livraison, annuleeC, annuleeR, 
 terminee \}&
 EId $\Rightarrow$ CId.statut = \{terminee\}
-& CId $\rightarrow$ TypeCommande \\
+& CId $\rightarrow$ TypeCommande \\ 
 \cline{1-2}
 
 CEId $\rightarrow$ CEStatut &
-CEStatut $\in$ \{ attente, validée, annuleeC, annuleeR, terminee \}& 
-CLArrivee $\ge$ CHeure & CId $\rightarrow$ U\_Id\\
+CEStatut $\in$ \{ attente, validée, disponible, annuleeC, annuleeR, terminee \}&  & CId $\rightarrow$ U\_Id\\
 \cline{1-2}
 
 CPId $\rightarrow$ NbPers, CPArrivee, CPStatut &
-CPStatut $\in$ \{ attente, validée, disponible, annuleeC, annuleeR, 
-terminee \}&CDate == EDate $\Rightarrow$ CHeure $<$ EHeure & CId $\pfun$ 
+CPStatut $\in$ \{ attente, validée, annuleeC, annuleeR, 
+terminee \}&  & CId $\pfun$ 
 EId\\
 
 & NbPers $>0$ & & CatNom $\pfun$ CatNom\\
 \cline{1-2}
 
-EId $ \rightarrow$ EDate, EHeure, Avis, ENote & ENote $ \in [0..5] $&
+EId $ \rightarrow$ EDate, Avis, ENote & ENote $ \in [0..5] $&
 CType $\in$ TypeCommande pour un CId donné et le RMail associé &\\ 
 \cline{1-2}
 
-& JourHeure $\in $ \{LM, LS, MM, MS, MeM, MeS, JM,JS, VM, VS, SM, SS, DM, 
+& JourHeure $\in $ \{LM, LS, MM, MS, MeM, MeS, JM, JS, VM, VS, SM, SS, DM, 
 DS \} & & \\
 \hline
 
@@ -111,13 +110,14 @@ On obtient ensuite le diagramme Entité-Relation suivant :
 \includegraphics[scale=0.7]{Diagramme_entite_relation.png}\\
 \end{center}
 
+\end{landscape}
 \section{Modèle Relationnel}
 \section{Analyse des fonctionnalités}
 \section{Bilan du projet}
 \section{Mode d'emploi}
 
 
-\end{landscape}
+
 \end{document}
 
 
