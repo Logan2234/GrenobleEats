@@ -17,6 +17,7 @@ public class Commande {
 	
 	public int heure;
 	public int minute;
+	public Timestamp timestamp;
 	
 	
 	public Commande() {

@@ -86,10 +86,16 @@ public class Interface {
 
 		try {
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery("BLABLABLABLA"); // TODO COMMANDE QUI DONNE 3 DERNIÈRES CAT COMMANDÉES
+			ResultSet rs = stmt.executeQuery("SELECT CatNom FROM CATEGORIESRESTAURANT AS cat, RESTAURANTS as res, PLATSCOMMANDE as plcm, COMMANDES as com WHERE cat.RMail = res.RMail AND plcm.PRestaurant = res.RMail AND com.Cid = plcm.Cid AND com.U_id = " + String.valueOf(user.identifiant) + " ORDER by com.CDate DESC LIMIT 3;"); 
 			Set<String> recommandes = new HashSet<String>();
+			int nbCommandes = -1;
 			while (rs.next()) {
 				recommandes.add(rs.getString("CatNom")); // TODO vérifier que c'est bien CatNom que tu recup
+				nbCommandes++;
+			}
+			if (nbCommandes <= 0) {
+				categoriesMeres();
+				return;
 			}
 			System.out.println("\n -- -- -- \n");
 
@@ -204,18 +210,23 @@ public class Interface {
 			System.out.println(" \nTu veux manger sur place ou on te livre ?\n");
 			System.out.println("1) Livraison");
 			System.out.println("2) Sur place");
-			System.out.println("3) Annuler commande\n");
+			System.out.println("3) À emporter");
+			System.out.println("4) Annuler commande\n");
 			String reponse = interacteur.nextLine();
 			switch (reponse) {
 			case "1":
-				commande.type = "L"; // En livraison
+				commande.type = "livraison"; 
 				commandeLivraison();
 				return;
 			case "2":
-				commande.type = "P"; // Sur place
+				commande.type = "place"; 
 				commandeSurPlace();
 				return;
 			case "3":
+				commande.type = "emporter";
+				commandeAEmporter();
+				return;
+			case "4":
 				accueil();
 			default:
 				System.out.println("\nAïe... La valeur introduite est incorrecte... \n");
@@ -224,6 +235,7 @@ public class Interface {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void commandeLivraison() {
 		clearConsole();
 
@@ -271,10 +283,21 @@ public class Interface {
 			}
 		}
 		
+		Timestamp tempsActuel = new Timestamp(System.currentTimeMillis());
+		Timestamp tempsCommande = new Timestamp(System.currentTimeMillis());
+		tempsCommande.setHours(commande.heure);
+		tempsCommande.setMinutes(commande.minute);
+		
+		if (tempsCommande.before(tempsActuel)) {
+			commandeLivraison();
+			return;
+		}
+		
 		envoyerCommande();
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void commandeSurPlace() {
 		clearConsole();
 
@@ -325,12 +348,90 @@ public class Interface {
 				System.out.println("\nOups... T'as pas indiqué un chiffre entre 0 et 59\n");
 			}
 		}
+		Timestamp tempsActuel = new Timestamp(System.currentTimeMillis());
+		Timestamp tempsCommande = new Timestamp(System.currentTimeMillis());
+		tempsCommande.setHours(commande.heure);
+		tempsCommande.setMinutes(commande.minute);
+		
+		if (tempsCommande.before(tempsActuel)) {
+			commandeLivraison();
+			return;
+		}
+		
+		envoyerCommande();
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void commandeAEmporter() {
+		clearConsole();
+
+		String reponse;
+		
+		while (true) {
+			System.out.println(" \nÀ quelle heure tu veux réserver ? (heure entre 0 et 23) : \n");
+			reponse = interacteur.nextLine();
+			try {
+				int heure = Integer.valueOf(reponse);
+				if (0 <= heure && heure <= 23) {
+					commande.heure = heure;
+					break;
+				}
+				else System.out.println("\nOups... T'as pas indiqué un chiffre entre 0 et 23\n");
+			} catch (Exception e) {
+				System.out.println("\nOups... T'as pas indiqué un chiffre entre 0 et 23\n");
+			}
+		}
+		
+		while (true) {
+			System.out.println(" \nÀ quelle minute tu veux réserver ? (minute entre 0 et 59) : \n");
+			reponse = interacteur.nextLine();
+			try {
+				int minute = Integer.valueOf(reponse);
+				if (0 <= minute && minute <= 59) {
+					commande.minute = minute;
+					break;
+				}
+				else System.out.println("\nOups... T'as pas indiqué un chiffre entre 0 et 59\n");
+			} catch (Exception e) {
+				System.out.println("\nOups... T'as pas indiqué un chiffre entre 0 et 59\n");
+			}
+		}
+		Timestamp tempsActuel = new Timestamp(System.currentTimeMillis());
+		Timestamp tempsCommande = new Timestamp(System.currentTimeMillis());
+		tempsCommande.setHours(commande.heure);
+		tempsCommande.setMinutes(commande.minute);
+		commande.timestamp = tempsCommande;
+		
+		if (tempsCommande.before(tempsActuel)) {
+			commandeLivraison();
+			return;
+		}
 		
 		envoyerCommande();
 	}
 	
 	public void envoyerCommande() {
-		// TODO mettre dans la BDD
+		try {
+			Statement stmt = jdbc.connection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT MAX(U_ID) FROM COMMANDES");
+			int new_uid = rs.getInt("MAX(U_ID)") + 1;
+			stmt.executeUpdate("INSERT INTO COMMANDES VALUES (" + new_uid + ",CURRENT_TIMESTAMP," + String.valueOf(commande.prix) + "," + String.valueOf(user.identifiant) + ",\'" + commande.type + "\')");
+			switch (commande.type) {
+			case "livraison":
+				stmt.executeUpdate("INSERT INTO COMMANDESLIVREES VALUES (" + new_uid + "," + commande.adresse + "," + commande.texte + "," + commande.timestamp.toString() + ",\'Attente\')");
+				break;
+			case "emporter":
+				stmt.executeUpdate("INSERT INTO COMMANDESEMPORTEES VALUES (" + new_uid + ",\'Attente\')");
+				break;
+			case "place":
+				stmt.executeUpdate("INSERT INTO COMMANDESSURPLACE VALUES (" + new_uid + "," + commande.nbPlaces + "," + commande.timestamp.toString()+ ",\'Attente\')");
+				break;
+			}
+			accueil();
+			return;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void listeRestos() {
@@ -351,7 +452,7 @@ public class Interface {
 			
 			for (int i = 0; i < restos.size(); i += 10) {
 				for (int j = i; j < i + 10 && j < restos.size(); j++) {
-					System.out.println(String.valueOf((i%10) + 1) + ") " + restos.get(j)); 
+					System.out.println(String.valueOf((i%10) + j + 1) + ") " + restos.get(j)); 
 				}
 				if (i + 10 <= restos.size()) {
 					System.out.println("11) Voir plus de restaurants");
@@ -360,48 +461,49 @@ public class Interface {
 				while (true) {
 					System.out.println("\n Écris le numéro de ta réponse souhaitée : \n");
 					String reponse = interacteur.nextLine();
-					if (reponse == "11" && i + 10 <= restos.size()) break;
-					if (reponse == "1" && i <= restos.size()) {
+					if (reponse.equals("11") && i + 10 <= restos.size())
+						break;
+					if (reponse.equals("1") && i <= restos.size()) {
 						commanderResto(restos.get(i));
 						return;
 					}
-					if (reponse == "2" && i + 1 <= restos.size()) {
+					if (reponse.equals("2") && i + 1 <= restos.size()) {
 						commanderResto(restos.get(i + 1));
 						return;
 					}
-					if (reponse == "3" && i + 2 <= restos.size()) {
+					if (reponse.equals("3") && i + 2 <= restos.size()) {
 						commanderResto(restos.get(i + 2));
 						return;
 					}
-					if (reponse == "4" && i + 3 <= restos.size()) {
+					if (reponse.equals("4") && i + 3 <= restos.size()) {
 						commanderResto(restos.get(i + 3));
 						return;
 					}
-					if (reponse == "5" && i + 4 <= restos.size()) {
+					if (reponse.equals("5") && i + 4 <= restos.size()) {
 						commanderResto(restos.get(i + 4));
 						return;
 					}
-					if (reponse == "6" && i + 5 <= restos.size()) {
+					if (reponse.equals("6") && i + 5 <= restos.size()) {
 						commanderResto(restos.get(i + 5));
 						return;
 					}
-					if (reponse == "7" && i + 6 <= restos.size()) {
+					if (reponse.equals("7") && i + 6 <= restos.size()) {
 						commanderResto(restos.get(i + 6));
 						return;
 					}
-					if (reponse == "8" && i + 7 <= restos.size()) {
+					if (reponse.equals("8") && i + 7 <= restos.size()) {
 						commanderResto(restos.get(i + 7));
 						return;
 					}
-					if (reponse == "9" && i + 8 <= restos.size()) {
+					if (reponse.equals("9") && i + 8 <= restos.size()) {
 						commanderResto(restos.get(i + 8));
 						return;
 					}
-					if (reponse == "10" && i + 9 <= restos.size()) {
+					if (reponse.equals("10") && i + 9 <= restos.size()) {
 						commanderResto(restos.get(i + 9));
 						return;
 					}
-					if (reponse == "0") {
+					if (reponse.equals("0")) {
 						accueil();
 						return;
 					}
@@ -417,7 +519,7 @@ public class Interface {
 		}
 	}
 
-public void commanderResto(String resto) {
+	public void commanderResto(String resto) {
 		try {
 			Statement stmt = jdbc.connection.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT PNom, PDescription, PPrix FROM PLATS WHERE PRestaurant = \'" + resto + "\'"); 
@@ -445,7 +547,7 @@ public void commanderResto(String resto) {
 			
 			for (int i = 0; i < plats.size(); i += 10) {
 				for (int j = i; j < i + 10 && j < plats.size(); j++) { 
-					System.out.println(String.valueOf((i%10) + 1) + ") " + plats.get(j).get("Nom") + " (" + plats.get(j).get("Prix") + " €) - " + plats.get(j).get("Des")); 
+					System.out.println(String.valueOf((i%10) + j + 1) + ") " + plats.get(j).get("Nom") + " (" + plats.get(j).get("Prix") + " €) - " + plats.get(j).get("Des")); 
 				}
 				if (i + 10 <= plats.size()) {
 					System.out.println("11) Voir plus de plats");
@@ -454,48 +556,49 @@ public void commanderResto(String resto) {
 				while (true) {
 					System.out.println("\n Écris le numéro de ta réponse souhaitée : \n");
 					String reponse = interacteur.nextLine();
-					if (reponse == "11" && i + 10 <= plats.size()) break;
-					if (reponse == "1" && i <= plats.size()) {
+					if (reponse.equals("11") && i + 10 <= plats.size())
+						break;
+					if (reponse.equals("1") && i <= plats.size()) {
 						ajouterACommande(plats.get(i), resto);
 						return;
 					}
-					if (reponse == "2" && i + 1 <= plats.size()) {
+					if (reponse.equals("2") && i + 1 <= plats.size()) {
 						ajouterACommande(plats.get(i + 1), resto);
 						return;
 					}
-					if (reponse == "3" && i + 2 <= plats.size()) {
+					if (reponse.equals("3") && i + 2 <= plats.size()) {
 						ajouterACommande(plats.get(i + 2), resto);
 						return;
 					}
-					if (reponse == "4" && i + 3 <= plats.size()) {
+					if (reponse.equals("4") && i + 3 <= plats.size()) {
 						ajouterACommande(plats.get(i + 3), resto);
 						return;
 					}
-					if (reponse == "5" && i + 4 <= plats.size()) {
+					if (reponse.equals("5") && i + 4 <= plats.size()) {
 						ajouterACommande(plats.get(i + 4), resto);
 						return;
 					}
-					if (reponse == "6" && i + 5 <= plats.size()) {
+					if (reponse.equals("6") && i + 5 <= plats.size()) {
 						ajouterACommande(plats.get(i + 5), resto);
 						return;
 					}
-					if (reponse == "7" && i + 6 <= plats.size()) {
+					if (reponse.equals("7") && i + 6 <= plats.size()) {
 						ajouterACommande(plats.get(i + 6), resto);
 						return;
 					}
-					if (reponse == "8" && i + 7 <= plats.size()) {
+					if (reponse.equals("8") && i + 7 <= plats.size()) {
 						ajouterACommande(plats.get(i + 7), resto);
 						return;
 					}
-					if (reponse == "9" && i + 8 <= plats.size()) {
+					if (reponse.equals("9") && i + 8 <= plats.size()) {
 						ajouterACommande(plats.get(i + 8), resto);
 						return;
 					}
-					if (reponse == "10" && i + 9 <= plats.size()) {
+					if (reponse.equals("10") && i + 9 <= plats.size()) {
 						ajouterACommande(plats.get(i + 9), resto);
 						return;
 					}
-					if (reponse == "0") {
+					if (reponse.equals("0")) {
 						commande.commencerCommande();
 						listeRestos();
 						return;
@@ -579,7 +682,7 @@ public void commanderResto(String resto) {
 
 			for (int i = 0; i < restos.size(); i += 10) {
 				for (int j = i; j < i + 10 && j < restos.size(); j++) {
-					System.out.println(String.valueOf((i % 10) + 1) + ") " + restos.get(j));
+					System.out.println(String.valueOf((i % 10) + j + 1) + ") " + restos.get(j));
 				}
 				if (i + 10 <= restos.size()) {
 					System.out.println("11) Voir plus de restaurants");
@@ -588,49 +691,49 @@ public void commanderResto(String resto) {
 				while (true) {
 					System.out.println("\n Écris le numéro de ta réponse souhaitée : \n");
 					String reponse = interacteur.nextLine();
-					if (reponse == "11" && i + 10 <= restos.size())
+					if (reponse.equals("11") && i + 10 <= restos.size())
 						break;
-					if (reponse == "1" && i <= restos.size()) {
+					if (reponse.equals("1") && i <= restos.size()) {
 						commanderResto(restos.get(i), categorie);
 						return;
 					}
-					if (reponse == "2" && i + 1 <= restos.size()) {
+					if (reponse.equals("2") && i + 1 <= restos.size()) {
 						commanderResto(restos.get(i + 1), categorie);
 						return;
 					}
-					if (reponse == "3" && i + 2 <= restos.size()) {
+					if (reponse.equals("3") && i + 2 <= restos.size()) {
 						commanderResto(restos.get(i + 2), categorie);
 						return;
 					}
-					if (reponse == "4" && i + 3 <= restos.size()) {
+					if (reponse.equals("4") && i + 3 <= restos.size()) {
 						commanderResto(restos.get(i + 3), categorie);
 						return;
 					}
-					if (reponse == "5" && i + 4 <= restos.size()) {
+					if (reponse.equals("5") && i + 4 <= restos.size()) {
 						commanderResto(restos.get(i + 4), categorie);
 						return;
 					}
-					if (reponse == "6" && i + 5 <= restos.size()) {
+					if (reponse.equals("6") && i + 5 <= restos.size()) {
 						commanderResto(restos.get(i + 5), categorie);
 						return;
 					}
-					if (reponse == "7" && i + 6 <= restos.size()) {
+					if (reponse.equals("7") && i + 6 <= restos.size()) {
 						commanderResto(restos.get(i + 6), categorie);
 						return;
 					}
-					if (reponse == "8" && i + 7 <= restos.size()) {
+					if (reponse.equals("8") && i + 7 <= restos.size()) {
 						commanderResto(restos.get(i + 7), categorie);
 						return;
 					}
-					if (reponse == "9" && i + 8 <= restos.size()) {
+					if (reponse.equals("9") && i + 8 <= restos.size()) {
 						commanderResto(restos.get(i + 8), categorie);
 						return;
 					}
-					if (reponse == "10" && i + 9 <= restos.size()) {
+					if (reponse.equals("10") && i + 9 <= restos.size()) {
 						commanderResto(restos.get(i + 9), categorie);
 						return;
 					}
-					if (reponse == "0") {
+					if (reponse.equals("0")) {
 						categoriesRecommandes();
 						return;
 					}
@@ -647,8 +750,8 @@ public void commanderResto(String resto) {
 	public void commanderResto(String resto, String categorie) {
 		try {
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt
-					.executeQuery("SELECT PNom, PDescription, PPrix FROM PLATS WHERE PRestaurant = \'" + resto + "\'");
+			ResultSet rs = stmt.executeQuery("SELECT RMail FROM RESTAURANTS WHERE RNOM = \'" + resto + "\'");
+			rs = stmt.executeQuery("SELECT PNom, PDescription, PPrix FROM PLATS WHERE PRestaurant = \'" + rs.getString("RMail") + "\'");
 
 			ArrayList<Map<String, String>> plats = new ArrayList<Map<String, String>>();
 
@@ -657,7 +760,7 @@ public void commanderResto(String resto) {
 				Map<String, String> plat = new HashMap<String, String>();
 				plat.put("Nom", rs.getString("PNom"));
 				plat.put("Des", rs.getString("PDescription"));
-				plat.put("Prix", "PPrix");
+				plat.put("Prix", String.valueOf(rs.getFloat("PPrix")));
 				plats.add(plat);
 			}
 			if (plats.size() == 0) {
@@ -671,7 +774,7 @@ public void commanderResto(String resto) {
 
 			for (int i = 0; i < plats.size(); i += 10) {
 				for (int j = i; j < i + 10 && j < plats.size(); j++) {
-					System.out.println(String.valueOf((i % 10) + 1) + ") " + plats.get(j).get("Nom") + " ("
+					System.out.println(String.valueOf((i % 10) + j + 1) + ") " + plats.get(j).get("Nom") + " ("
 							+ plats.get(j).get("Prix") + " €) - " + plats.get(j).get("Des"));
 				}
 				if (i + 10 <= plats.size()) {
@@ -681,51 +784,50 @@ public void commanderResto(String resto) {
 				while (true) {
 					System.out.println("\n Écris le numéro de ta réponse souhaitée : \n");
 					String reponse = interacteur.nextLine();
-					if (reponse == "11" && i + 10 <= plats.size())
+					if (reponse.equals("11") && i + 10 <= plats.size())
 						break;
-					if (reponse == "1" && i <= plats.size()) {
+					if (reponse.equals("1") && i <= plats.size()) {
 						ajouterACommande(plats.get(i), resto, categorie);
 						return;
 					}
-					if (reponse == "2" && i + 1 <= plats.size()) {
+					if (reponse.equals("2") && i + 1 <= plats.size()) {
 						ajouterACommande(plats.get(i + 1), resto, categorie);
 						return;
 					}
-					if (reponse == "3" && i + 2 <= plats.size()) {
+					if (reponse.equals("3") && i + 2 <= plats.size()) {
 						ajouterACommande(plats.get(i + 2), resto, categorie);
 						return;
 					}
-					if (reponse == "4" && i + 3 <= plats.size()) {
+					if (reponse.equals("4") && i + 3 <= plats.size()) {
 						ajouterACommande(plats.get(i + 3), resto, categorie);
 						return;
 					}
-					if (reponse == "5" && i + 4 <= plats.size()) {
+					if (reponse.equals("5") && i + 4 <= plats.size()) {
 						ajouterACommande(plats.get(i + 4), resto, categorie);
 						return;
 					}
-					if (reponse == "6" && i + 5 <= plats.size()) {
+					if (reponse.equals("6") && i + 5 <= plats.size()) {
 						ajouterACommande(plats.get(i + 5), resto, categorie);
 						return;
 					}
-					if (reponse == "7" && i + 6 <= plats.size()) {
+					if (reponse.equals("7") && i + 6 <= plats.size()) {
 						ajouterACommande(plats.get(i + 6), resto, categorie);
 						return;
 					}
-					if (reponse == "8" && i + 7 <= plats.size()) {
+					if (reponse.equals("8") && i + 7 <= plats.size()) {
 						ajouterACommande(plats.get(i + 7), resto, categorie);
 						return;
 					}
-					if (reponse == "9" && i + 8 <= plats.size()) {
+					if (reponse.equals("9") && i + 8 <= plats.size()) {
 						ajouterACommande(plats.get(i + 8), resto, categorie);
 						return;
 					}
-					if (reponse == "10" && i + 9 <= plats.size()) {
+					if (reponse.equals("10") && i + 9 <= plats.size()) {
 						ajouterACommande(plats.get(i + 9), resto, categorie);
 						return;
 					}
-					if (reponse == "0") {
+					if (reponse.equals("0")) {
 						restoParCat(categorie);
-						;
 						return;
 					}
 					System.out.println(
@@ -926,8 +1028,6 @@ public void commanderResto(String resto) {
 			} else {
 				this.user = new Utilisateur(Integer.valueOf(id), mail, rs.getString("UNom"), rs.getString("UPrenom"), mdp,
 						rs.getString("UAdresse"));
-				
-				System.out.println(String.valueOf(rs.getInt("U_id")));
 				
 				System.out.println("\n -- -- -- \n");
 				accueil();
