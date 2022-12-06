@@ -116,8 +116,26 @@ On obtient ensuite le diagramme Entité-Relation suivant :
 \section{Bilan du projet}
 \section{Mode d'emploi}
 
+Nous avons développé, comme demandé initialement, un démonstrateur en Java.
+
+Après la panne informatique de l'Ensimag et l'arrêt de l'obligation du démonstrateur, nous avons quand même voulu rendre un démonstrateur fonctionnel, même si toutes les fonctionnalités n'ont pas été introduites. Ainsi, Oracle n'étant pas accessible, nous avons développé la Base de Données en SQLite, en local.
+
+Nous avons alors exporté le démonstrateur dans un \texttt{.jar}. Pour démarrer le démonstrateur, il faut aller dans le dossier Interpréteur et lancer la commande \texttt{java -jar GrenobleEAT.jar}. \\
 
 
+La navigation dans le navigateur est assez intuitive. L'utilisateur peut naviguer de menu en menu en suivant les instructions demandées. Pour sélectionner les options proposées par  démonstrateur, l'utilisateur devra introduire soit le chiffre correspondant à l'option souhaitée, soit exactement écrirel'option souhaitée. L'application indiquera quand est-ce qu'il faut introduire l'option en chiffre et quand en toutes lettres. \\
+
+Lorsqu'un utilisateur veut réaliser une commande, il peut soit voir la liste des restaurants soit explorer les catégories de l'application.
+
+La liste des restaurants s'affiche dans l'ordre décroissant des évaluations des utilisateurs et dans l'ordre alphabétique des noms. \\
+
+Pour l'exploration des catégories, tout d'abord l'application recommande à l'utilisateur les 3 dernières catégories commandées. Puis, si les catégories ne convainquent pas l'utilisateur ou si simplement l'utilisateur manque de commandes réalisées, nous avons choisi de faire un parcours sous forme d'arbre. Au début, l'application propose des catégories générales, et l'utilisateur peut soit sélectionner la catégorie courante, soit continuer à parcourir les sous-catégories. Puis, l'application montre les restaurants spécialisés dans les catégories choisies. \\
+
+L'utilisateur peut alors choisir les plats qu'il veut dans le restaurant choisi. Une fois qu'il a fini sa sélection, l'utilisateur choisi entre commander en livraison, sur place ou à emporter. L'application demandera alors les informations complémentaires. \\
+
+Pour s'identifier dans l'application, l'utilisateur soit rentrer dans sa session en indiquant son email et mot de passe, soit créer un nouveau compte en introduisant toutes les données nécessaires. Si un utilisateur souhaite demander un effacement de ses données, le demander à l'application dans l'option correspondante. Le compte efface alors toutes les données personnelles, mais existe encore dans l'application même s'il reste non accessible. Ceci permet de garder les évaluations et l'historique des commandes sans que celles-ci soient attribuées à une personne. \\
+
+Finalement, l'utilisateur peut aussi évaluer les commandes réalisées dans le passé. Il pourra voir les commandes réalisées et choisir une note de 0 à 5, ainsi que laisser un commentaire optionnel.
 \end{document}
 
 
