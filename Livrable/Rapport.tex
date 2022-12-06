@@ -23,14 +23,16 @@
 
 \section{Analyse du problème}
 \subsection{Hypothèses}
-Pour la conception, nous avons fait les choix suivants :
+Pour la conception, nous avons fait les choix suivants:
 \begin{enumerate}
     \item Le statut des commandes n'est pas dans l'entité mère COMMANDES 
 mais dans ses sous-entités afin d'éviter d'avoir des statuts non cohérents 
 pour un type de commande donné.
-    \item Nous avons rajouté le statut "terminée" qui indique qu'une 
+    \item Nous avons rajouté le statut ``terminée'' qui indique qu'une 
 commande a effectivement été effectuée et que l'on peut donner un 
 évaluation
+    \item % TODO: Rajouter le fait qu'on décide de ne pas créer un nouvel identifiant lorsqu'on fait appel au droit a l'oubli
+    \item % TODO: Les restaurants s'occupent d'actualiser les statuts de la base de données
 \end{enumerate}
 
 Nous sommes arrivés avec les contraintes suivantes :
@@ -105,13 +107,63 @@ DS \} & & \\
 
 \newpage
 \subsection{Diagramme Entités/Associations}
-On obtient ensuite le diagramme Entité-Relation suivant :
+On obtient ensuite le diagramme Entité-Relation suivant:
 \begin{center}
 \includegraphics[scale=0.7]{Diagramme_entite_relation.png}\\
 \end{center}
 
 \end{landscape}
 \section{Modèle Relationnel}
+
+
+Nous avons appliqué l'algorithme vu en cours pour obtenir le schéma relationnel.
+
+\subsection{Traduction des entités simples}
+
+Nous avons identifié les entités simples suivantes:
+
+\begin{itemize}
+    \item Restaurant\@(\underline{RMail}, RNom, RNum, RAdresse, Places, Présentation, RNote)
+    \item Commandes\@(\underline{Cid}, CDate, CPrix, \textbf{Uid}, \textbf{TypeCommande})
+    \item Utilisateurs\@(\underline{U\_id}, UMail, UMdp, UNom, UPrenom, UAdresse)
+    \item Evaluation\@(\underline{Eid}, EDate, Avis, ENote, \textbf{Cid})
+    \item Horaires\@(\underline{JourPlage})
+    \item TypesCommande\@(\underline{TypeCommande})
+    \item Categories\@(\underline{CatNom})
+    \item Allergenes\@(\underline{ANom})
+\end{itemize}
+
+\subsection{Sous-types d'entités}
+
+Pour une question d'espace occupé nous avons décidé de traduire l'héritage des différentes catégories des commandes par référence. 
+Contrairement à l'unification cela nous permet de ne pas avoir à gérer les contraintes avec l'application.
+
+\begin{itemize}
+    \item CommandesEmportees\@(\underline{CEid}, CEStatut)
+    \item CommandesLivrees\@(\underline{CLid}, CLAdresse, Indications, CLArrivee, CLStatut)
+    \item CommandesSurPlace\@(\underline{CPid}, NbPers, CPArrivee, CPStatut)
+\end{itemize}
+
+\subsection{Type d'entité faible}
+
+\begin{itemize}
+    \item Plats\@(Pid, PRestaurant, PNom, Description, PPrix)
+\end{itemize}
+
+\textbf{Contrainte induite par la traduction}: Vérifier que tout restaurant a au moins un plat 
+
+\subsection{Types d'associations}
+
+\subsubsection{Cardinalité 1..1}
+
+
+
+\subsubsection{Cardinalité 0..1}
+
+
+
+\subsubsection{Cardinalité ?..*}
+
 \section{Analyse des fonctionnalités}
 \section{Bilan du projet}
 \section{Mode d'emploi}
