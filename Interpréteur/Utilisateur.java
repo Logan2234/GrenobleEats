@@ -15,6 +15,11 @@ public class Utilisateur {
         this.mdp = mdp;
         this.adresse = adresse;
     }
+    
+    public Utilisateur() {
+    	
+    }
+    
 
     public String getMail() {
         return this.eMail;

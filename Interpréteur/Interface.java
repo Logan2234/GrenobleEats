@@ -19,6 +19,7 @@ public class Interface {
 		this.jdbc = new DriverJDBC();
 		this.jdbc.connexion();
 		this.commande = new Commande();
+		this.user = new Utilisateur();
 	}
 
 	private void clearConsole() {
@@ -60,7 +61,7 @@ public class Interface {
 
 		switch (interacteur.nextLine()) {
 			case "1":
-				// TODO
+				listeRestos();
 				break;
 			case "2":
 				this.categoriesRecommandes();
@@ -90,7 +91,7 @@ public class Interface {
 			Set<String> recommandes = new HashSet<String>();
 			int nbCommandes = -1;
 			while (rs.next()) {
-				recommandes.add(rs.getString("CatNom")); // TODO vérifier que c'est bien CatNom que tu recup
+				recommandes.add(rs.getString("CatNom")); 
 				nbCommandes++;
 			}
 			if (nbCommandes <= 0) {
@@ -287,6 +288,7 @@ public class Interface {
 		Timestamp tempsCommande = new Timestamp(System.currentTimeMillis());
 		tempsCommande.setHours(commande.heure);
 		tempsCommande.setMinutes(commande.minute);
+		commande.timestamp = tempsCommande;
 		
 		if (tempsCommande.before(tempsActuel)) {
 			commandeLivraison();
@@ -352,6 +354,7 @@ public class Interface {
 		Timestamp tempsCommande = new Timestamp(System.currentTimeMillis());
 		tempsCommande.setHours(commande.heure);
 		tempsCommande.setMinutes(commande.minute);
+		commande.timestamp = tempsCommande;
 		
 		if (tempsCommande.before(tempsActuel)) {
 			commandeLivraison();
@@ -413,20 +416,27 @@ public class Interface {
 	public void envoyerCommande() {
 		try {
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT MAX(U_ID) FROM COMMANDES");
-			int new_uid = rs.getInt("MAX(U_ID)") + 1;
+			ResultSet rs = stmt.executeQuery("SELECT MAX(Cid) FROM COMMANDES");
+			int new_uid = rs.getInt("MAX(Cid)") + 1;
 			stmt.executeUpdate("INSERT INTO COMMANDES VALUES (" + new_uid + ",CURRENT_TIMESTAMP," + String.valueOf(commande.prix) + "," + String.valueOf(user.identifiant) + ",\'" + commande.type + "\')");
+			for (String plat : commande.plats.keySet()) {
+				stmt = jdbc.connection.createStatement();
+				rs = stmt.executeQuery("SELECT Pid FROM PLATS WHERE PNom = \'" + plat + "\' AND PRestaurant = \'" + commande.rMail + "\'");
+				System.out.println("-- -- --\n" + String.valueOf(commande.plats.get(plat)));
+				stmt.executeUpdate("INSERT INTO PLATSCOMMANDE VALUES (" + new_uid + "," + String.valueOf(rs.getString("Pid")) + ",\'" + commande.rMail + "\'," + String.valueOf(commande.plats.get(plat)) + ")");
+			}
 			switch (commande.type) {
 			case "livraison":
-				stmt.executeUpdate("INSERT INTO COMMANDESLIVREES VALUES (" + new_uid + "," + commande.adresse + "," + commande.texte + "," + commande.timestamp.toString() + ",\'Attente\')");
+				stmt.executeUpdate("INSERT INTO COMMANDESLIVREES VALUES (" + new_uid + ",\'" + commande.adresse + "\',\'" + commande.texte + "\',\'" + commande.timestamp.toString() + "\',\'Attente\')");
 				break;
 			case "emporter":
 				stmt.executeUpdate("INSERT INTO COMMANDESEMPORTEES VALUES (" + new_uid + ",\'Attente\')");
 				break;
 			case "place":
-				stmt.executeUpdate("INSERT INTO COMMANDESSURPLACE VALUES (" + new_uid + "," + commande.nbPlaces + "," + commande.timestamp.toString()+ ",\'Attente\')");
+				stmt.executeUpdate("INSERT INTO COMMANDESSURPLACE VALUES (" + new_uid + "," + commande.nbPlaces + ",\'" + commande.timestamp.toString()+ "\',\'Attente\')");
 				break;
 			}
+			System.out.println("\n -- -- -- -- \n MERCI POUR TA COMMANDE \n Votre banger est en attente de validation par le restaurant ! \n -- -- -- -- \n");
 			accueil();
 			return;
 		} catch (SQLException e) {
@@ -442,7 +452,7 @@ public class Interface {
 			ArrayList<String> restos = new ArrayList<String>();
 			
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery(""); // TODO requete pour sortir dans l'ordre décroissant des éval et ordre alpha 
+			ResultSet rs = stmt.executeQuery("SELECT RNom FROM RESTAURANTS ORDER BY RNote DESC, RNom ASC;"); 
 			
 			while (rs.next()) {
 				restos.add(rs.getString("RNom"));
@@ -522,7 +532,9 @@ public class Interface {
 	public void commanderResto(String resto) {
 		try {
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT PNom, PDescription, PPrix FROM PLATS WHERE PRestaurant = \'" + resto + "\'"); 
+			ResultSet rs = stmt.executeQuery("SELECT RMail FROM RESTAURANTS WHERE RNOM = \'" + resto + "\'");
+			commande.rMail = rs.getString("RMail");
+			rs = stmt.executeQuery("SELECT PNom, PDescription, PPrix FROM PLATS WHERE PRestaurant = \'" + rs.getString("RMail") + "\'"); 
 			
 			commande.rNom = resto;
 			
@@ -537,7 +549,7 @@ public class Interface {
 				plats.add(plat);
 			}
 			if (plats.size() == 0) {
-				System.out.println(" Oups... Il y a aucun plat disponible... Veillez sélectionner un autre restorant. \n");
+				System.out.println(" Oups... Il y a aucun plat disponible... Veillez sélectionner un autre restaurant. \n");
 				commande.commencerCommande();
 				listeRestos();
 				return;
@@ -751,6 +763,7 @@ public class Interface {
 		try {
 			Statement stmt = jdbc.connection.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT RMail FROM RESTAURANTS WHERE RNOM = \'" + resto + "\'");
+			commande.rMail = rs.getString("RMail");
 			rs = stmt.executeQuery("SELECT PNom, PDescription, PPrix FROM PLATS WHERE PRestaurant = \'" + rs.getString("RMail") + "\'");
 
 			ArrayList<Map<String, String>> plats = new ArrayList<Map<String, String>>();
@@ -1119,7 +1132,7 @@ public class Interface {
 				try {
 					Statement stmt = jdbc.connection.createStatement();
 					stmt.executeUpdate(
-							"UPDATE UTILISATEURS SET UMail = NULL, UMdp = NULL, UNom = NULL, UPrenom = NULL, UAddresse = NULL WHERE U_Id = "
+							"UPDATE UTILISATEURS SET UMail = NULL, UMdp = NULL, UNom = NULL, UPrenom = NULL, UAdresse = NULL WHERE U_Id = "
 									+ String.valueOf(user.getIdentifiant()));
 					System.out.println("Les données personnelles ont été effacées. Fermeture de la session...\n");
 					connexion();
