@@ -5,9 +5,9 @@ CREATE TABLE RESTAURANTS(
     RNom VARCHAR(30) NOT NULL,
     RNum VARCHAR(12) NOT NULL,
     RAdresse VARCHAR(50) NOT NULL,
-    Places int NOT NULL,
+    Places int NOT NULL CHECK (Places > 0),
     Presentation VARCHAR(1000),
-    RNote FLOAT,
+    RNote FLOAT CHECK (RNote >= 0 AND RNote <= 5),
     PRIMARY KEY(RMail)
 );
 
@@ -44,7 +44,7 @@ CREATE TABLE UTILISATEURS(
 CREATE TABLE COMMANDES(
     Cid INT,
     CDate TIMESTAMP NOT NULL,
-    CPrix FLOAT,
+    CPrix FLOAT CHECK (CPrix > 0),
     U_id INT,
     TypeCommande VARCHAR(9),
     PRIMARY KEY(Cid),
@@ -56,7 +56,7 @@ CREATE TABLE EVALUATIONS(
     Eid INT,
     EDate TIMESTAMP NOT NULL,
     Avis VARCHAR(1000),
-    ENote INT NOT NULL,
+    ENote INT NOT NULL CHECK (ENote >= 0 AND ENote <= 5),
     Cid INT,
     PRIMARY KEY(Eid),
     FOREIGN KEY(Cid) REFERENCES COMMANDES(Cid)
@@ -79,7 +79,7 @@ CREATE TABLE COMMANDESLIVREES(
 
 CREATE TABLE COMMANDESSURPLACE(
     CPid INT,
-    NbPers INT NOT NULL,
+    NbPers INT NOT NULL CHECK (NbPers > 0),
     CPArrivee TIMESTAMP NOT NULL,
     CPStatut VARCHAR(8) CHECK (CPStatut IN ('Attente', 'Validee', 'AnnuleeC', 'AnnuleeR', 'Terminee')) NOT NULL,
     PRIMARY KEY(CPid)
@@ -90,7 +90,7 @@ CREATE TABLE PLATS(
     PRestaurant VARCHAR(50),
     PNom VARCHAR(50) NOT NULL,
     PDescription VARCHAR(1000),
-    PPrix FLOAT NOT NULL,
+    PPrix FLOAT NOT NULL CHECK (PPrix > 0),
     PRIMARY KEY(Pid, PRestaurant),
     FOREIGN KEY(PRestaurant) REFERENCES RESTAURANTS(RMail)
 );

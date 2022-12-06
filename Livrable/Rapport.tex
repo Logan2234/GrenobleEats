@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{pdflscape}
 \usepackage{amssymb}
+% \usepackage[margin=3cm]{geometry}
 \usepackage{graphicx}
 \usepackage{oz}
 \usepackage{array,multirow,makecell}
@@ -75,7 +76,7 @@ CLId $\rightarrow$ CLAdresse, Indications, CLArrivee, CLStatut &
 CLStatut $\in$ \{ attente, validée, en livraison, annuleeC, annuleeR, 
 terminee \}&
 EId $\Rightarrow$ CId.statut = \{terminee\}
-& CId $\rightarrow$ TypeCommande \\
+& CId $\rightarrow$ TypeCommande \\ 
 \cline{1-2}
 
 CEId $\rightarrow$ CEStatut &
@@ -95,7 +96,7 @@ EId $ \rightarrow$ EDate, EHeure, Avis, ENote & ENote $ \in [0..5] $&
 CType $\in$ TypeCommande pour un CId donné et le RMail associé &\\ 
 \cline{1-2}
 
-& JourHeure $\in $ \{LM, LS, MM, MS, MeM, MeS, JM,JS, VM, VS, SM, SS, DM, 
+& JourHeure $\in $ \{LM, LS, MM, MS, MeM, MeS, JM, JS, VM, VS, SM, SS, DM, 
 DS \} & & \\
 \hline
 
