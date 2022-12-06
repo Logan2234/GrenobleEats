@@ -1,4 +1,5 @@
 -- Parcours de catégories et sous-catégories
+-- On regarde le parcours de catégorie comme un menu déroulant affichant les résultats petit à petit.
 
 BEGIN;
 
@@ -21,13 +22,13 @@ SELECT CatNom FROM CATEGORIEPARENT WHERE CatNomMere = 'francaise';
 -- Et on veut voir les sous-catégories de la cuisine alpine
 SELECT CatNom FROM CATEGORIEPARENT WHERE CatNomMere = 'alpine';
 
--- L'alpine semble bien, donc on la sélectionne pour voir les restaurants associés
+-- La dauphinoise semble bien, donc on la sélectionne pour voir les restaurants associés
 SELECT RESTAURANTS.RMail, RNom, RNum, RAdresse, Places, Presentation, RNote FROM RESTAURANTS 
 JOIN CATEGORIESRESTAURANT ON RESTAURANTS.RMail = CATEGORIESRESTAURANT.RMail
-WHERE CatNom = 'alpine'
+WHERE CatNom = 'dauphinoise'
 ORDER BY RNote DESC, RNom ASC;
 
--- En fait, on vient de se rappeler qu'on veut passer commande dans un restaurant français ouvert un mardi midi, peu importe si c'est alpin ou pas
+-- En fait, on vient de se rappeler qu'on veut passer commande dans un restaurant français ouvert un mardi midi, peu importe si c'est dauphinois ou pas
 SELECT RESTAURANTS.RMail, RNom, RNum, RAdresse, Places, Presentation, RNote FROM RESTAURANTS 
 JOIN CATEGORIESRESTAURANT ON RESTAURANTS.RMail = CATEGORIESRESTAURANT.RMail
 JOIN HORAIRESRESTAURANT ON RESTAURANTS.RMail = HORAIRESRESTAURANT.RMail

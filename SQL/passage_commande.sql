@@ -1,5 +1,6 @@
 -- Passage de la commande
 -- TODO : tester le dernier cas avec plusieurs commandes dans la base
+
 /*
 On supposera que l'utilisateur U_Id, le restaurant RMail et les plats (Pid, PRestaurant) sont connus via Java.
 
@@ -9,11 +10,10 @@ On supposera que le restaurant aura accès aux commandes et s'occupera d'actuali
 La conversion TIMESTAMP->JourPlage est faite par Java.
 
 Dans le cas de la commande sur place, on a supposé que l'on souhaite réservé pour l'instant T, il conviendra de mettre la date choisie par l'utilisateur 
-avec l'usage de l'API. De même ce sera l'API qui s'occupera de regarder si la réservation sur place est possible (en comptant le nombre de personnes le soir demandé)
+avec l'usage de l'API. De même ce sera l'API qui s'occupera de regarder si la réservation sur place est possible (en comptant le nombre de personnes au moment en question)
 */
 
--- COMMANDE EN LIVRAISON (cas de base avec deux plats commandés une seule fois)
-COMMIT;
+BEGIN;
 
 TRUNCATE TABLE COMMANDESLIVREES;
 TRUNCATE TABLE COMMANDESEMPORTEES;
@@ -21,34 +21,40 @@ TRUNCATE TABLE COMMANDESSURPLACE;
 TRUNCATE TABLE PLATSCOMMANDE;
 TRUNCATE TABLE COMMANDES;
 
--- Création de la commande
+
+-- COMMANDE EN LIVRAISON (cas de base avec deux plats commandés une seule fois)
+-- Création de la commande pour l'utilisateur d'identifiant 1
 INSERT INTO COMMANDES VALUES ('0', CURRENT_TIMESTAMP, NULL, '1',
-                            (SELECT TypeCommande FROM TYPESRESTAURANT
+                            (SELECT TypeCommande FROM TYPESRESTAURANT 
                                 WHERE RMail = 'croquettes@resto.com' AND TypeCommande = 'livraison'));
+                            -- Le SELECT permet de vérifier que le restaurant accepte effectivement la livraison, 
+                            -- cette partie n'est pas nécessaire car en réalité, l'API s'occupera de vérifier ce genre de contraintes.
 
 -- Choix des plats
 INSERT INTO PLATSCOMMANDE VALUES ('0', '1', 'croquettes@resto.com', '1');
 INSERT INTO PLATSCOMMANDE VALUES ('0', '2', 'croquettes@resto.com', '1');
 
--- Calcul du prix
+-- Calcul du prix en SQL qui peut également se faire via l'API
 UPDATE COMMANDES SET CPrix = (SELECT SUM(PPrix * NbPlat) FROM PLATS
     INNER JOIN PLATSCOMMANDE ON PLATSCOMMANDE.Pid=PLATS.Pid AND PLATSCOMMANDE.PRestaurant=PLATS.PRestaurant
-        WHERE Cid = '0')
-    WHERE Cid = '0';
+    WHERE Cid = '0')
+WHERE Cid = '0';
 
 -- Ajout de la commande à livrer
 INSERT INTO COMMANDESLIVREES VALUES ('0', (SELECT UAdresse FROM UTILISATEURS WHERE U_id='1'), 'Niet', NULL, 'Attente');
 
+
 -- COMMANDE A EMPORTER
--- Création de la commande
+-- Création de la commande pour l'utilisateur d'identifiant 5
 INSERT INTO COMMANDES VALUES ('1', CURRENT_TIMESTAMP, NULL, '5',
                             (SELECT TypeCommande FROM TYPESRESTAURANT
                                 WHERE RMail = 'instant@resto.com' AND TypeCommande = 'emporter'));
+                            -- Le SELECT fait la même chose que pour la partie précédente
 
 -- Choix des plats
 INSERT INTO PLATSCOMMANDE VALUES ('1', '0',  'instant@resto.com', '3');
 
--- Calcul du prix
+-- Calcul du prix en SQL qui peut également se faire via l'API
 UPDATE COMMANDES SET CPrix = (SELECT SUM(PPrix * NbPlat) FROM PLATS
     INNER JOIN PLATSCOMMANDE ON PLATSCOMMANDE.Pid=PLATS.Pid AND PLATSCOMMANDE.PRestaurant=PLATS.PRestaurant
         WHERE Cid = '1')
@@ -57,8 +63,9 @@ UPDATE COMMANDES SET CPrix = (SELECT SUM(PPrix * NbPlat) FROM PLATS
 -- Ajout de la commande à emporter
 INSERT INTO COMMANDESEMPORTEES VALUES ('1', 'Attente');
 
+
 -- COMMANDE SUR PLACE
--- Création de la commande
+-- Création de la commande pour l'utilisateur d'identifiant 6
 INSERT INTO COMMANDES VALUES ('2', CURRENT_TIMESTAMP, NULL, '6',
     (SELECT TypeCommande FROM TYPESRESTAURANT
         WHERE RMail = 'gyoza@resto.com' AND TypeCommande = 'place'));
@@ -69,17 +76,18 @@ INSERT INTO PLATSCOMMANDE VALUES ('2', '1', 'gyoza@resto.com', '1');
 INSERT INTO PLATSCOMMANDE VALUES ('2', '2', 'gyoza@resto.com', '2');
 INSERT INTO PLATSCOMMANDE VALUES ('2', '3', 'gyoza@resto.com', '1');
 
--- Calcul du prix
+-- Calcul du prix en SQL qui peut également se faire via l'API
 UPDATE COMMANDES SET CPrix = (SELECT SUM(PPrix * NbPlat) FROM PLATS
     INNER JOIN PLATSCOMMANDE ON PLATSCOMMANDE.Pid=PLATS.Pid AND PLATSCOMMANDE.PRestaurant=PLATS.PRestaurant
         WHERE Cid = '2')
     WHERE Cid = '2';
 
--- Ajout de la commande sur place
+-- Ajout de la commande sur place pour 5 personnes réservant pour la date CURRENT_TIMESTAMP
 INSERT INTO COMMANDESSURPLACE VALUES ('2', '5', CURRENT_TIMESTAMP, 'Attente');
 
 -- Nombre de clients sur place
 SELECT Distinct NbPers, PRestaurant FROM COMMANDESSURPLACE
 JOIN COMMANDES ON COMMANDES.Cid = COMMANDESSURPLACE.CPid
 JOIN PLATSCOMMANDE ON PLATSCOMMANDE.Cid = COMMANDES.Cid
-WHERE PRestaurant = 'gyoza@resto.com' AND COMMANDES.CDate - CURRENT_TIMESTAMP < TO_DSINTERVAL('0 04:00:00');
+WHERE PRestaurant = 'gyoza@resto.com' AND COMMANDESSURPLACE.CPArrivee - CURRENT_TIMESTAMP < TO_DSINTERVAL('0 04:00:00');
+-- CURRENT_TIMESTAMP est à remplacer ici par la date choisie pour la réservation
