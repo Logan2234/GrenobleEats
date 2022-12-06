@@ -7,6 +7,7 @@ public class Commande {
 	public String type;
 	public Map<String, Integer> plats;
 	public String rNom;
+	public String rMail;
 	
 	// Livraison
 	public String texte;
