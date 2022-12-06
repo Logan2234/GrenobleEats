@@ -54,8 +54,9 @@ public class Interface {
 		System.out.println("1) Parcourir les restaurants");
 		System.out.println("2) Passer une commande");
 		System.out.println("3) Supprimer mes données personnelles (Droit à l'oubli)");
-		System.out.println("4) Changer d'utilisateur");
-		System.out.println("5) Quitter l'application \n");
+		System.out.println("4) Laisser évaluation");
+		System.out.println("5) Changer d'utilisateur");
+		System.out.println("6) Quitter l'application \n");
 
 		System.out.print("Tapez le numéro de la réponse que vous souhaitez : ");
 
@@ -70,9 +71,12 @@ public class Interface {
 				droitOubli();
 				break;
 			case "4":
-				identification();
+				laisserEvaluation();
 				break;
 			case "5":
+				identification();
+				break;
+			case "6":
 				quit();
 				break;
 			default:
@@ -445,6 +449,8 @@ public class Interface {
 	}
 	
 	public void listeRestos() {
+		clearConsole();
+		
 		try {
 			System.out.println("\n -- -- -- \n");
 			System.out.println(" Tu vas te régaler ! \n");
@@ -530,6 +536,8 @@ public class Interface {
 	}
 
 	public void commanderResto(String resto) {
+		clearConsole();
+		
 		try {
 			Statement stmt = jdbc.connection.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT RMail FROM RESTAURANTS WHERE RNOM = \'" + resto + "\'");
@@ -669,6 +677,8 @@ public class Interface {
 	}
 
 	public void restoParCat(String categorie) {
+		clearConsole();
+		
 		try {
 			System.out.println("\n -- -- -- \n");
 			System.out.println(" Tu vas te régaler ! \n");
@@ -760,6 +770,8 @@ public class Interface {
 	}
 
 	public void commanderResto(String resto, String categorie) {
+		clearConsole();
+		
 		try {
 			Statement stmt = jdbc.connection.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT RMail FROM RESTAURANTS WHERE RNOM = \'" + resto + "\'");
@@ -895,7 +907,7 @@ public class Interface {
 		}
 	}
 
-	public void laisserEvaluation() { // TODO à debugger avec la base de donnée en partie complète
+	public void laisserEvaluation() { 
 		try {
 			System.out.println("\n Entrez le numéro de la commande à sélectionner \n");
 			System.out.println("Numéro, IdCommande, Date, Heure, Prix");
@@ -907,7 +919,7 @@ public class Interface {
 					"SELECT Cid, CDate, CPrix FROM COMMANDES WHERE U_Id = \'" + user.getIdentifiant() + "\'");
 			int cId;
 			while (rs.next()) {
-				System.out.println(rs.getString("Cid") + " " + rs.getString("CDate") + " " + rs.getString("CHeure")
+				System.out.println(rs.getString("Cid") + " " + rs.getString("CDate") 
 						+ " " + rs.getString("CPrix"));
 			}
 			System.out.println();
@@ -941,9 +953,7 @@ public class Interface {
 				String note = String.valueOf(userInputInt);
 				System.out.println("\n Entrez une un avis (Facultatif)\n");
 				userInput = interacteur.nextLine();
-				Date newDate = new Date();
-				String currDate = date.format(newDate);
-				String currHeure = heure.format(newDate);
+				long currDate = System.currentTimeMillis();
 
 				stmt = jdbc.connection.createStatement();
 				rs = stmt.executeQuery("SELECT Eid FROM EVALUATIONS");
@@ -952,9 +962,8 @@ public class Interface {
 					nbLoop++;
 				}
 				String id = String.valueOf(nbLoop);
-				// TODO : mettre au format TIMESTAMP
-				jdbc.insertValeur("EVALUATIONS", "(" + id + ", " + currDate + ", " + currHeure
-						+ "' \'" + userInput + "\', " + note + ", " + idCommande + ")"); // TODO requête à vérifier
+				jdbc.insertValeur("EVALUATIONS", "(" + id + ", " + currDate + ", "
+						+ "\'" + userInput + "\', " + note + ", " + idCommande + ")");
 			}
 			System.out.println("\n Merci d'avoir laissé un avis \n");
 			accueil();
