@@ -61,7 +61,7 @@ public class Interface {
 
 		switch (interacteur.nextLine()) {
 			case "1":
-				// TODO
+				listeRestos();
 				break;
 			case "2":
 				this.categoriesRecommandes();
@@ -91,7 +91,7 @@ public class Interface {
 			Set<String> recommandes = new HashSet<String>();
 			int nbCommandes = -1;
 			while (rs.next()) {
-				recommandes.add(rs.getString("CatNom")); // TODO vérifier que c'est bien CatNom que tu recup
+				recommandes.add(rs.getString("CatNom")); 
 				nbCommandes++;
 			}
 			if (nbCommandes <= 0) {
@@ -452,7 +452,7 @@ public class Interface {
 			ArrayList<String> restos = new ArrayList<String>();
 			
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery(""); // TODO requete pour sortir dans l'ordre décroissant des éval et ordre alpha 
+			ResultSet rs = stmt.executeQuery("SELECT RNom FROM RESTAURANTS ORDER BY RNote DESC, RNom ASC;"); 
 			
 			while (rs.next()) {
 				restos.add(rs.getString("RNom"));
@@ -532,7 +532,9 @@ public class Interface {
 	public void commanderResto(String resto) {
 		try {
 			Statement stmt = jdbc.connection.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT PNom, PDescription, PPrix FROM PLATS WHERE PRestaurant = \'" + resto + "\'"); 
+			ResultSet rs = stmt.executeQuery("SELECT RMail FROM RESTAURANTS WHERE RNOM = \'" + resto + "\'");
+			commande.rMail = rs.getString("RMail");
+			rs = stmt.executeQuery("SELECT PNom, PDescription, PPrix FROM PLATS WHERE PRestaurant = \'" + rs.getString("RMail") + "\'"); 
 			
 			commande.rNom = resto;
 			
@@ -547,7 +549,7 @@ public class Interface {
 				plats.add(plat);
 			}
 			if (plats.size() == 0) {
-				System.out.println(" Oups... Il y a aucun plat disponible... Veillez sélectionner un autre restorant. \n");
+				System.out.println(" Oups... Il y a aucun plat disponible... Veillez sélectionner un autre restaurant. \n");
 				commande.commencerCommande();
 				listeRestos();
 				return;
