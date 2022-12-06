@@ -1132,7 +1132,7 @@ public class Interface {
 				try {
 					Statement stmt = jdbc.connection.createStatement();
 					stmt.executeUpdate(
-							"UPDATE UTILISATEURS SET UMail = NULL, UMdp = NULL, UNom = NULL, UPrenom = NULL, UAddresse = NULL WHERE U_Id = "
+							"UPDATE UTILISATEURS SET UMail = NULL, UMdp = NULL, UNom = NULL, UPrenom = NULL, UAdresse = NULL WHERE U_Id = "
 									+ String.valueOf(user.getIdentifiant()));
 					System.out.println("Les données personnelles ont été effacées. Fermeture de la session...\n");
 					connexion();
