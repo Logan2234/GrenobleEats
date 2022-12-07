@@ -1024,22 +1024,6 @@ public class Interface {
 		}
 	}
 
-	public void commande(int idRestaurant) {
-		try {
-			System.out.println("\n Prenons ta commande\n");
-
-			while (true) {
-				System.out.println("Entre l'identifiant d'un plat : ");
-				Statement stmt = jdbc.connection.createStatement();
-				ResultSet rs = stmt.executeQuery(""); // TODO idPlat et nomPlat (avec idRestaurant)
-				while (rs.next())
-					System.out.println(rs.getString("Pid") + " " + rs.getString("PNom"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void connexion() {
 		System.out.println(" -- -- -- \n Bienvenue à GrenobleEAT ! \n");
 		System.out.println(" As-tu un compte ? \n -- -- -- \n");
@@ -1180,17 +1164,17 @@ public class Interface {
 			}
 		}
 
-		clearConsole();
-
 		try {
 			Statement stmt = jdbc.connection.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT MAX(U_ID) FROM UTILISATEURS");
 			rs.next();
 			int new_uid = rs.getInt("MAX(U_ID)") + 1;
-
+			
 			jdbc.insertValeur("UTILISATEURS",
-					"(\'" + new_uid + "\', \'" + user.eMail + "\', \'" + user.mdp + "\', \'" + user.nom
-							+ "\', \'" + user.prenom + "\', \'" + user.adresse + "\')");
+			"(\'" + new_uid + "\', \'" + user.eMail + "\', \'" + user.mdp + "\', \'" + user.nom
+			+ "\', \'" + user.prenom + "\', \'" + user.adresse + "\')");
+			
+			clearConsole();
 			accueil();
 			return;
 		} catch (SQLException e) {
