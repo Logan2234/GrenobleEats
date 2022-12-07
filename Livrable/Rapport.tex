@@ -34,6 +34,8 @@ commande a effectivement été effectuée et que l'on peut donner un
     \item Nous avons choisi, lorsque le client fait appel au droit à l'oubli de ne pas lui créer de nouvel identifiant car il en possède déjà
     un qui est uniquement vu par la base de données et auquel il n'a pas accès. Cette modification n'aurait donc était qu'une modification de nombreuses tables.
     \item Concernant les statuts des commandes, nous supposerons que ce sont les restaurants qui s'soccuperont d'actualiser dans la base de données leur commande.
+    \item pour les catégories, nous avons ajouté une catégorie mère '\_' qui est la racine des catégories.
+    Ainsi, chaque restaurant a une catégorie qui est au pire, la catégorie '\_'.
 \end{enumerate}
 
 Nous sommes arrivés avec les contraintes suivantes :
@@ -97,7 +99,7 @@ EId $ \rightarrow$ EDate, Avis, ENote & ENote $ \in [0..5] $&
 CType $\in$ TypeCommande pour un CId donné et le RMail associé &\\ 
 \cline{1-2}
 
-& JourHeure $\in $ \{LM, LS, MM, MS, MeM, MeS, JM, JS, VM, VS, SM, SS, DM, 
+& JourHeure $\in $ \{LM, LS, MaM, MaS, MeM, MeS, JM, JS, VM, VS, SM, SS, DM, 
 DS \} & & \\
 \hline
 
@@ -180,8 +182,17 @@ Aucune vérification supplémentaire n'est à faire.
 
 
 \section{Analyse des fonctionnalités}
-\subsection{Droit à l'oubli}
 \subsection{Parcours des restaurants}
+Pour obtenir la fiche de présentation des restaurants pour une catégorie donnée $categorie$ :
+$$
+\pi_{attr}(\sigma_{CatNom = 'categorie'}(CATEGORIESRESTAURANT \Join RESTAURANTS))
+$$
+Avec $attr = \left\{ RMail, RNom, Presentation, RNum, RAdresse, Place, Note \right\}$
+
+\subsection{Droit à l'oubli}
+Le droit à l'oubli modifie uniquement la table utilisateur mais n'est pas exprimable
+avec l'algèbre relationnel.
+
 \subsection{Passage de commande}
 Pour le passage de la commande, il y a plusieurs requêtes nécessaires.
 Les premières étapes :
@@ -205,8 +216,80 @@ $$
 On remarquera que dès que plusieurs plats auront été commandés pour une même commande, on aura alors
 une répétition qu'i faudra donc trier avec l'API.
 
-
 \section{Bilan du projet}
+\subsection{Logan - gestion BD}
+En commençant le projet j'étais enthousiaste d'avoir un projet mêlant différentes 
+technologies afin de d'avoir en résultat un produit beaucoup plus concret. Je me suis dès le 
+début occupé de la partie SQL avec l'analyse et la conception de la base de données. Cela m'a 
+permis de réellement comprendre la méthode vue en cours, et ce, de manière bien plus efficace 
+que lors des TDs.\\
+
+En terme de difficultés relevées réside surtout les choix de conception, que ce soit dû à une
+ambiguïté du sujet, ou bien seulement un manque d'informations. Savoir si le choix que l'on fait
+s'avérera être utile ou handicapant pour la suite est une chose qui m'est souvent difficile de
+faire. Une autre difficulté de trouve être l'analyse même de la base de données. Beaucoup 
+d'informations sont présentes, on ne doit rien omettre et une erreur, ou un oubli, dès cette 
+étape peut générer des problèmes ou des incohérences dans tout le projet.
+
+En ce qui concerne les facilités, je pourrais citer l'étape de création du diagramme 
+entités/associations ou encore le passage en relationnel. Puis plus généralement les requêtes 
+SQL n'étaient pas un majeur problème que ce soit pour la création des tables, pour le 
+peuplement ou les différents scripts SQL.\\
+
+Enfin, je ne ferai pas tout un paragraphe sur la panne informatique, mais le seul regret que 
+j'ai c'est d'avoir dû abandonner l'idée d'avoir un rendu de projet pleinement fonctionnel et 
+concret puisque désormais il ne s'agit de ne discuter qu'autour de notre travail sur la base de
+donnée sans pouvoir s'appuyer sur un démonstrateur.
+Pour conclure avec mon appréciation générale, je dirais que c'était pour moi un projet 
+intéressant, la répartition du travail était claire et plutôt efficace et l'ambiance de groupe 
+l'était tout autant.
+
+\subsection{Maud - gestion BD}
+Pour ma part, au début du projet j'avais peur de la quantité de travail à faire mais j'étais
+en même temps très enthousiaste à l'idée d'implémenter une application et de voir l'interraction
+application-base de données. Je me suis principalement focalisée sur l'analyse et la mise en 
+place de la base de données.\\
+
+Les difficultés éprouvées provenaient principalement de zones floues liées à l'énoncé et donc
+des incertitudes sur la mise en place du schéma. En particulier, l'hérédité des catégories a été
+compliquée à concevoir mais nous avons réussi à la mettre en place sans problème une fois La
+solution trouvée.
+
+La partie plus facile a été le remplissage des tables car bien qu'il ait été long, il ne
+présentatit aucune difficulté. L'analyse en elle-même a été faite relativement facilement
+ainsi que l'écriture des requêtes SQL.\\
+
+Enfin, ce projet m'a beaucoup appris sur la conception de base de données. De même, j'ai trouvé
+que l'ambiance était bonne et l'organisation du groupe a été efficace. Toutefois, je reste déçue
+quant à la suppression de l'API de l'évaluation car dasn notre cas elle est fonctionnelle et terminée.
+
+\subsection{Jorge - gestion API}
+Les difficultés auxquelles j'ai fait face étaient les suivantes : tout d'abord la connexion entre la base de données
+et l'API pour la première fois était compliquée à comprendre, difficulté qui s'est représentée
+à la fin du projet lorsque nous avons utilisé SQLLite pour poursuivre notre projet. Ensuite,
+l'envoi des commandes vers la base de données une fois que l'utilisateur avait fini sa commande 
+a été compliqué à réaliser ainsi que d'implémenter les contraintes contextuelles car je 
+n'avais que peu travaillé sur la partie relationnelle. \\
+
+Toutefois, certains aspects ont été beaucoup plus simples que prévus, notamment le droit à l'oubli,
+le parcours des catégories, la connexion/déconnexion de l'API par un utilisateur et l'écriture
+des requêtes SQL pour les envoyer à la base de données.\\
+
+Je me suis également occupé de l'interface utilisateur avec les différents menus ainsi que l'affichage
+de 10 restaurants par 10 restaurants. Ces derniers aspects m'ont pris beaucoup de temps car
+l'implémentation est longue bien que pas très complexe.
+
+\subsection{Cédric - gestion API}
+Pour ma part, je n'ai éprouvé aucune difficulté sur la compréhension du sujet, l'assimiliation
+des demandes client ainsi que la construction de l'interface Java.
+
+Cependant j'ai eu beaucoup de mal à mettre en lien la base de données et le code et utiliser ensuite 
+les bibliothèques SQL. De plus certaines requêtes SQL étaient compliquées à déterminer.\\
+
+Pendant ce projet j'ai beaucoup aimé créer les différentes parties de l'interface ainsi 
+que rajouter les différents cas de figure pour les entrées utilisateurs. De même, faire la liaison
+entre le diagramme et les requêtes pour remplir le cahier des charges et la demande du client.
+
 \section{Mode d'emploi}
 
 Nous avons développé, comme demandé initialement, un démonstrateur en Java.
