@@ -5,7 +5,7 @@ CREATE TABLE RESTAURANTS(
     RNom VARCHAR(30) NOT NULL,
     RNum VARCHAR(12) NOT NULL,
     RAdresse VARCHAR(50) NOT NULL,
-    Places int NOT NULL CHECK (Places > 0),
+    Places int NOT NULL CHECK (Places >= 0),
     Presentation VARCHAR(1000),
     RNote FLOAT CHECK (RNote >= 0 AND RNote <= 5),
     PRIMARY KEY(RMail)

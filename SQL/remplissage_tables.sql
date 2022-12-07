@@ -165,7 +165,7 @@ INSERT INTO CATEGORIES VALUES ('pintxo');
 INSERT INTO CATEGORIES VALUES ('italienne');
 INSERT INTO CATEGORIES VALUES ('sicilienne');
 INSERT INTO CATEGORIES VALUES ('romaine');
-INSERT INTO CATEGORIES VALUES ('tuscane');
+INSERT INTO CATEGORIES VALUES ('toscane');
 
 INSERT INTO CATEGORIES VALUES ('Par catégorie');
 INSERT INTO CATEGORIES VALUES ('fastfood');
@@ -201,14 +201,14 @@ INSERT INTO CATEGORIEPARENT VALUES ('pintxo', 'tapas');
 INSERT INTO CATEGORIEPARENT VALUES ('italienne', 'Par pays');
 INSERT INTO CATEGORIEPARENT VALUES ('sicilienne', 'italienne');
 INSERT INTO CATEGORIEPARENT VALUES ('romaine', 'italienne');
-INSERT INTO CATEGORIEPARENT VALUES ('tuscane', 'italienne');
+INSERT INTO CATEGORIEPARENT VALUES ('toscane', 'italienne');
 
 -- Création des entrées de la table RESTAURANTS
 -- Restaurants espagnols
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('croquettes@resto.com', 'Croquettes de chez vous', '0000000', '12 rue Croquettes 38000', '20', 'On vous sert des croquettes');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
-    ('instant@resto.com', 'L instant espagnol', '0000001', '12 rue Instant 38000', '30', 'On vous sert de la bouffe espagnole');
+    ('instant@resto.com', 'L instant espagnol', '0000001', '12 rue Instant 38000', '0', 'On vous sert de la bouffe espagnole');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('saveur@resto.com', 'La saveur iberique', '0000003', '12 rue Iberique 38000', '30', 'On vous sert de la bouffe espagnole');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
@@ -216,15 +216,15 @@ INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALU
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('paella@resto.com', 'Paëlla maison', '0000005', '12 rue Paella 38000', '20', 'On vous sert de la paella');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
-    ('tortilla@resto.com', 'La buena tortilla', '0000006', '12 rue Tortilla 38000', '30', 'On vous sert des tortillas');
+    ('tortilla@resto.com', 'La buena tortilla', '0000006', '12 rue Tortilla 38000', '0', 'On vous sert des tortillas');
 -- Restaurants japonais
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
-    ('ramen@resto.com', 'Le Ramen de Shibuya', '0000007', '13 rue Ramen 38000', '20', 'On vous sert des ramens');
+    ('ramen@resto.com', 'Le Ramen de Shibuya', '0000007', '13 rue Ramen 38000', '0', 'On vous sert des ramens');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('gyoza@resto.com', 'Gyoza de Ginza', '0000008', '13 rue Gyozas 38000', '50', 'On vous sert des gyozas');
 -- Restaurants italiens
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
-    ('pizza@resto.com', 'Pasta Pizza', '0000009', '14 rue PizzaPasta 38000', '10', 'On vous sert des pizzas');
+    ('pizza@resto.com', 'Pasta Pizza', '0000009', '14 rue PizzaPasta 38000', '0', 'On vous sert des pizzas');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('gorgonzola@resto.com', 'Il Gorgonzola', '00000010', '14 rue Gorgonzola 38000', '20', 'On vous sert du fromage italien');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
@@ -239,7 +239,7 @@ INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALU
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('gustatif@resto.com', 'La raie gustative', '00000015', '15 rue de la raie 38000', '25', 'Tout bon salon de coiffure se doit d''avoir un nom... digne de ce nom');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
-    ('rizkiki@resto.com', 'Riz Kiki', '00000016', '15 rue kiki 38000', '10', 'On vous sert du riz, mais en petite quantité');
+    ('rizkiki@resto.com', 'Riz Kiki', '00000016', '15 rue kiki 38000', '0', 'On vous sert du riz, mais en petite quantité');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 
     ('grandbleu@resto.com', 'La table du grand bleu', '00000017', '15 rue fromage 38000', '19', 'On vous sert du gratin dauphinois');
 INSERT INTO RESTAURANTS (RMail, RNom, RNum, RAdresse, Places, Presentation) VALUES 

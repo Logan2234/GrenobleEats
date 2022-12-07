@@ -1,9 +1,9 @@
 import java.sql.*;
-import oracle.jdbc.driver.*;
+// import oracle.jdbc.driver.*;
 
 public class DriverJDBC {
 
-	public oracle.jdbc.driver.OracleDriver driver;
+	// public oracle.jdbc.driver.OracleDriver driver;
 	private String url;
 	private String user;
 	private String passwrd;
@@ -49,7 +49,7 @@ public class DriverJDBC {
 	public void insertValeur(String nomTable, String values) {
 		try {
 			System.out.println(
-					" -- -- -- \n Insertion de valeurs: " + values + " dans la table " + nomTable + "\n -- -- -- \n");
+					" -- -- -- \n Insertion des valeurs: " + values + " dans la table " + nomTable + "\n -- -- -- \n");
 			Statement stmt = this.connection.createStatement();
 			stmt.executeUpdate("INSERT INTO " + nomTable + " VALUES " + values);
 		} catch (SQLException e) {
@@ -91,7 +91,7 @@ public class DriverJDBC {
 	}
 
 	public void fermeture() {
-		System.out.print(" -- -- -- \n Tentative de fermeture de connexion... ");
+		System.out.print("\n -- -- -- \n Tentative de fermeture de connexion... ");
 		try {
 			this.connection.close();
 			System.out.println("Connexion fermée \n -- -- -- \n");
