@@ -116,7 +116,6 @@ On obtient ensuite le diagramme Entité-Relation suivant:
 \end{landscape}
 \section{Modèle Relationnel}
 
-
 Nous avons appliqué l'algorithme vu en cours pour obtenir le schéma relationnel.
 
 \subsection{Traduction des entités simples}
@@ -181,6 +180,32 @@ Aucune vérification supplémentaire n'est à faire.
 
 
 \section{Analyse des fonctionnalités}
+\subsection{Droit à l'oubli}
+\subsection{Parcours des restaurants}
+\subsection{Passage de commande}
+Pour le passage de la commande, il y a plusieurs requêtes nécessaires.
+Les premières étapes :
+\begin{itemize}
+    \item Insertion de la commande
+    \item Ajout des plats
+    \item Ajout du type de la commande
+\end{itemize}
+ne seront pas exprimables avec l'algèbre relationnel car il s'agit de modifier les tables.
+On peut toutefois récupérer les tuples (PPrix, NbPlats) qui vont servir à calculer le coût total pour une commande de Cid = $Cid_0$:
+$$
+\pi_{PPrix, NbPlats}( \sigma_{Cid = Cid_0}(PLATS \Join PLATSCOMMANDE))
+$$
+De même, il est possible d'avoir le nombre de personnes sur place pour toutes les commandes sur place passées pour un horaire demandé = $time$ et un restaurant = $restaurant$ :
+$$
+\pi_{Cid, NbPers}(\sigma_{CPArrivee - time < '4h'}(COMMANDES \Join_{CType = 'sur place'} COMMANDESSURPLACE 
+$$
+$$
+\Join_{PRestaurant = 'restaurant'} PLATSCOMMANDE))
+$$
+On remarquera que dès que plusieurs plats auront été commandés pour une même commande, on aura alors
+une répétition qu'i faudra donc trier avec l'API.
+
+
 \section{Bilan du projet}
 \section{Mode d'emploi}
 
