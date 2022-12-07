@@ -34,8 +34,8 @@ commande a effectivement été effectuée et que l'on peut donner un
     \item Nous avons choisi, lorsque le client fait appel au droit à l'oubli de ne pas lui créer de nouvel identifiant car il en possède déjà
     un qui est uniquement vu par la base de données et auquel il n'a pas accès. Cette modification n'aurait donc était qu'une modification de nombreuses tables.
     \item Concernant les statuts des commandes, nous supposerons que ce sont les restaurants qui s'soccuperont d'actualiser dans la base de données leur commande.
-    \item pour les catégories, nous avons ajouté une catégorie mère '_' qui est la racine des catégories.
-    Ainsi, chaque restaurant a une catégorie qui est au pire, la catégorie '_'.
+    \item pour les catégories, nous avons ajouté une catégorie mère '\_' qui est la racine des catégories.
+    Ainsi, chaque restaurant a une catégorie qui est au pire, la catégorie '\_'.
 \end{enumerate}
 
 Nous sommes arrivés avec les contraintes suivantes :
@@ -99,7 +99,7 @@ EId $ \rightarrow$ EDate, Avis, ENote & ENote $ \in [0..5] $&
 CType $\in$ TypeCommande pour un CId donné et le RMail associé &\\ 
 \cline{1-2}
 
-& JourHeure $\in $ \{LM, LS, MM, MS, MeM, MeS, JM, JS, VM, VS, SM, SS, DM, 
+& JourHeure $\in $ \{LM, LS, MaM, MaS, MeM, MeS, JM, JS, VM, VS, SM, SS, DM, 
 DS \} & & \\
 \hline
 
@@ -182,8 +182,17 @@ Aucune vérification supplémentaire n'est à faire.
 
 
 \section{Analyse des fonctionnalités}
-\subsection{Droit à l'oubli}
 \subsection{Parcours des restaurants}
+Pour obtenir la fiche de présentation des restaurants pour une catégorie donnée $categorie$ :
+$$
+\pi_{attr}(\sigma_{CatNom = 'categorie'}(CATEGORIESRESTAURANT \Join RESTAURANTS))
+$$
+Avec $attr = \left\{ RMail, RNom, Presentation, RNum, RAdresse, Place, Note \right\}$
+
+\subsection{Droit à l'oubli}
+Le droit à l'oubli modifie uniquement la table utilisateur mais n'est pas exprimable
+avec l'algèbre relationnel.
+
 \subsection{Passage de commande}
 Pour le passage de la commande, il y a plusieurs requêtes nécessaires.
 Les premières étapes :
