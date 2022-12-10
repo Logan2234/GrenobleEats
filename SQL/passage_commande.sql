@@ -24,7 +24,7 @@ TRUNCATE TABLE COMMANDES;
 
 -- COMMANDE EN LIVRAISON (cas de base avec deux plats commandés une seule fois)
 -- Création de la commande pour l'utilisateur d'identifiant 1
-INSERT INTO COMMANDES VALUES ('0', CURRENT_TIMESTAMP, NULL, '1',
+INSERT INTO COMMANDES VALUES ('0', CURRENT_TIMESTAMP, '0', '1',
                             (SELECT TypeCommande FROM TYPESRESTAURANT 
                                 WHERE RMail = 'croquettes@resto.com' AND TypeCommande = 'livraison'));
                             -- Le SELECT permet de vérifier que le restaurant accepte effectivement la livraison, 
@@ -46,7 +46,7 @@ INSERT INTO COMMANDESLIVREES VALUES ('0', (SELECT UAdresse FROM UTILISATEURS WHE
 
 -- COMMANDE A EMPORTER
 -- Création de la commande pour l'utilisateur d'identifiant 5
-INSERT INTO COMMANDES VALUES ('1', CURRENT_TIMESTAMP, NULL, '5',
+INSERT INTO COMMANDES VALUES ('1', CURRENT_TIMESTAMP, '0', '5',
                             (SELECT TypeCommande FROM TYPESRESTAURANT
                                 WHERE RMail = 'instant@resto.com' AND TypeCommande = 'emporter'));
                             -- Le SELECT fait la même chose que pour la partie précédente
@@ -66,7 +66,7 @@ INSERT INTO COMMANDESEMPORTEES VALUES ('1', 'Attente');
 
 -- COMMANDE SUR PLACE
 -- Création de la commande pour l'utilisateur d'identifiant 6
-INSERT INTO COMMANDES VALUES ('2', CURRENT_TIMESTAMP, NULL, '6',
+INSERT INTO COMMANDES VALUES ('2', CURRENT_TIMESTAMP, '0', '6',
     (SELECT TypeCommande FROM TYPESRESTAURANT
         WHERE RMail = 'gyoza@resto.com' AND TypeCommande = 'place'));
 
@@ -85,9 +85,4 @@ UPDATE COMMANDES SET CPrix = (SELECT SUM(PPrix * NbPlat) FROM PLATS
 -- Ajout de la commande sur place pour 5 personnes réservant pour la date CURRENT_TIMESTAMP
 INSERT INTO COMMANDESSURPLACE VALUES ('2', '5', CURRENT_TIMESTAMP, 'Attente');
 
--- Nombre de clients sur place
-SELECT Distinct NbPers, PRestaurant FROM COMMANDESSURPLACE
-JOIN COMMANDES ON COMMANDES.Cid = COMMANDESSURPLACE.CPid
-JOIN PLATSCOMMANDE ON PLATSCOMMANDE.Cid = COMMANDES.Cid
-WHERE PRestaurant = 'gyoza@resto.com' AND COMMANDESSURPLACE.CPArrivee - CURRENT_TIMESTAMP < TO_DSINTERVAL('0 04:00:00');
--- CURRENT_TIMESTAMP est à remplacer ici par la date choisie pour la réservation
+ROLLBACK;
