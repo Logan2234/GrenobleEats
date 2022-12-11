@@ -45,6 +45,7 @@ public class Interface {
 	}
 
 	public void accueil() {
+		clearConsole();
 		commande.uid = user.getIdentifiant();
 
 		System.out.println(" -- -- --");
