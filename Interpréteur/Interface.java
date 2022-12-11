@@ -133,7 +133,7 @@ public class Interface {
 							selectSousCat(reponse);
 						else
 							System.out.println(
-									"\n Oups... Cette réponse n'est pas valide. Écris (exactement) la catégorie qui te donne la dalle.");
+									" Oups... Cette réponse n'est pas valide. Écris (exactement) la catégorie qui te donne la dalle.\n");
 						break;
 				}
 
@@ -169,7 +169,7 @@ public class Interface {
 
 				clearConsole();
 				System.out.println(
-						"\n Oups... Cette réponse n'est pas valide. Écris (exactement) la catégorie de tes rêves.");
+						" Oups... Cette réponse n'est pas valide. Écris (exactement) la catégorie de tes rêves.\n");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -213,7 +213,7 @@ public class Interface {
 								selectSousCat(reponse);
 							else
 								System.out.println(
-										"\n Oups... Cette réponse n'est pas valide. Écris (exactement) la catégorie de tes rêves.");
+										" Oups... Cette réponse n'est pas valide. Écris (exactement) la catégorie de tes rêves.\n");
 					}
 				}
 			}

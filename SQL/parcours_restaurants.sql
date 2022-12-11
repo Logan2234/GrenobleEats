@@ -5,9 +5,18 @@ BEGIN;
 
 -- On se connecte en tant que USER (on obtient son UID qu'on sauvegarde dans l'API)
 SELECT U_id FROM UTILISATEURS WHERE UMail = 'Nicolas.Carpentier@ggmail.com' AND UMdp = 'CarpentierN';
+-- L'ID est ici égal à 82
 
--- Parcours des catégories, de la catégorie mère jusqu'à une sous-catégorie
-SELECT CatNom FROM CATEGORIEPARENT WHERE CatNomMere = '_';
+-- Si on parcourt suivant les recommendations de l'utilisateur:
+SELECT CATEGORIESRESTAURANT.CatNom FROM CATEGORIESRESTAURANT
+JOIN CATEGORIESRESTAURANT ON CATEGORIESRESTAURANT.RMail = RESTAURANTS.RMail 
+JOIN PLATSCOMMANDE ON PLATSCOMMANDE.PRestaurant = RESTAURANTS.RMail 
+JOIN COMMANDES ON COMMANDES.Cid = PLATSCOMMANDE.Cid 
+WHERE COMMANDES.U_id = '82' 
+ORDER BY COMMANDES.CDate DESC LIMIT 5;
+
+-- Sinon, on parcourt les catégories, de la catégorie mère jusqu'à une sous-catégorie
+SELECT CatNom FROM CATEGORIEPARENT WHERE CatNomMere = '_'; -- '_' désignant la racine. Parmi les résultats se trouve "Par pays"
 SELECT CatNom FROM CATEGORIEPARENT WHERE CatNomMere = 'Par pays'; -- Parmi les résultats se trouve "francaise"
 
 -- On regarde quels sont les restaurants français
@@ -16,7 +25,7 @@ JOIN CATEGORIESRESTAURANT ON RESTAURANTS.RMail = CATEGORIESRESTAURANT.RMail
 WHERE CatNom = 'francaise'
 ORDER BY RNote DESC, RNom ASC;
 
--- Il y en a trop, donc on demande les sous-catégories
+-- Il y en a trop, donc on retourne en arrière et on demande les sous-catégories
 SELECT CatNom FROM CATEGORIEPARENT WHERE CatNomMere = 'francaise';
 
 -- Et on veut voir les sous-catégories de la cuisine alpine

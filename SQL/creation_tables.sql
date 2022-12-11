@@ -6,7 +6,7 @@ CREATE TABLE RESTAURANTS(
     RNum VARCHAR(12) NOT NULL,
     RAdresse VARCHAR(50) NOT NULL,
     Places int NOT NULL CHECK (Places >= 0),
-    Presentation VARCHAR(1000),
+    Presentation VARCHAR(1000) NOT NULL,
     RNote FLOAT CHECK (RNote >= 0 AND RNote <= 5),
     PRIMARY KEY(RMail)
 );
@@ -44,9 +44,9 @@ CREATE TABLE UTILISATEURS(
 CREATE TABLE COMMANDES(
     Cid INT,
     CDate TIMESTAMP NOT NULL,
-    CPrix FLOAT CHECK (CPrix > 0),
-    U_id INT,
-    TypeCommande VARCHAR(9),
+    CPrix FLOAT CHECK (CPrix > 0) NOT NULL,
+    U_id INT NOT NULL,
+    TypeCommande VARCHAR(9) NOT NULL,
     PRIMARY KEY(Cid),
     FOREIGN KEY(U_id) REFERENCES UTILISATEURS(U_id),
     FOREIGN KEY(TypeCommande) REFERENCES TYPESCOMMANDE(TypeCommande)
@@ -55,9 +55,9 @@ CREATE TABLE COMMANDES(
 CREATE TABLE EVALUATIONS(
     Eid INT,
     EDate TIMESTAMP NOT NULL,
-    Avis VARCHAR(1000),
+    Avis VARCHAR(1000) NOT NULL,
     ENote INT NOT NULL CHECK (ENote >= 0 AND ENote <= 5),
-    Cid INT,
+    Cid INT NOT NULL,
     PRIMARY KEY(Eid),
     FOREIGN KEY(Cid) REFERENCES COMMANDES(Cid)
 );
@@ -70,8 +70,8 @@ CREATE TABLE COMMANDESEMPORTEES(
 
 CREATE TABLE COMMANDESLIVREES(
     CLid INT,
-    CLAdresse VARCHAR(50),
-    Indications VARCHAR(1000),
+    CLAdresse VARCHAR(50) NOT NULL,
+    Indications VARCHAR(1000) NOT NULL,
     CLArrivee TIMESTAMP,
     CLStatut VARCHAR(11) CHECK (CLStatut IN ('Attente', 'Validee', 'enLivraison', 'AnnuleeC', 'AnnuleeR', 'Terminee')) NOT NULL,
     PRIMARY KEY(CLid)
@@ -87,9 +87,9 @@ CREATE TABLE COMMANDESSURPLACE(
 
 CREATE TABLE PLATS(
     Pid INT,
-    PRestaurant VARCHAR(50),
+    PRestaurant VARCHAR(50) NOT NULL,
     PNom VARCHAR(50) NOT NULL,
-    PDescription VARCHAR(1000),
+    PDescription VARCHAR(1000) NOT NULL,
     PPrix FLOAT NOT NULL CHECK (PPrix > 0),
     PRIMARY KEY(Pid, PRestaurant),
     FOREIGN KEY(PRestaurant) REFERENCES RESTAURANTS(RMail)
@@ -140,7 +140,7 @@ CREATE TABLE PLATSCOMMANDE(
     Cid INT,
     Pid INT,
     PRestaurant VARCHAR(50),
-    NbPlat INT,
+    NbPlat INT NOT NULL CHECK (NbPlat > 0),
     PRIMARY KEY(Cid, Pid, PRestaurant),
     FOREIGN KEY(Cid) REFERENCES COMMANDES(Cid),
     FOREIGN KEY(Pid, PRestaurant) REFERENCES PLATS(Pid, PRestaurant)

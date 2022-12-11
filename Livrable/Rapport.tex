@@ -72,7 +72,7 @@ Pour la conception, nous avons fait les choix suivants:
                 U\_Id $\rightarrow$ UMail, UMdp, UNom, UPrenom, UAdresse                        &                                                                            & CDate donne JourPlage pour toute commande    & (PId, RMail) $\psur$ ANom \\
                 \cline{1-2}
 
-                CId $\rightarrow$ CDate, CPrix                                                  & CPrix $>0$                                                                 & CDate $\le$ EDate                            &
+                CId $\rightarrow$ CDate, CPrix                                                  & CPrix $>0$                                                                 & CDate $<$ EDate                              &
                 CId $\twoheadrightarrow$ (PId, RMail)                                                                                                                                                                                                   \\
                 \cline{1-2}
 
@@ -84,23 +84,23 @@ Pour la conception, nous avons fait les choix suivants:
                 \cline{1-2}
 
                 CEId $\rightarrow$ CEStatut                                                     &
-                CEStatut $\in$ \{ attente, validée, disponible, annuleeC, annuleeR, terminee \} &                                                                            & CId $\rightarrow$ U\_Id                                                  \\
+                CEStatut $\in$ \{ attente, validée, disponible, annuleeC, annuleeR, terminee \} & CDate $\geq$ DateActuelle                                                  & CId $\rightarrow$ U\_Id                                                  \\
                 \cline{1-2}
 
                 CPId $\rightarrow$ NbPers, CPArrivee, CPStatut                                  &
                 CPStatut $\in$ \{ attente, validée, annuleeC, annuleeR,
-                terminee \}                                                                     &                                                                            & CId $\pfun$
+                terminee \}                                                                     & CPArrivee $\geq$ DateActuelle                                              & CId $\pfun$
                 EId                                                                                                                                                                                                                                     \\
 
                                                                                                 & NbPers $>0$                                                                &                                              & CatNom $\pfun$ CatNom     \\
                 \cline{1-2}
 
                 EId $ \rightarrow$ EDate, Avis, ENote                                           & ENote $ \in [0..5] $                                                       &
-                CType $\in$ TypeCommande pour un CId donné et le RMail associé                  &                                                                                                                                                       \\
+                EDate $\geq$ DateActuelle                                                       &                                                                                                                                                       \\
                 \cline{1-2}
 
-                                                                                                & JourHeure $\in $ \{LM, LS, MaM, MaS, MeM, MeS, JM, JS, VM, VS, SM, SS, DM,
-                DS \}                                                                           &                                                                            &                                                                          \\
+                                                                                                & JourPlage $\in $ \{LM, LS, MaM, MaS, MeM, MeS, JM, JS, VM, VS, SM, SS, DM,
+                DS \}                                                                           & CType $\in$ TypeCommande pour un CId donné et le RMail associé             &                                                                          \\
                 \hline
             \end{tabular}
         \]
@@ -109,12 +109,22 @@ Pour la conception, nous avons fait les choix suivants:
 
     \newpage
     \subsection{Diagramme Entités/Associations}
-    On obtient ensuite le diagramme Entité-Relation suivant:
+    On obtient ensuite le diagramme Entité/Associations suivant (à noter qu'une légende est présente puisque nous n'avons pas utilisé le même formalisme que celui du cours avec le logiciel utilisé):
     \begin{center}
-        \includegraphics[scale=0.7]{Diagramme_entite_relation.png}\\
+        \includegraphics[scale=0.45]{Diagramme_entite_relation.png}\\
     \end{center}
 
 \end{landscape}
+
+Quelques précisions sont à apporter:
+
+\begin{itemize}
+    \item Pour une question d'espace occupé nous avons décidé de traduire l'héritage des différentes catégories des commandes par référence. Contrairement à l'unification cela nous permet de ne pas avoir à gérer les contraintes avec l'application. Cependant, cela nous force à faire des jointures lorsque l'on souhaite accéder à toutes les données.
+    \item L'héritage que l'on fait pour les différents types de commandes est dans le cas d'une contrainte de partition: celui-ci doit être obligatoire, et une commande ne peut pas à la fois être à emporter et sur place par exemple.
+    \item La cardinalité de la flèche allant de la table ALLERGENES à PLATS est de 0..* puisque nous avons fait le choix (cf. partie sur le peuplement) de remplir cette première table de manière exhaustive avec tout les allergènes alimentaires définis par le règlement UE. Ce choix a été fait car la liste complète ne prend pas beaucoup de place dans la base de données.
+
+\end{itemize}
+
 \section{Modèle Relationnel}
 
 Nous avons appliqué l'algorithme vu en cours pour obtenir le schéma relationnel.
@@ -124,31 +134,28 @@ Nous avons appliqué l'algorithme vu en cours pour obtenir le schéma relationne
 Nous avons identifié les entités simples suivantes:
 
 \begin{itemize}
-    \item Restaurant\@(\underline{RMail}, RNom, RNum, RAdresse, Places, Présentation, RNote)
-    \item Commandes\@(\underline{Cid}, CDate, CPrix, \textbf{Uid}, \textbf{TypeCommande})
-    \item Utilisateurs\@(\underline{U\_id}, UMail, UMdp, UNom, UPrenom, UAdresse)
-    \item Evaluation\@(\underline{Eid}, EDate, Avis, ENote, \textbf{Cid})
-    \item Horaires\@(\underline{JourPlage})
-    \item TypesCommande\@(\underline{TypeCommande})
-    \item Categories\@(\underline{CatNom})
-    \item Allergenes\@(\underline{ANom})
+    \item RESTAURANTS\@(\underline{RMail}, RNom, RNum, RAdresse, Places, Présentation, RNote)
+    \item COMMANDES\@(\underline{Cid}, CDate, CPrix, \textbf{Uid}, \textbf{TypeCommande})
+    \item UTILISATEURS\@(\underline{U\_id}, UMail, UMdp, UNom, UPrenom, UAdresse)
+    \item EVALUATIONS\@(\underline{Eid}, EDate, Avis, ENote, \textbf{Cid})
+    \item HORAIRES\@(\underline{JourPlage})
+    \item TYPESCOMMANDE\@(\underline{TypeCommande})
+    \item CATEGORIES\@(\underline{CatNom})
+    \item ALLERGENES\@(\underline{ANom})
 \end{itemize}
 
 \subsection{Sous-types d'entités}
 
-Pour une question d'espace occupé nous avons décidé de traduire l'héritage des différentes catégories des commandes par référence.
-Contrairement à l'unification cela nous permet de ne pas avoir à gérer les contraintes avec l'application.
-
 \begin{itemize}
-    \item CommandesEmportees\@(\underline{CEid}, CEStatut)
-    \item CommandesLivrees\@(\underline{CLid}, CLAdresse, Indications, CLArrivee, CLStatut)
-    \item CommandesSurPlace\@(\underline{CPid}, NbPers, CPArrivee, CPStatut)
+    \item COMMANDESEMPORTEES\@(\underline{CEid}, CEStatut)
+    \item COMMANDESLIVREES\@(\underline{CLid}, CLAdresse, Indications, CLArrivee, CLStatut)
+    \item COMMANDESSURPLACE\@(\underline{CPid}, NbPers, CPArrivee, CPStatut)
 \end{itemize}
 
 \subsection{Type d'entité faible}
 
 \begin{itemize}
-    \item Plats\@(Pid, PRestaurant, PNom, Description, PPrix)
+    \item PLATS\@(Pid, PRestaurant, PNom, Description, PPrix)
 \end{itemize}
 
 \textbf{Contrainte induite par la traduction}: Vérifier que tout restaurant a au moins un plat.
@@ -158,27 +165,51 @@ Contrairement à l'unification cela nous permet de ne pas avoir à gérer les co
 \subsubsection{Cardinalité 1..1}
 
 Les attributs en gras dans les relations de la partie 2.1 correspondent aux traductions des associations avec cardinalité 1..1.
-Aucune vérification supplémentaire n'est à faire.
+Aucune vérification supplémentaire n'est à faire puisque la cardinalité dans l'autre sens est de 0 à soit 1 soit plus l'infini.
 \subsubsection{Cardinalité 0..1}
 
 \begin{itemize}
-    \item CategorieParent\@(\underline{CatNom, CatNomMere})
+    \item CATEGORIEPARENT\@(\underline{CatNom, CatNomMere})
 \end{itemize}
 
 \subsubsection{Cardinalité ?..*}
 
 \begin{itemize}
-    \item HorairesRestaurant\@(\underline{RMail, JourPlage})\\
+    \item HORAIRESRESTAURANT\@(\underline{RMail, JourPlage})\\
           \textbf{Contrainte induite}: Vérifier qu'un restaurant a au moins un horaire.
-    \item CategoriesRestaurant\@(\underline{RMail, CatNom})\\
+    \item CATEGORIESRESTAURANT\@(\underline{RMail, CatNom})\\
           \textbf{Contrainte induite}: Vérifier qu'un restaurant a au moins une catégorie
-    \item TypesRestaurant\@(\underline{RMail, TypeCommande})\\
+    \item TYPESRESTAURANT\@(\underline{RMail, TypeCommande})\\
           \textbf{Contrainte induite}: Vérifier qu'un restaurant a au moins un type de commande.
-    \item PlatsCommande\@(\underline{Cid, Pid, PRestaurant})\\
+    \item PLATSCOMMANDE\@(\underline{Cid, Pid, PRestaurant}, NbPlats\footnote[1]{Choix de conception fait en aval du passage en relationnel afin de permettre la sélection d'un même plat plusieurs fois dans une commande donnée.})\\
           \textbf{Contrainte induite}: Vérifier qu'une commande a au moins un plat.
-    \item AllergenesPlat\@(\underline{Pid, PRestaurant, ANom})
+    \item ALLERGENESPLAT\@(\underline{Pid, PRestaurant, ANom})
 \end{itemize}
 
+Après vérification, toutes les relations sont 3FNBCK exceptées celles qui peuvent contenir des attributs NULL, c'est à dire la table UTILISATEURS\footnote[2]{Nous y reviendrons dans la partie 5 de ce rapport.} ainsi que la table COMMANDESLIVREES qui contient l'attribut CLArrivee qui est NULL tant que la commande n'est pas livrée, puis contenant la date et l'heure de livraison une fois celle-ci effectuée.
+
+\section{Peuplement de la base de données}
+
+Quelques chiffres concernant le peuplement de la base de données:
+
+\begin{itemize}
+    \item 100 utilisateurs différents ont été créé dans la table UTILISATEURS.
+    \item 19 restaurants différents ont été créé dans la table RESTAURANTS.
+    \item 47 plats différents répartis dans ces restaurants ont été créé dans la table PLATS.
+\end{itemize}
+Les tables à entrées constantes ont été remplies comme suit:
+\begin{itemize}
+    \item HORAIRES = [LM, LS, MaM, MaS, MeM, MeS, JM, JS, VM, VS, SM, SS, DM, DS]\footnote[3]{Cela correspond à des plages horaires, LM signifiant Lundi Midi par exemple.}
+    \item ALLERGENES = [Gluten, Crustacés, Oeufs, Poissons, Arachides, Soja, Lait, Fruits a coques, Céleri, Moutarde, Graines de sésame, Anhydre sulfureux et sulfites, Lupin, Mollusques]
+    \item TYPESCOMMANDE = [emporter, place, livraison]
+\end{itemize}
+\newpage 
+La table CATEGORIES a été remplie comme suit:
+\begin{center}
+    \includegraphics[scale=2.5]{categories.png}
+\end{center}
+
+Enfin, les tables faisant le lien entre différentes tables (CATEGORIEPARENT, HORAIRESRESTAURANT, CATEGORIESRESTAURANT, TYPESRESTAURANT, PLATSCOMMANDE et ALLERGENESPLAT) ont été remplies de manière logique en fonction des données rentrées au-dessus.
 
 \section{Analyse des fonctionnalités}
 \subsection{Parcours des restaurants}
@@ -190,7 +221,7 @@ Avec $attr = \left\{ RMail, RNom, Presentation, RNum, RAdresse, Place, Note \rig
 
 \subsection{Droit à l'oubli}
 Le droit à l'oubli modifie uniquement la table utilisateur mais n'est pas exprimable
-avec l'algèbre relationnel.
+avec l'algèbre relationnel. Pour un utilisateur, identifié de manière secrète par son U\_Id, le droit à l'oubli remplassera toutes ses informations par des NULL\footnote[1]{Comme dit précédemment, nous y reviendrons dans la partie 5} tout en conservant son U\_Id.
 
 \subsection{Passage de commande}
 Pour le passage de la commande, il y a plusieurs requêtes nécessaires.
@@ -223,11 +254,14 @@ Il reste encore beaucoup de points que nous n'avons pas eu le temps de faire et 
 
 \begin{itemize}
     \item L'application Java ne vérifie pas que les horaires d'un restaurant sont compatibles avec les commandes des utilisateurs.
-    \item De même, il n'y a pas de vérification en terme de type de commande passé par un utilisateur à un restaurant. Ainsi, il est toujours possible de demander une livraison à un restaurant ne livrant pas.
-    \item L'API ne permet pas d'obtenir la fiche complète d'un restaurant, ainsi, on a jamais accès à son numéro par exemple. Il suffirait d'ajouter une requête à un moment précis permettant d'afficher toutes ces informations.
-    \item Dans notre implémentation, nous n'avons pas eu le temps de donner la possibilité à l'utilisateur de lire ses anciennes évaluations.
-    \item Concernant les commandes à passer sur place il y a deux choses à relever. La première étant que l'on est pas censé devoir demander la liste des plats que l'on souhaite commander en amont dans la logique des choses. La seconde est que l'API ne vérifie pas qu'il reste un nombre suffisant de places pour passer une commande en question.
-    \item En terme d'amélioration, il aurait été favorable de mettre une clé étrangère Eid dans la table COMMANDES plutôt que l'inverse. Ainsi, il est plus facile de savoir si une commande a déjà été évaluée ou non.
+    \item De ce fait, il n'y a pas non plus la possibilité de filtrer les restaurants en fonction de leurs horaires d'ouverture, comme demandé dans la partie des fonctionnalité.
+    \item De même, il n'y a pas de vérification en terme de type de commande passé par un utilisateur à un restaurant. Ainsi, il est possible de demander une livraison à un restaurant ne livrant pas.
+    \item L'API ne permet pas d'obtenir la fiche complète d'un restaurant, ainsi, on ne peut pas accéder au numéro ou à la note d'un restaurant par exemple. Il suffirait d'ajouter une requête à un moment précis permettant d'afficher toutes ces informations.
+    \item Dans notre implémentation, l'utilisateur n'a pas la possibilité de lire ses anciennes évaluations.
+    \item Concernant les commandes à passer sur place il y a deux choses à relever. La première étant que l'on est pas censé devoir demander la liste des plats que l'on souhaite commander en amont. La seconde est que l'API ne vérifie pas qu'il reste un nombre suffisant de places pour passer une commande en question.
+    \item Plus généralement, presque toutes les contraintes contextuelles ne sont pas vérifiées.
+    \item Il en est de même pour les contraintes induites par la traduction, celles relevées par la partie 2.
+    \item Nous avons compris grâce à la soutenance que le but de réassigner un nouvel identifiant à un utilisateur demandant l'effacement de ses données était nécessaire pour cacher toutes ces données de la vue de l'administrateur de la base de données. Ainsi, l'hypothèse n°3 que nous avons faite dans la partie 1.1 de ce rapport n'était pas nécessaire. Nous aurions dû à la place créer une table CLIENTS contenant alors toutes les données d'un utilisateur.
 \end{itemize}
 
 \section{Bilan du projet}
@@ -236,25 +270,29 @@ Il reste encore beaucoup de points que nous n'avons pas eu le temps de faire et 
 
 En commençant le projet j'étais enthousiaste d'avoir un projet mêlant différentes
 technologies afin d'avoir en résultat un produit beaucoup plus concret. Je me suis dès le
-début occupé de la partie SQL avec l'analyse et la conception de la base de données. Cela m'a
+début occupé de la partie base de données avec son analyse et sa conception. Cela m'a
 permis de réellement comprendre la méthode vue en cours, et ce, de manière bien plus efficace
 que lors des TDs.\\
 
 En terme de difficultés relevées réside surtout les choix de conception, que ce soit dû à une
 ambiguïté du sujet, ou bien seulement un manque d'informations. Savoir si le choix que l'on fait
 s'avérera être utile ou handicapant pour la suite est une chose qui m'est souvent difficile de
-faire. Une autre difficulté se trouve être l'analyse même de la base de données. Beaucoup
+faire. C'est en me concertant avec mes collègues ou bien parfois en demandant l'avis à notre professeur jouant le rôle du client ou bien de l'expert en base de données que certaines décisions étaient prises. Une autre difficulté se trouve être l'analyse même de la base de données. Beaucoup
 d'informations sont présentes, on ne doit rien omettre et une erreur, ou un oubli, dès cette
 étape peut générer des problèmes ou des incohérences dans tout le projet.
 
 En ce qui concerne les facilités, je pourrais citer l'étape de création du diagramme
-entités/associations ou encore le passage en relationnel. Puis plus généralement les requêtes
+entités/associations ou encore le passage en relationnel. Puis, plus généralement les requêtes
 SQL n'étaient pas un majeur problème que ce soit pour la création des tables, pour le
 peuplement ou les différents scripts SQL.\\
 
-Pour conclure avec mon appréciation générale, je dirais que c'était pour moi un projet
-intéressant, la répartition du travail était claire et plutôt efficace et l'ambiance de groupe
-l'était tout autant.
+Puisque la remise du rapport a été décalée, je me permets de rajouter un paragraphe concernant l'attendu même du projet lors de la soutenance.
+Celle-ci m'a permis de comprendre ce qui était attendu lorsque l'on devait ``convaincre l'expert''. La partie convaincre le client était pour moi plus évidente alors que ce deuxième aspect était quelque chose de totalement nouveau et d'assez flou. C'est, je pense, l'un des plus gros apport en terme de compétence que ce projet a pu m'apporter.\\
+
+Pour conclure avec mon appréciation générale, je dirais que c'était pour moi un projet vraiment
+intéressant, en particulier avec cette notion d'être en lien avec le client et de devoir faire ce projet dans cet objectif que de satisfaire le client.
+Cela change de d'habitude, et je pense avoir bien plus appris grâce à cette méthode.
+Enfin, pour ce qui est du groupe, la répartition du travail s'est, selon moi, faite de manière efficace, et l'ambiance générale était généralement très positive.
 
 \subsection{Maud - gestion BD}
 Pour ma part, au début du projet j'avais peur de la quantité de travail à faire mais j'étais
@@ -273,7 +311,7 @@ ainsi que l'écriture des requêtes SQL.\\
 
 Enfin, ce projet m'a beaucoup appris sur la conception de base de données. De même, j'ai trouvé
 que l'ambiance était bonne et l'organisation du groupe a été efficace. Toutefois, je reste déçue
-quant à la suppression de l'API de l'évaluation car dasn notre cas elle est fonctionnelle et terminée.
+quant à la suppression de l'API de l'évaluation car dans notre cas elle est fonctionnelle et quasiment terminée.
 
 \subsection{Jorge - gestion API}
 Les difficultés auxquelles j'ai fait face étaient les suivantes : tout d'abord la connexion entre la base de données
@@ -308,11 +346,9 @@ Nous avons développé, comme demandé initialement, un démonstrateur en Java.
 
 Après la panne informatique de l'Ensimag et la non-nécessité du démonstrateur, nous avons tout de même voulu
 rendre un démonstrateur fonctionnel, même si toutes les fonctionnalités n'ont pas été introduites. Ainsi, Oracle n'étant pas accessible,
-nous avons développé la base de données en SQLite, en local.
+nous avons développé la base de données en SQLite, en local. \\
 
-Nous avons alors exporté le démonstrateur dans un \texttt{.jar}. Pour démarrer le démonstrateur, il faut aller
-dans le dossier Interpréteur et lancer la commande \texttt{java -jar GrenobleEAT.jar}. \\
-
+Afin de compiler et d'exécuter le démonstrateur, il suffit de taper un simple {\tt make} dans la console. \\
 
 La navigation dans le navigateur est assez intuitive. L'utilisateur peut naviguer de menu en menu en suivant
 les instructions demandées. Pour sélectionner les options proposées par  démonstrateur, l'utilisateur devra
@@ -323,7 +359,7 @@ Lorsqu'un utilisateur veut réaliser une commande, il peut soit voir la liste de
 
 La liste des restaurants s'affiche dans l'ordre décroissant des évaluations des utilisateurs et dans l'ordre alphabétique des noms. \\
 
-Pour l'exploration des catégories, tout d'abord l'application recommande à l'utilisateur les 3 dernières catégories
+Pour l'exploration des catégories, tout d'abord l'application recommande à l'utilisateur les 5 dernières catégories
 commandées. Puis, si les catégories ne conviennent pas à l'utilisateur ou si simplement l'utilisateur manque de commandes
 réalisées, nous avons choisi de faire un parcours sous forme d'arbre. Au début, l'application propose des catégories générales, et
 l'utilisateur peut soit sélectionner la catégorie courante, soit continuer à parcourir les sous-catégories. Puis, l'application montre
