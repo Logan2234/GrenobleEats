@@ -37,6 +37,20 @@ Pour la conception, nous avons fait les choix suivants:
     \item Pour les catégories, nous avons ajouté une catégorie mère '\_' qui est la racine des catégories.
 \end{enumerate}
 
+\subsection{Exemple du passage à l'énoncé aux contraintes : cas des plats}
+L'énoncé donnait la portion suivante sur les plats :
+
+"
+Un plat est identifié par un \textbf{numéro unique au restaurant} qui le propose et possède \textbf{un nom}, \textbf{une description},
+\textbf{un prix} et \textbf{optionnellement une liste des allergènes} qu’il peut contenir.
+"
+
+On obtient donc l'entité \textbf{Plats}\{\underline{Pid, PRestaurant}, PNom, Description, PPrix, PAllergenes \}.
+De cette phrase on en déduit la DF : 
+PId, Restaurant $\rightarrow$ PNom, PDescription, PPrix
+Ainsi que la contraintes de multiplicité : (PId, RMail) $\psur$ ANom
+
+
 \begin{landscape}
     \subsection{Contraintes}
 
@@ -246,7 +260,7 @@ $$
     \Join_{PRestaurant = 'restaurant'} PLATSCOMMANDE))
 $$
 On remarquera que dès que plusieurs plats auront été commandés pour une même commande, on aura alors
-une répétition qu'i faudra donc trier avec l'API.
+une répétition qu'il faudra donc trier avec l'API.
 
 \section{Fonctionnalités manquantes et améliorations}
 
@@ -254,8 +268,8 @@ Il reste encore beaucoup de points que nous n'avons pas eu le temps de faire et 
 
 \begin{itemize}
     \item L'application Java ne vérifie pas que les horaires d'un restaurant sont compatibles avec les commandes des utilisateurs.
-    \item De ce fait, il n'y a pas non plus la possibilité de filtrer les restaurants en fonction de leurs horaires d'ouverture, comme demandé dans la partie des fonctionnalité.
-    \item De même, il n'y a pas de vérification en terme de type de commande passé par un utilisateur à un restaurant. Ainsi, il est possible de demander une livraison à un restaurant ne livrant pas.
+    \item De ce fait, il n'y a pas non plus la possibilité de filtrer les restaurants en fonction de leurs horaires d'ouverture, comme demandé dans la partie des fonctionnalités.
+    \item De même, il n'y a pas de vérification en terme de type de commande passée par un utilisateur à un restaurant. Ainsi, il est possible de demander une livraison à un restaurant ne livrant pas.
     \item L'API ne permet pas d'obtenir la fiche complète d'un restaurant, ainsi, on ne peut pas accéder au numéro ou à la note d'un restaurant par exemple. Il suffirait d'ajouter une requête à un moment précis permettant d'afficher toutes ces informations.
     \item Dans notre implémentation, l'utilisateur n'a pas la possibilité de lire ses anciennes évaluations.
     \item Concernant les commandes à passer sur place il y a deux choses à relever. La première étant que l'on est pas censé devoir demander la liste des plats que l'on souhaite commander en amont. La seconde est que l'API ne vérifie pas qu'il reste un nombre suffisant de places pour passer une commande en question.
@@ -302,8 +316,8 @@ place de la base de données.\\
 
 Les difficultés éprouvées provenaient principalement de zones floues liées à l'énoncé et donc
 des incertitudes sur la mise en place du schéma. En particulier, l'hérédité des catégories a été
-compliquée à concevoir mais nous avons réussi à la mettre en place sans problème une fois La
-solution trouvée.
+compliquée à concevoir mais nous avons réussi à la mettre en place sans problème une fois la
+solution trouvée (création de la table CATEGORIESPARENT).
 
 La partie plus facile a été le remplissage des tables car bien qu'il ait été long, il ne
 présentatit aucune difficulté. L'analyse en elle-même a été faite relativement facilement
@@ -311,7 +325,7 @@ ainsi que l'écriture des requêtes SQL.\\
 
 Enfin, ce projet m'a beaucoup appris sur la conception de base de données. De même, j'ai trouvé
 que l'ambiance était bonne et l'organisation du groupe a été efficace. Toutefois, je reste déçue
-quant à la suppression de l'API de l'évaluation car dans notre cas elle est fonctionnelle et quasiment terminée.
+quant à la suppression de l'API de l'évaluation car dans notre cas elle est fonctionnelle et bien avancée.
 
 \subsection{Jorge - gestion API}
 Les difficultés auxquelles j'ai fait face étaient les suivantes : tout d'abord la connexion entre la base de données
