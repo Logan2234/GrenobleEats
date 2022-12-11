@@ -1,6 +1,7 @@
 \documentclass[10pt, a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{pdflscape}
+\usepackage[french]{babel}
 \usepackage{amssymb}
 % \usepackage[margin=3cm]{geometry}
 \usepackage{graphicx}
@@ -37,18 +38,25 @@ Pour la conception, nous avons fait les choix suivants:
     \item Pour les catégories, nous avons ajouté une catégorie mère '\_' qui est la racine des catégories.
 \end{enumerate}
 
-\subsection{Exemple du passage à l'énoncé aux contraintes : cas des plats}
-L'énoncé donnait la portion suivante sur les plats :
+\subsection{Exemple du passage de l'énoncé aux contraintes : cas des plats}
+L'énoncé donnait la portion suivante sur les plats:
+\\
 
-"
-Un plat est identifié par un \textbf{numéro unique au restaurant} qui le propose et possède \textbf{un nom}, \textbf{une description},
-\textbf{un prix} et \textbf{optionnellement une liste des allergènes} qu’il peut contenir.
-"
+\textit{``Un plat est identifié par un \textbf{numéro unique au restaurant} qui le propose et possède \textbf{un nom}, \textbf{une description},
+\textbf{un prix} et \textbf{optionnellement une liste des allergènes} qu’il peut contenir.''}
+\\
 
-On obtient donc l'entité \textbf{Plats}\{\underline{Pid, PRestaurant}, PNom, Description, PPrix, PAllergenes \}.
-De cette phrase on en déduit la DF : 
-PId, Restaurant $\rightarrow$ PNom, PDescription, PPrix
-Ainsi que la contraintes de multiplicité : (PId, RMail) $\psur$ ANom
+On obtient donc l'entité \textbf{Plats} et les attributs \{\underline{Pid, PRestaurant}, PNom, Description, PPrix, PAllergenes \}.
+De cette phrase on en déduit: 
+\\ 
+
+La DF: (PId, Restaurant) \(\rightarrow \) PNom, PDescription, PPrix
+\\
+
+La contrainte de valeur: PPrix \(>\) 0
+\\
+
+La contrainte de multiplicité: (PId, RMail) \(\psur \) ANom
 
 
 \begin{landscape}
@@ -227,15 +235,47 @@ Enfin, les tables faisant le lien entre différentes tables (CATEGORIEPARENT, HO
 
 \section{Analyse des fonctionnalités}
 \subsection{Parcours des restaurants}
-Pour obtenir la fiche de présentation des restaurants pour une catégorie donnée $categorie$ :
-$$
-    \pi_{attr}(\sigma_{CatNom = 'categorie'}(CATEGORIESRESTAURANT \Join RESTAURANTS))
-$$
-Avec $attr = \left\{ RMail, RNom, Presentation, RNum, RAdresse, Place, Note \right\}$
+
+D'abord, un utilisateur doit pouvoir s'identifier avec son mail et son mot de passe (mdp):
+
+\[
+    \pi_{U\_id}(\sigma_{UMail='mail', UMdp='mdp'}(UTILISATEURS))
+\]
+
+Il s'agit maintenant de trouver les catégories recommandées en fonction de l'U\_Id préalablement enregistré d'un utilisateur. Ici, nous avons considéré les catégories non pas les plus utilisées par un utilisateur mais seulement les dernières catégories commandées par celui-ci. Il conviendrait de demander au client quel type de recommandation il préfère.
+
+\[
+    \pi_{CatNom}(\sigma_{COMMANDES.U\_Id = U\_Id}(CATEGORIESRESTAURANT \Join RESTAURANTS \\ \Join_{PRestaurant = RMail} PLATSCOMMANDE \Join COMMANDES))
+\]
+
+Les résultats pourront ensuite être triés par date de commande de la plus récente à la plus ancienne, et limiter le nombre de résultats par exemple aux 5 dernières catégories.
+\\
+
+Sinon, il s'agit de parcourir les catégories à la façon d'un menu déroulant, en partant de la racine jusqu'à une catégorie fille souhaitée, par exemple:
+
+\[
+    \pi_{CatNom}(\sigma_{CatNomMere='\_'}(CATEGORIEPARENT)) \\
+\]
+
+puis
+
+\[
+    \pi_{CatNom}(\sigma_{CatNomMere='Par\ pays'}(CATEGORIEPARENT))
+\]
+on veut par exemple sélectionner les restaurants de cuisine française qui sont ouverts les mardi midi (JourPlage = 'MaM'):
+
+\[
+    \pi_{attr}(\sigma_{P}(CATEGORIESRESTAURANT \Join RESTAURANTS \Join HORAIRESRESTAURANT))
+\]
+
+Avec \(attr = \) (RMail, RNom, Presentation, RNum, RAdresse, Place, Note) et \\ \(P =\ \)(CatNom='francaise', JourPlage='MaM')
+\\
+
+À noter qu'à la différence du démonstrateur, ici, on passe par la description complète des restaurants trouvés avant d'en sélectionner un pour commander.
 
 \subsection{Droit à l'oubli}
 Le droit à l'oubli modifie uniquement la table utilisateur mais n'est pas exprimable
-avec l'algèbre relationnel. Pour un utilisateur, identifié de manière secrète par son U\_Id, le droit à l'oubli remplassera toutes ses informations par des NULL\footnote[1]{Comme dit précédemment, nous y reviendrons dans la partie 5} tout en conservant son U\_Id.
+avec l'algèbre relationnel. Pour un utilisateur, identifié de manière secrète par son U\_Id, le droit à l'oubli remplacera toutes ses informations par des NULL\footnote[1]{Comme dit précédemment, nous y reviendrons dans la partie 5} tout en conservant son U\_Id.
 
 \subsection{Passage de commande}
 Pour le passage de la commande, il y a plusieurs requêtes nécessaires.
@@ -261,6 +301,8 @@ $$
 $$
 On remarquera que dès que plusieurs plats auront été commandés pour une même commande, on aura alors
 une répétition qu'il faudra donc trier avec l'API.
+
+\newpage
 
 \section{Fonctionnalités manquantes et améliorations}
 
