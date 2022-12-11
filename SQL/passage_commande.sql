@@ -1,5 +1,4 @@
 -- Passage de la commande
--- TODO : tester le dernier cas avec plusieurs commandes dans la base
 
 /*
 On supposera que l'utilisateur U_Id, le restaurant RMail et les plats (Pid, PRestaurant) sont connus via Java.
@@ -43,6 +42,12 @@ WHERE Cid = '0';
 -- Ajout de la commande à livrer
 INSERT INTO COMMANDESLIVREES VALUES ('0', (SELECT UAdresse FROM UTILISATEURS WHERE U_id='1'), 'Niet', NULL, 'Attente');
 
+-- Vérification de ce que l'on a mis dans la table
+SELECT * FROM COMMANDES WHERE Cid = '0'; -- on attend une ligne
+SELECT * FROM COMMANDESLIVREES WHERE Cid = '0'; -- on attend deux lignes
+SELECT * FROM PLATSCOMMANDE WHERE Cid = '0'; -- on attend une ligne
+
+
 
 -- COMMANDE A EMPORTER
 -- Création de la commande pour l'utilisateur d'identifiant 5
@@ -62,6 +67,11 @@ UPDATE COMMANDES SET CPrix = (SELECT SUM(PPrix * NbPlat) FROM PLATS
 
 -- Ajout de la commande à emporter
 INSERT INTO COMMANDESEMPORTEES VALUES ('1', 'Attente');
+
+-- Vérification de ce que l'on a mis dans la table
+SELECT * FROM COMMANDES WHERE Cid = '1'; -- on attend une ligne
+SELECT * FROM COMMANDESLIVREES WHERE Cid = '1'; -- on attend une ligne
+SELECT * FROM PLATSCOMMANDE WHERE Cid = '1'; -- on attend une ligne
 
 
 -- COMMANDE SUR PLACE
@@ -84,5 +94,10 @@ UPDATE COMMANDES SET CPrix = (SELECT SUM(PPrix * NbPlat) FROM PLATS
 
 -- Ajout de la commande sur place pour 5 personnes réservant pour la date CURRENT_TIMESTAMP
 INSERT INTO COMMANDESSURPLACE VALUES ('2', '5', CURRENT_TIMESTAMP, 'Attente');
+
+-- Vérification de ce que l'on a mis dans la table
+SELECT * FROM COMMANDES WHERE Cid = '2'; -- on attend une ligne
+SELECT * FROM COMMANDESLIVREES WHERE Cid = '2'; -- on attend quatre lignes
+SELECT * FROM PLATSCOMMANDE WHERE Cid = '2'; -- on attend une ligne
 
 ROLLBACK;
