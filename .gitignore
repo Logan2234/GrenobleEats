@@ -147,3 +147,7 @@ Temporary Items
 scripts/
 
 *.png
+
+*.drawio
+
+Presentation*.pdf
